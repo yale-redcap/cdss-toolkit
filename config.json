@@ -1,0 +1,93 @@
+{
+  "name": "CDSS",
+
+  "namespace": "Yale\\CDSS",
+
+  "description": "Clinical Decision Support Systems Toolkit",
+
+  "authors": [
+    {
+      "name": "Peter Charpentier",
+      "email": "peter.charpentier@yale.edu",
+      "institution": "Yale University"
+    },
+    {
+      "name": "Terri Fried",
+      "email": "terri.fried@yale.edu",
+      "institution": "Yale University"
+    }
+  ],
+
+  "versions": [
+    {
+      "number": "0.0.1",
+      "date": "2021-01-18",
+      "description": "and off we go",
+      "comments": ""
+    }
+  ],
+
+  "permissions": [
+    "redcap_data_entry_form",
+    "redcap_module_link_check_display"
+  ],
+
+  "links": {
+    "project": [
+      {
+        "name": "CDSS Setup",
+        "icon": "fas fa-cog",
+        "url": "plugins/cdss_setup.php"
+      },
+      {
+        "name": "CDSS Rules",
+        "icon": "fas fa-ruler",
+        "url": "plugins/cdss_setup_rules.php"
+      }
+    ]
+  },
+
+  "no-auth-pages": [
+  ],
+
+  "system-settings": [
+  ],
+
+  "project-settings": [
+    {
+      "key":  "cdss-diseases",
+      "name": "CDSS Diseases",
+      "type": "text"
+    },
+    {
+      "key":  "cdss-medications",
+      "name": "CDSS medications",
+      "type": "text"
+    },
+    {
+      "key":  "cdss-conditions",
+      "name": "CDSS conditions",
+      "type": "text"
+    },
+    {
+      "key":  "cdss-variables",
+      "name": "CDSS variables",
+      "type": "text"
+    },
+    {
+      "key":  "cdss-rbase",
+      "name": "CDSS Rule Base",
+      "type": "text"
+    }
+  ],
+
+  "crons":[
+  ],
+
+  "compatibility": {
+    "php-version-min": "7.0.0",
+    "redcap-version-min": "10.0.0"
+  },
+
+  "framework-version": 5
+}

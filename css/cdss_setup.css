@@ -1,0 +1,375 @@
+
+html {
+    --cdss-canvas-min-width: 1250px;
+
+    --cdss-font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+    --cdss-semibold-font-family: "Segoe UI Semibold", Segoe, "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
+    --cdss-font-color: darkslategray;
+    --cdss-font-size: 13px;
+    --cdss-font-weight: 400;
+    --cdss-thin-font-weight: 200;
+    --cdss-semibold-font-weight: 600;
+    --cdss-bold-font-weight: 800;
+    --cdss-line-height: 1.08;
+
+    --cdss-border-color: slategray;
+    --cdss-background-color: #fffef7;
+    --cdss-divider-color: cadetblue;
+
+    --cdss-padding: 5px;
+    --cdss-margin: 2.5px;
+    --cdss-scrollbar-width: 20px;
+
+    --cdss-metadata-panel-width: 200px;
+
+    --cdss-rbase-max-width: calc( 6*var(--cdss-metadata-panel-width) + 10*var(--cdss-margin) );
+
+    font-family: var( --cdss-font-family );
+    font-size: var( --cdss-font-size );
+    line-height: var( --cdss-line-height );
+    font-weight: var( --cdss-font-weight );
+    color: var( --cdss-font-color );
+}
+
+a {
+    color: inherit;
+    font-size: inherit;
+    text-decoration: none;
+}
+
+textarea, select, input, button{
+    outline: none !important;
+}
+
+button:hover {
+    background-color: black !important;
+    border: 1px solid black !important;
+    color: white !important;
+}
+
+button:active, button:focus {
+    border: 1px solid !important;
+}
+
+#cdss-screencover {
+    position:fixed;
+    top:0;
+    left:0;
+    background: rgba(255, 155, 46, 0.1);
+    z-index:5000;
+    width:100%;
+    height:100%;
+    display:none;
+}
+
+#cdss-curtain {
+    position:fixed;
+    top:0;
+    left:0;
+    background-color:black;
+    z-index:5001;
+    width:100%;
+    height:100%;
+    display:none;
+}
+
+div#cdss-canvas {
+    float: left;
+    width: 100%;
+    background-color: var(--cdss-background-color);
+    min-width: var(--cdss-canvas-min-width);
+}
+
+div#center {
+    background-color: var(--cdss-background-color) !important;
+}
+
+div.cdss-metadata-list-container {
+    float: left;
+    margin: var(--cdss-margin);
+    padding: var(--cdss-padding);
+    width: 200px;
+    max-width: 200px;
+    background-color: white;
+    border: 1px solid var(--cdss-border-color);
+}
+
+div.cdss-metadata-list-header {
+    width: 100%;
+    background-color: var(--cdss-font-color);
+    color: white;
+    padding: var(--cdss-padding);
+    font-family: var(--cdss-semibold-font-family);
+}
+
+div.cdss-metadata-list-cpanel {
+    width: 100%;
+    background-color: transparent;
+    padding-top: 5px;
+}
+
+div.cdss-metadata-list-content {
+    width: 100%;
+    height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+div.cdss-metadata-list-item {
+    width: 100%;
+    display: block;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: transparent;
+    color: var(--cdss-font-color);
+    padding: var(--cdss-padding);
+    font-family: var(--cdss-semibold-font-family);
+    border-bottom: 1px solid var(--cdss-divider-color);
+}
+
+div.cdss-metadata-list-item:hover {
+    cursor: pointer;
+    background-color: #d9e0f8;
+}
+
+div.cdss-metadata-list-item.cdss-item-selected {
+    background-color: var(--cdss-divider-color);
+    color: white;
+}
+
+div.cdss-scrollable-content-header {
+    width: 100%;
+    float: left;
+    color: linen;
+    background-color: var(--cdss-border-color);
+    height: 2rem;
+    line-height: 2rem;
+    padding-left: var(--cdss-padding);
+    padding-right: calc( var(--cdss-padding) + var(--cdss-scrollbar-width) );
+    border: 2px solid var(--cdss-border-color);
+}
+
+div.cdss-scrollable-content {
+    width: 100%;
+    float: left;
+    background-color: white;
+    height: 400px;
+    padding-left: var(--cdss-padding);
+    padding-right: var(--cdss-padding);
+    border: 2px solid var(--cdss-border-color);
+    overflow: auto ;
+}
+
+div.cdss-listrow {
+    width: 100%;
+    float: left;
+    clear: both;
+    height: 2rem;
+    line-height: 2rem;
+    border-bottom: 1px solid lightgray;
+}
+
+div.cdss-row {
+    width: 100%;
+    float: left;
+    margin-top: 10px;
+}
+
+button.cdss-metadata-button {
+    height: 30px;
+    width: calc((100% - 10px)/3);
+    color: white;
+    font-family: var(--cdss-semibold-font-family);
+    border: 1px solid;
+}
+
+button.cdss-metadata-button.cdss-button-inspect {
+    float: left;
+    background-color: var(--cdss-divider-color);
+    border-color: var(--cdss-divider-color);
+    display: none;
+}
+
+button.cdss-metadata-button.cdss-button-edit {
+    float: left;
+    background-color: var(--cdss-divider-color);
+    border-color: var(--cdss-divider-color);
+    display: none;
+}
+
+button.cdss-metadata-button.cdss-button-add {
+    float: right;
+    background-color: mediumseagreen;
+    border-color: mediumseagreen;
+}
+
+button.cdss-metadata-button.cdss-button-delete {
+    float: left;
+    margin-left: 5px;
+    background-color: indianred;
+    border-color: indianred;
+    display: none;
+}
+
+textarea#cdss-rbase-text {
+    width: calc( 100% - var(--cdss-margin) );
+    max-width: var(--cdss-rbase-max-width);
+    margin: var(--cdss-margin);
+    padding: var(--cdss-padding);
+    float: left;
+    clear: left;
+    resize: both;
+    height: 500px;
+    font-family: var(--cdss-semibold-font-family);
+    background-color: white;
+}
+
+/*== popups ==*/
+
+div.cdss-popup {
+    display: none;
+    background-color: var(--cdss-background-color);
+    padding: 10px;
+    width: 50%;
+    min-width: 500px;
+    -webkit-box-shadow: 0 0 16px 1px rgba(32, 32, 32, 0.5);
+    -moz-box-shadow: 0 0 16px 1px rgba(32, 32, 32, 0.5);
+}
+
+div.cdss-popup a {
+    color: inherit !important;
+    font-size: inherit !important;
+    text-decoration: none !important;
+}
+
+div.cdss-drag-handle {
+    cursor: move;
+}
+
+div.cdss-popup-header {
+    width: 100%;
+    font-size: 20px;
+    height: 40px;
+    line-height: 40px;
+}
+
+div.cdss-popup-content {
+    width: 100%;
+}
+
+div.cdss-popup table {
+    margin-top: 10px;
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+div.cdss-popup-content table td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: 15px;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+div.cdss-popup-content table td.cdss-table-left {
+    padding-right: 5px;
+    padding-left: 0;
+    color: slategray;
+    width: 100px;
+}
+
+div.cdss-popup-content table td.cdss-table-right {
+    padding-right: 0;
+    padding-left: 0;
+    color: black;
+}
+
+div.cdss-popup-content table td.cdss-metadata-name {
+    font-size: 20px;
+    font-weight: 700 !important;
+    color: black !important;
+}
+
+div.cdss-popup-content table td.cdss-editor-button-container {
+    text-align: center;
+}
+
+button.cdss-editor-button {
+    height: 32px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 0;
+    padding-bottom: 0;
+    border: 1px solid !important;
+    font-size: 13px !important;
+    border-radius: 16px;
+    /*font-family: var(--cdss-semibold-font-family) !important;*/
+    background-color: transparent !important;
+}
+
+button.cdss-editor-button:hover {
+    cursor: pointer;
+    background-color: var(--cdss-border-color) !important;
+    color: white !important;
+}
+
+button.cdss-editor-button-save {
+    background-color: white;
+    color: var(--cdss-border-color);
+    border-color: var(--cdss-border-color);
+}
+
+button.cdss-editor-button-cancel {
+    background-color: white;
+    color: indianred;
+    border-color: indianred;
+}
+
+div.cdss-popup-row-left {
+    float: left;
+    margin-right: 10px;
+}
+
+div.cdss-popup-row-right {
+    float: right;
+    margin-right: 10px;
+}
+
+div#cdss-inspector-title {
+    font-weight: 200;
+}
+
+div#cdss-inspector-metaclass, div#cdss-editor-metaclass {
+    font-weight: 700;
+    color: slategray;
+}
+
+div#cdss-inspector-itemname, div#cdss-editor-itemname {
+    font-weight: 700;
+    color: darkcyan;
+}
+
+input.cdss-editor-string {
+    width: 100%;
+    padding: 5px;
+    color: black;
+    font-size: 15px;
+    font-weight: 600;
+    border: 1px solid var(--cdss-border-color);
+}
+
+textarea.cdss-editor-text {
+    width: 100%;
+    padding: 5px;
+    color: black;
+    font-size: 15px;
+    font-weight: 600;
+    resize: vertical;
+    height: 100px;
+    border: 1px solid var(--cdss-border-color);
+}
+
+
