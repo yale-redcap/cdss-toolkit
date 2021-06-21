@@ -95,9 +95,19 @@ function get_cdss_settings() {
       $cdss_variables = $module->getProjectSetting('cdss-variables');
    }
 
+   // for now, 'actions' are just functions that start with 'report_'
+   $cdss_functions = json_decode($cdss_functions);
+   $cdss_actions = [];
+   foreach ( $cdss_functions as $cdss_function ) {
+      if ( substr( $cdss_function->name, 0, 7)==="report_" ) {
+         $cdss_actions[] = $cdss_function;
+      }
+   }
+
    return json_encode([
       'study_fields'=>$study_fields,
-      'cdss_functions'=>json_decode($cdss_functions),
+      'cdss_functions'=>$cdss_functions,
+      'cdss_actions'=>$cdss_actions,
       'cdss_variables'=>json_decode($cdss_variables),
       'cdss_medications'=>json_decode($cdss_medications),
       'cdss_diseases'=>json_decode($cdss_diseases),

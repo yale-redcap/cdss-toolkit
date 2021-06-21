@@ -24,7 +24,12 @@ html {
 
     --cdss-block-height: 50px;
     --cdss-item-description-width: 175px;
-    --cdss-item-gutter-width: 30px;
+
+    --cdss-item-gutter-width: 25px;
+    --cdss-rule-left-stub-width: 80px;
+    --cdss-rule-input-width: calc( 100% - var(--cdss-rule-left-stub-width) - 2*var(--cdss-item-gutter-width));
+    --cdss-condition-left-stub-width: 140px;
+    --cdss-condition-input-width: calc( 100% - var(--cdss-condition-left-stub-width) - 2*var(--cdss-item-gutter-width));
 
     --cdss-color-balloon-input: darkslategrey;
 
@@ -35,6 +40,8 @@ html {
     --cdss-panel-background-color: white;
 
     --cdss-highlight-color: darkslategray;
+
+    --cdss-line-height: 40px;
 
 }
 
@@ -130,32 +137,88 @@ table.cdss-config-table {
     margin-bottom: calc( 5*var(--cdss-margin) );
 }
 
-table.cdss-config-table tr:first-child td {
-    padding: var(--cdss-padding);
-}
-
-table.cdss-config-table tr:not(:first-child) td {
-    padding-top: 0;
+td {
+    padding-top: var(--cdss-padding);
     padding-bottom: var(--cdss-padding);
     padding-left: var(--cdss-padding);
     padding-right: var(--cdss-padding);
 }
 
-table.cdss-config-table td.cdss-gutter-left {
-    width: var(--cdss-item-gutter-width);
+tr.cdss-rule-condition td {
+    vertical-align: middle;
+}
+
+td.cdss-gutter-left {
+    width: 25px;
     text-align: left;
     vertical-align: top;
 }
 
-table.cdss-config-table td.cdss-gutter-right {
-    width: var(--cdss-item-gutter-width);
+td.cdss-gutter-right {
+    width: 25px;
     text-align: right;
     vertical-align: top;
 }
 
-table.cdss-config-table td.cdss-config-table-item-description {
-    width: var(--cdss-item-description-width);
-    vertical-align: center;
+td.cdss-rule-left-stub {
+    width: var(--cdss-rule-left-stub-width);
+    vertical-align: middle;
+}
+
+td.cdss-rule-input {
+    width: var(--cdss-rule-input-width);
+    vertical-align: middle;
+}
+
+td.cdss-rule-input select,td.cdss-rule-input input  {
+    width: 100%;
+}
+
+td.cdss-condition-left-stub {
+    width: var(--cdss-condition-left-stub-width);
+    vertical-align: middle;
+}
+
+td.cdss-condition-left-stub div {
+    width: 100%;
+}
+
+td.cdss-condition-left-stub div select {
+    font-weight: 800;
+    opacity: 66%;
+    font-size: 1.2rem;
+    color: indianred;}
+
+td.cdss-condition-input {
+    width: var(--cdss-rule-input-width);
+    vertical-align: middle;
+}
+
+td.cdss-condition-input select, td.cdss-condition-input input  {
+    width: 100%;
+    height: var(--cdss-line-height);
+}
+
+input.cdss-rule-name {
+    color: dodgerblue !important;
+}
+
+select.cdss-rule-action {
+    color: darkviolet !important;
+}
+
+td.cdss-rule-join-option {
+    width: 100px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+td.cdss-rule-condition-input {
+    width: calc( 100% - 50px - 100px );
+}
+
+td.cdss-gutter-left.centered, td.cdss-gutter-right.centered {
+    vertical-align: middle !important;
 }
 
 td.cdss-divider {
@@ -178,14 +241,18 @@ div.cdss-vertical-option {
     line-height: 40px;
 }
 
-.cdss-rule-is-or-not {
+.cdss-rule-condition-not {
     float: left;
     width: 50px;
 }
 
-.cdss-rule-basis {
+.cdss-rule-condition-basis {
     float: left;
     width: calc(100% - 50px);
+}
+
+.cdss-rule-conditions-table {
+    width: 100%;
 }
 
 div.cdss-halfwidth {
@@ -194,6 +261,7 @@ div.cdss-halfwidth {
 
 td.cdss-config-table-item-value input[type=text] {
     display:inline-block;
+    height: var(--cdss-line-height);
 }
 
 td.cdss-config-table-item-value span {
@@ -232,10 +300,12 @@ td.cdss-config-table-third:not(.cdss-bottom-row) {
     font-family: var(--cdss-input-font-family);
     font-weight: var(--cdss-input-font-weight);
     border-radius: 4px;
+    height: var(--cdss-line-height);
 }
 
 .cdss-config-table-item-value input.cdss-input-large, tbody#cdss-trk-table-body input[type=text]  {
     width: 100%;
+    height: var(--cdss-line-height);
 }
 
 .cdss-config-table-item-value-text-readonly  {
@@ -257,10 +327,6 @@ td.cdss-config-table-third:not(.cdss-bottom-row) {
     margin-right: var(--cdss-margin);
 }
 
-.cdss-config-panel select {
-    width: 100%;
-}
-
 .ui-autocomplete-input {
     padding: var(--cdss-padding) !important;
     border: 1px solid var(--cdss-input-border-color);
@@ -268,8 +334,9 @@ td.cdss-config-table-third:not(.cdss-bottom-row) {
     font-family: var(--cdss-input-font-family);
     font-weight: var(--cdss-input-font-weight);
     border-radius: 4px;
-    width: 100%;
-    height: 40px;
+    width: calc(100% - 50px);
+    height: var(--cdss-line-height);
+    margin-left: var(--cdss-padding);
 }
 
 .ui-autocomplete {
@@ -293,9 +360,18 @@ td.cdss-config-table-third:not(.cdss-bottom-row) {
     color: white;
 }
 
-.cdss-rule-if {
+.cdss-rule-condition-if {
+    float: left;
+    width: 100%;
     font-weight: 800;
     font-size: 1.3rem;
+    color: cadetblue;
+}
+
+.cdss-rule-condition-then {
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: cadetblue;
 }
 
 .cdss-sortable .cdss-config-table-item-description:hover {
@@ -569,4 +645,9 @@ input[type=radio].balloon + label:before{
 input[type=checkbox].balloon + label:before{
     border-radius: 50%;
     margin-bottom: 2px;
+}
+
+/* JQ */
+.ui-sortable-handle:hover {
+    cursor: move;
 }
