@@ -7,12 +7,18 @@ let cdss = {
    cdss_diseases: "",
    cdss_conditions: "",
    cdss_rbase: "",
-   rule_base_source: [],
+   rule_basis_source: [],
    rule_action_source: [],
    maxZ: 500,
    serviceUrl: "YES3_SERVICE_URL",
    user: "YES3_USERNAME",
    project_id: "YES3_PROJECT_ID",
+   rule_condition_basis_options: {
+      c: ["IS NOTED", "IS NOT NOTED"],
+      d: ["IS PRESENT", "IS NOT PRESENT"],
+      m: ["IS PRESCRIBED", "IS NOT PRESCRIBED", "DOSE IS GREATER THAN", "DOSE IS LESS THAN", "DOSE IS GREATER THAN OR EQUAL TO", "DOSE IS LESS THAN OR EQUAL TO"],
+      f: ["IS GREATER THAN", "IS LESS THAN", "IS EQUAL TO", "IS GREATER THAN OR EQUAL TO", "IS LESS THAN OR EQUAL TO"]
+   },
    cdss_actions: [
       {
          id: 1,
@@ -20,9 +26,9 @@ let cdss = {
          label: 'add a freetext entry to the medications management report',
          params: [
             {
-               name: 'free_text_comment',
+               name: 'cdss_rule_comment',
                label: 'comment',
-               type: 'text',
+               type: 'textarea',
             }
          ]
       },
@@ -32,19 +38,19 @@ let cdss = {
          label: 'add an entry to the high risk medications report',
          params: [
             {
-               name: 'medication1',
+               name: 'cdss_rule_main_item',
                label: 'medication',
-               type: 'medication'
+               type: 'medication',
             },
             {
-               name: 'med_con_dis',
-               label: 'medication, condition or disease (if relevant)',
-               type: 'med_con_dis'
+               name: 'cdss_rule_secondary_item',
+               label: 'interacting medication or condition, if appropriate',
+               type: 'general_item',
             },
             {
-               name: 'consequence',
+               name: 'cdss_rule_comment',
                label: 'consequence',
-               type: 'text'
+               type: 'textarea',
             }
          ]
       },
@@ -54,14 +60,14 @@ let cdss = {
          label: 'add an entry to the dosing report',
          params: [
             {
-               name: 'medication',
+               name: 'cdss_rule_main_item',
                label: 'medication',
                type: 'medication'
             },
             {
-               name: 'recommendation',
+               name: 'cdss_rule_comment',
                label: 'recommendation',
-               type: 'text'
+               type: 'textarea'
             }
          ]
       },
@@ -71,39 +77,14 @@ let cdss = {
          label: 'add an entry to the overtreatment report',
          params: [
             {
-               name: 'med_con_dis',
-               label: 'medication, condition or disease',
-               type: 'med_con_dis_1'
+               name: 'cdss_rule_main_item',
+               label: 'medication, condition, disease or study field',
+               type: 'general_item'
             },
             {
-               name: 'med_con_dis',
-               label: 'additional medication, condition or disease (if relevant)',
-               type: 'med_con_dis_2'
-            },
-            {
-               name: 'med_con_dis',
-               label: 'additional medication, condition or disease (if relevant)',
-               type: 'med_con_dis_3'
-            },
-            {
-               name: 'study_value_1',
-               label: 'study value to report (if relevant)',
-               type: 'study_field'
-            },
-            {
-               name: 'study_value_2',
-               label: 'additional study value to report (if relevant)',
-               type: 'study_field'
-            },
-            {
-               name: 'study_value_3',
-               label: 'additional study value to report (if relevant)',
-               type: 'study_field'
-            },
-            {
-               name: 'recommendation',
+               name: 'cdss_rule_comment',
                label: 'recommendation',
-               type: 'text'
+               type: 'textarea'
             }
          ]
       },
@@ -113,19 +94,14 @@ let cdss = {
          label: 'add an entry to the renal dosing report',
          params: [
             {
-               name: 'medication',
+               name: 'cdss_rule_main_item',
                label: 'medication',
                type: 'medication'
             },
             {
-               name: 'study_value',
-               label: 'study value to report, if any',
-               type: 'study_field'
-            },
-            {
-               name: 'recommendation',
+               name: 'cdss_rule_comment',
                label: 'recommendation',
-               type: 'text'
+               type: 'textarea'
             }
          ]
       }
@@ -323,16 +299,18 @@ cdss.getSetGo = function( response ){
    cdss.populateRuleActionSelect( "9999" );
    cdss.populateRuleConditionBasisSelect( "9999", "8888" );
    cdss.addRuleSpecListeners("9999");
+   //cdss.populateRuleParamTableElements("9999");
+   //cdss.addRuleConditionListeners( "9999", "8888");
    $("tbody.cdss-rule-conditions-subtable").trigger("sortupdate");
 
 }
 
 cdss.pushRuleBaseCategory = function (category, x ) {
    for (let i=0; i<x.length; i++ ){
-      cdss.rule_base_source.push(
+      cdss.rule_basis_source.push(
          {
             label: `[${category}] ${x[i].name}`,
-            value: x[i].name
+            value: `[${category}] ${x[i].name}`
          }
       )
    }
@@ -342,8 +320,27 @@ cdss.populateRuleConditionBasisSelect = function( ruleNumber, conditionNumber ){
    let el = $(`#cdss-rule-${ruleNumber}-condition-${conditionNumber}-basis`);
 
    el.autocomplete({
-      source: cdss.rule_base_source,
-      minLength: 0
+      source: cdss.rule_basis_source,
+      minLength: 0,
+      select: function(event, ui){
+
+         //console.log('RuleConditionBasis.select', ui);
+
+         let rule_condition_basis = ui.item.value;
+         let basisCategory = rule_condition_basis.substr(1, 1);
+         let ruleNumber = $(this).data('rule_number');
+         let conditionNumber = $(this).data('condition_number');
+
+         let basis_option = $(`select#cdss-rule-${ruleNumber}-condition-${conditionNumber}-basis-option`);
+
+         cdss.populateRuleConditionBasisOptionSelect( basis_option, basisCategory );
+
+         cdss.addRuleConditionBasisOptionListeners( basis_option, ruleNumber, conditionNumber );
+
+         //console.log('RuleConditionBasis.select', ruleNumber, conditionNumber, rule_condition_basis, basisCategory);
+
+         //return false;
+      }
    });
 
 }
@@ -361,10 +358,10 @@ cdss.expandOrCollapse = function( ruleNumber ){
 
    let tbl = $(`table#cdss-rule-${ruleNumber}`);
 
-   cdss.showSpecTable( tbl );
+   cdss.showSpecTable( tbl, ruleNumber );
 }
 
-cdss.showSpecTable = function( tbl ){
+cdss.showSpecTable = function( tbl, ruleNumber ){
 
    let collapsed = !tbl.hasClass('cdss-collapsed');
    let specType = tbl.data("spectype");
@@ -387,7 +384,10 @@ cdss.showSpecTable = function( tbl ){
       if (tbl.hasClass('cdss-collapsed')) {
          tbl.removeClass('cdss-collapsed');
       }
-      tbl.find("tr.cdss-collapsible").show();
+      tbl.find("tr.cdss-collapsible:not(.cdss-rule-params-wrapper)").show();
+      
+      // only show params elements if action selected
+      cdss.showOrHideRuleParams(ruleNumber);
    }
 
 }
@@ -467,13 +467,76 @@ cdss.addRuleCondition = function( ruleNumber ) {
    thisRuleParent.append( conditionHtml );
 
    let thisCondition = $(`tr#cdss-rule-${ruleNumber}-condition-${thisConditionNumber}`);
+   let thisConditionBasis = $(`input#cdss-rule-${ruleNumber}-condition-${thisConditionNumber}-basis`);
+   let thisConditionBasisOption = $(`select#cdss-rule-${ruleNumber}-condition-${thisConditionNumber}-basis-option`);
+   let thisConditionBasisOptionCutpoint = $(`input#cdss-rule-${ruleNumber}-condition-${thisConditionNumber}-basis-option-cutpoint`);
 
    thisCondition.attr('data-condition_index', thisConditionIndex);
 
+   thisConditionBasis.val('');
+   thisConditionBasisOption.val('').find('option').remove().end().hide();
+   thisConditionBasisOptionCutpoint.val('').hide();
+
    cdss.populateRuleConditionBasisSelect( ruleNumber, thisConditionNumber );
+   //cdss.addRuleConditionListeners( ruleNumber, thisConditionNumber );
    cdss.showCondition( ruleNumber, thisConditionNumber );
 
    console.log("addRuleCondition", conditionHtml);
+
+}
+/*
+cdss.addRuleConditionListeners = function( ruleNumber, conditionNumber ) {
+   let thisCondition = $(`tr#cdss-rule-${ruleNumber}-condition-${conditionNumber}`);
+
+   thisCondition.find("input.cdss-condition-rule-basis")
+      .on('twiddly', function () {
+
+         let rule_condition_basis = $(this).val();
+         let basis_option = $(`select#cdss-rule-${ruleNumber}-condition-${conditionNumber}-basis-option`);
+         let basisCategory = rule_condition_basis.substr(1, 1);
+
+         cdss.populateRuleConditionBasisOptionSelect( basis_option, basisCategory );
+
+         cdss.addRuleConditionBasisOptionListeners( basis_option, ruleNumber, conditionNumber );
+
+      })
+   ;
+
+}
+*/
+cdss.populateRuleConditionBasisOptionSelect = function( el, basisCategory ) {
+
+   let selected = 'selected';
+
+   el.val('').find('option').remove();
+
+   for (let i=0; i<cdss.rule_condition_basis_options[basisCategory].length; i++){
+      el.append(`<option value='${cdss.rule_condition_basis_options[basisCategory][i]}' ${selected}>${cdss.rule_condition_basis_options[basisCategory][i]}</option>`);
+      selected = ''; // the first option is selected
+   }
+
+}
+
+cdss.addRuleConditionBasisOptionListeners = function( el, ruleNumber, conditionNumber ) {
+
+   el
+      .off()
+      .on('change', function () {
+
+         let optionSelected = el.val();
+         let optionCutpoint = $(`input#cdss-rule-${ruleNumber}-condition-${conditionNumber}-basis-option-cutpoint`);
+
+         if (new RegExp("EQUAL|GREATER THAN|LESS THAN").test(optionSelected)) {
+            optionCutpoint.show();
+         } else {
+            optionCutpoint.hide();
+         }
+
+
+      })
+      .show()
+      .trigger('change')
+   ;
 
 }
 
@@ -490,6 +553,165 @@ cdss.showCondition = function( ruleNumber, conditionNumber ) {
       thisCondition.find(".cdss-rule-condition-if").hide();
       thisCondition.find(".cdss-rule-condition-join").show();
    }
+}
+
+cdss.ruleActionSelect = function(ruleNumber){
+   let ruleAction = $(`select#cdss-rule-${ruleNumber}-action`).val();
+   let ruleParamsWrapper = $(`tr#cdss-rule-${ruleNumber}-params_wrapper`);
+
+   ruleParamsWrapper.hide();
+
+   if ( !ruleAction.length ){
+      return "no action selected";
+   }
+   
+   cdss.buildRuleActionParamTable(ruleNumber, ruleAction);
+
+   ruleParamsWrapper.show();
+   
+
+}
+
+cdss.buildRuleActionParamTable = function(ruleNumber, ruleAction){
+   let paramTableWrapper = $(`table#cdss-rule-${ruleNumber} div.cdss-rule-params:first`);
+   let ruleParamsWrapper = $(`tr#cdss-rule-${ruleNumber}-params_wrapper`);
+
+   let paramTableClone = $('table#cdss-param-table-template').clone();
+
+   paramTableClone
+      .attr('id', `cdss-rule-${ruleNumber}-param-table`)
+      .attr('data-rule_number', ruleNumber)
+   ;
+
+   let a = parseInt( ruleAction );
+   let paramTemplateId = "";
+   let paramClone = null;
+   let input_type="";
+   let tbody = paramTableClone.find('tbody').first();
+
+   tbody.html("");
+
+   for ( let i=0; i<cdss.cdss_actions[a].params.length; i++ ){
+
+      paramTemplateId = `cdss-rule-param-${cdss.cdss_actions[a].params[i].type}-template`;
+      console.log('buildRuleActionParamTable', paramTemplateId);
+
+      paramClone = $( `tr#${paramTemplateId}` ).clone();
+
+      if ( cdss.cdss_actions[a].params[i].type === "textarea" ){
+         input_type = "textarea";
+      }
+      else if ( cdss.cdss_actions[a].params[i].type === "medication" ){
+         input_type = "select";
+      }
+      else {
+         input_type = "input";
+      }
+
+      paramClone
+         .attr('id', `cdss-rule-${ruleNumber}-param-${cdss.cdss_actions[a].params[i].name}`)
+         .attr('data-configitem', cdss.cdss_actions[a].params[i].name)
+         .attr('data-rule_number', ruleNumber)
+         .find('td.cdss-rule-param-label').html(cdss.cdss_actions[a].params[i].label)
+      ;
+
+      paramClone.appendTo( tbody );
+
+   }
+
+   // add the additional item rows
+
+   paramClone = $( `tr#cdss-rule-param-additional_item-template` ).clone();
+
+   cdss.setRuleParamAdditionalItemProperties( paramClone, ruleNumber, "1");
+
+   paramClone.appendTo( tbody );
+
+   // final row is a link to add new item
+
+   paramClone = $( `tr#cdss-rule-param-add-item-template` ).clone();
+
+   paramClone
+      .attr('id', `cdss-rule-${ruleNumber}-add-additional-item`)
+      .find('a').first().attr('href', `javascript: cdss.addRuleParamAdditionalItem('${ruleNumber}');`);
+
+   paramClone.appendTo( tbody );
+
+   cdss.populateRuleParamTableElements(tbody);
+
+   paramTableWrapper
+      .html("")
+      .append( paramTableClone )
+      .show()
+   ;
+
+   console.log('buildRuleActionParamTable',ruleNumber, ruleAction, paramTableWrapper, paramTableClone);
+
+}
+
+cdss.setRuleParamAdditionalItemProperties = function( el, ruleNumber, additional_item_number ){
+
+   el
+      .attr('id', `cdss-rule-${ruleNumber}-param-additional_item-${additional_item_number}`)
+      .attr('data-configitem', "cdss_rule_additional_item")
+      .attr('data-rule_number', ruleNumber)
+      .attr('data-additional_item_number', additional_item_number)
+      .find('a').first().attr('href', `javascript: cdss.removeRuleParamAdditionalItem('${ruleNumber}', '${additional_item_number}');`)
+   ;
+
+   el.find('td.cdss-rule-param-remove-item').attr('data-additional_item_number', additional_item_number);
+
+}
+
+cdss.populateRuleParamTableElements = function(paramTable) {
+
+   paramTable.find('select.cdss-rule-param-medication').each(function () {
+      for (let i=0; i<cdss.cdss_medications.length; i++ ){
+         $(this).append(`<option value=${cdss.cdss_medications[i].name}>${cdss.cdss_medications[i].name}</option>`);
+      }
+   });
+
+   paramTable.find('input.cdss-rule-param-general_item').each(function () {
+      $(this).autocomplete({
+         source: cdss.rule_basis_source,
+         minLength: 0
+      });
+   });
+}
+
+cdss.showOrHideRuleParams = function(ruleNumber) {
+   let ruleAction = $(`select#cdss-rule-${ruleNumber}-action`).val();
+   let ruleParamsWrapper = $(`tr#cdss-rule-${ruleNumber}-params_wrapper`);
+
+   if ( ruleAction.length ) {
+      ruleParamsWrapper.show();
+   }
+   else {
+      ruleParamsWrapper.hide();
+   }
+}
+
+cdss.addRuleParamAdditionalItem = function(ruleNumber){
+
+   let lastItemSibling = $(`table#cdss-rule-${ruleNumber}-param-table tr.cdss-rule-param-additional-item:last`);
+   let additional_item_number = '' + (1 + parseInt(lastItemSibling.data('additional_item_number')));
+
+   let thisItemSibling = lastItemSibling.clone();
+
+   cdss.setRuleParamAdditionalItemProperties( thisItemSibling, ruleNumber, additional_item_number);
+
+   cdss.populateRuleParamTableElements(thisItemSibling);
+
+   lastItemSibling.after( thisItemSibling );
+
+   console.log( "addRuleParamAdditionalItem", lastItemSibling, thisItemSibling.data('additional_item_number'));
+
+}
+
+cdss.removeRuleParamAdditionalItem = function(ruleNumber, additional_item_number) {
+
+   $(`tr#cdss-rule-${ruleNumber}-param-additional_item-${additional_item_number}`).remove();
+
 }
 
 

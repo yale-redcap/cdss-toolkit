@@ -15,11 +15,11 @@ html {
 
     --cdss-description-color: cadetblue;
 
+    --cdss-font-size: 15px;
+
     --cdss-input-border-color: lightgrey;
-    --cdss-input-font-weight: 600;
     --cdss-input-font-family: "Segoe UI Semibold", Segoe, "DejaVu Sans", "Trebuchet MS", Verdana, sans-serif;
-    --cdss-input-font-size: 13px;
-    --cdss-input-color: darkred;
+    --cdss-input-color: firebrick;
     --cdss-select-color: steelblue;
 
     --cdss-block-height: 50px;
@@ -28,8 +28,7 @@ html {
     --cdss-item-gutter-width: 25px;
     --cdss-rule-left-stub-width: 80px;
     --cdss-rule-input-width: calc( 100% - var(--cdss-rule-left-stub-width) - 2*var(--cdss-item-gutter-width));
-    --cdss-condition-left-stub-width: 140px;
-    --cdss-condition-input-width: calc( 100% - var(--cdss-condition-left-stub-width) - 2*var(--cdss-item-gutter-width));
+    --cdss-condition-left-stub-width: 100px;
 
     --cdss-color-balloon-input: darkslategrey;
 
@@ -43,6 +42,10 @@ html {
 
     --cdss-line-height: 40px;
 
+}
+
+div#cdss-rules-container * {
+    font-size: var(--cdss-font-size);
 }
 
 /*
@@ -113,7 +116,7 @@ div#cdss-screen-cover {
 
 .cdss-config-panel-title {
     width: 100%;
-    font-size: 1.2rem;
+    font-size: 1.2rem !important;
     font-weight: 600;
 }
 
@@ -163,6 +166,8 @@ td.cdss-gutter-right {
 td.cdss-rule-left-stub {
     width: var(--cdss-rule-left-stub-width);
     vertical-align: middle;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 td.cdss-rule-input {
@@ -170,8 +175,87 @@ td.cdss-rule-input {
     vertical-align: middle;
 }
 
-td.cdss-rule-input select,td.cdss-rule-input input  {
+tr.cdss-rule-params-wrapper {
+    display: none;
+}
+
+td.cdss-rule-params {
+    width: var(--cdss-rule-input-width);
+    vertical-align: top;
+}
+
+div.cdss-rule-params {
     width: 100%;
+    border: 1px solid var(--cdss-border-color);
+    padding: var(--cdss-padding);
+    border-radius: 4px;
+}
+
+table.cdss-rule-params {
+    width: 100%;
+}
+
+td.cdss-rule-param-label {
+    width: 40%;
+    padding-left: calc( 2 * var(--cdss-padding) );
+    padding-right: var(--cdss-padding);
+    padding-top: calc( 0.5*var(--cdss-padding) );
+    padding-bottom: calc( 0.5*var(--cdss-padding) );
+}
+
+td.cdss-rule-param-input {
+    width: 60%;
+    padding-right: calc( 2 * var(--cdss-padding) );
+    padding-left: var(--cdss-padding);
+    padding-top: calc( 0.5*var(--cdss-padding) );
+    padding-bottom: calc( 0.5*var(--cdss-padding) );
+}
+
+textarea.cdss-rule-param-comment {
+    padding: var(--cdss-padding) !important;
+    border: 1px solid var(--cdss-input-border-color);
+    color: var(--cdss-input-color);
+    font-family: var(--cdss-input-font-family);
+    border-radius: 4px;
+    height: calc( 3*var(--cdss-line-height) );
+    width: 100%;
+    resize: vertical;
+}
+
+input.cdss-rule-param-general_item, select.cdss-rule-param-medication {
+    padding: var(--cdss-padding) !important;
+    border: 1px solid var(--cdss-input-border-color);
+    color: var(--cdss-input-color);
+    font-family: var(--cdss-input-font-family);
+    border-radius: 4px;
+    height: var(--cdss-line-height);
+}
+
+input.cdss-rule-param-general_item {
+    width: 100%;
+}
+
+div.cdss-rule-condition-join {
+    width: 100%;
+}
+
+div.cdss-rule-condition-join select {
+    width: calc( 100% - 2*var(--cdss-padding) );
+}
+/*
+hide the remove link for the first addl item
+ */
+td.cdss-rule-param-remove-item[data-additional_item_number='1'] {
+    visibility: hidden;
+}
+
+select.cdss-rule-action  {
+    color: darkslategray !important;
+    width: 100%;
+}
+
+div#cdss-rule-templates {
+    display: none;
 }
 
 td.cdss-condition-left-stub {
@@ -186,10 +270,11 @@ td.cdss-condition-left-stub div {
 td.cdss-condition-left-stub div select {
     font-weight: 800;
     opacity: 66%;
-    font-size: 1.2rem;
-    color: indianred;}
+    font-size: 1.2rem !important;
+    color: firebrick !important;
+}
 
-td.cdss-condition-input {
+td.cdss-rule-condition-basis-panel {
     width: var(--cdss-rule-input-width);
     vertical-align: middle;
 }
@@ -200,21 +285,8 @@ td.cdss-condition-input select, td.cdss-condition-input input  {
 }
 
 input.cdss-rule-name {
-    color: dodgerblue !important;
-}
-
-select.cdss-rule-action {
-    color: darkviolet !important;
-}
-
-td.cdss-rule-join-option {
-    width: 100px;
-    text-align: left;
-    vertical-align: middle;
-}
-
-td.cdss-rule-condition-input {
-    width: calc( 100% - 50px - 100px );
+    color: black !important;
+    width: 100%;
 }
 
 td.cdss-gutter-left.centered, td.cdss-gutter-right.centered {
@@ -224,6 +296,29 @@ td.cdss-gutter-left.centered, td.cdss-gutter-right.centered {
 td.cdss-divider {
     padding-top: var(--cdss-padding);
     padding-bottom: 0 !important;
+}
+
+input.cdss-condition-rule-basis {
+    float: left;
+    margin:0 !important;
+    /*width: calc( 100% - 100px - 100px - 6px - 6*var(--cdss-padding) - 2*var(--cdss-margin) );*/
+    width: calc( 100% - 320px - 100px - 2*var(--cdss-margin) );
+    min-width: 150px;
+}
+
+select.cdss-condition-rule-basis-option {
+    float: left;
+    width: 320px;
+    margin-left: var(--cdss-margin);
+    display: none;
+    color: darkslategray !important
+}
+
+input.cdss-condition-rule-basis-option-cutpoint {
+    float: left;
+    width: 100px;
+    margin-left: var(--cdss-margin);
+    display: none;
 }
 
 hr.cdss-divider {
@@ -246,13 +341,15 @@ div.cdss-vertical-option {
     width: 50px;
 }
 
-.cdss-rule-condition-basis {
-    float: left;
-    width: calc(100% - 50px);
-}
-
 .cdss-rule-conditions-table {
     width: 100%;
+}
+
+table.cdss-rule-conditions-table td {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: var(--cdss-padding);
 }
 
 div.cdss-halfwidth {
@@ -298,7 +395,6 @@ td.cdss-config-table-third:not(.cdss-bottom-row) {
     border: 1px solid var(--cdss-input-border-color);
     color: var(--cdss-input-color);
     font-family: var(--cdss-input-font-family);
-    font-weight: var(--cdss-input-font-weight);
     border-radius: 4px;
     height: var(--cdss-line-height);
 }
@@ -313,7 +409,6 @@ td.cdss-config-table-third:not(.cdss-bottom-row) {
     border: 1px solid transparent;
     color: var(--cdss-input-color);
     font-family: var(--cdss-input-font-family);
-    font-weight: var(--cdss-input-font-weight);
     width: 100%;
 }
 
@@ -332,18 +427,15 @@ td.cdss-config-table-third:not(.cdss-bottom-row) {
     border: 1px solid var(--cdss-input-border-color);
     color: var(--cdss-input-color);
     font-family: var(--cdss-input-font-family);
-    font-weight: var(--cdss-input-font-weight);
     border-radius: 4px;
-    width: calc(100% - 50px);
     height: var(--cdss-line-height);
-    margin-left: var(--cdss-padding);
+    margin: 0;
 }
 
 .ui-autocomplete {
     padding: 1px !important;
     color: var(--cdss-input-color);
     font-family: var(--cdss-input-font-family);
-    font-weight: var(--cdss-input-font-weight);
 }
 
 .ui-autocomplete li.ui-menu-item {
@@ -364,13 +456,13 @@ td.cdss-config-table-third:not(.cdss-bottom-row) {
     float: left;
     width: 100%;
     font-weight: 800;
-    font-size: 1.3rem;
+    font-size: 1.3rem !important;
     color: cadetblue;
 }
 
 .cdss-rule-condition-then {
     font-weight: 800;
-    font-size: 1.3rem;
+    font-size: 1.3rem !important;
     color: cadetblue;
 }
 
@@ -502,7 +594,7 @@ div#cdss-config-save-message {
 
 .cdss-panel-header-row {
     font-family: inherit;
-    font-size: 26px;
+    font-size: 26px !important;
     color: var(--cdss-panel-color);
     font-weight: 200;
     float:left; clear: both; width: 100%;
@@ -519,7 +611,7 @@ div#cdss-config-save-message {
 
 .cdss-panel-subtitle {
     font-family: inherit;
-    font-size: 15px;
+    font-size: 15px !important;
     color: var(--cdss-panel-subtitle-color);
     font-weight: 500;
     font-style: italic;
@@ -549,7 +641,6 @@ div#cdss-config-save-message {
 .cdss-panel-row {
     font-family: inherit;
     color: inherit;
-    font-size: 14px;
     font-weight: 400;
     float:left; clear: both; width: 100%;
     /* margin-top: 1em; */
