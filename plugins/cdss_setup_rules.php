@@ -120,8 +120,10 @@ $HtmlPage->ProjectHeader();
                                     <div class="cdss-rule-condition-join">
                                        <label for="cdss-rule-9999-condition-8888-join"></label>
                                        <select id="cdss-rule-9999-condition-8888-join" data-configitem="rule_condition_join">
-                                          <option value="and">AND</option>
-                                          <option value="or">OR</option>
+                                          <option value="and">&nbsp;&nbsp;AND</option>
+                                          <option value="or">&nbsp;&nbsp;OR</option>
+                                          <option value="oparen">(</option>
+                                          <option value="cparen">)</option>
                                        </select>
                                     <div>
 
