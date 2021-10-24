@@ -57,27 +57,44 @@
     {
       "key":  "cdss-diseases",
       "name": "CDSS Diseases",
-      "type": "text"
+      "required": false,
+      "type": "textarea"
     },
     {
       "key":  "cdss-medications",
       "name": "CDSS medications",
-      "type": "text"
+      "required": false,
+      "type": "textarea"
     },
     {
       "key":  "cdss-conditions",
       "name": "CDSS conditions",
-      "type": "text"
+      "required": false,
+      "type": "textarea"
     },
     {
       "key":  "cdss-variables",
       "name": "CDSS variables",
-      "type": "text"
+      "required": false,
+      "type": "textarea"
     },
     {
       "key":  "cdss-rbase",
       "name": "CDSS Rule Base",
-      "type": "text"
+      "required": false,
+      "type": "textarea"
+    },
+    {
+      "key":  "cdss-rules",
+      "name": "CDSS Rules",
+      "required": false,
+      "type": "textarea"
+    },
+    {
+      "key":  "cdss-rules-backups",
+      "name": "CDSS Rules backups",
+      "required": false,
+      "type": "textarea"
     }
   ],
 

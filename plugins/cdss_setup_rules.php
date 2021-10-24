@@ -34,9 +34,9 @@ $HtmlPage->ProjectHeader();
          <div class="cdss-config-panel-row">
 
             <div class="cdss-config-panel-row-left">
-               <input type="button" id="cdss-config-save" class="cdss-large-button" onclick="cdss.saveConfig()" value="SAVE ALL CHANGES" />
+               <input type="button" id="cdss-config-save" class="cdss-large-button" onclick="cdss.saveRules()" value="SAVE ALL CHANGES" />
             </div>
-            <div class="cdss-config-panel-row-left cdss-config-italicized-subdued" id="cdss-config-save-message">
+            <div class="cdss-config-panel-row-left cdss-config-italicized-subdued" id="cdss-rules-save-message">
                never saved
             </div>
 
@@ -48,11 +48,11 @@ $HtmlPage->ProjectHeader();
          <div class="cdss-config-panel-row">
 
             <div class="cdss-config-panel-row-right">
-               <input type="button" id="cdss-config-restore" class="cdss-small-button" onclick="cdss.loadConfig(1)" value="restore from backup" />
+               <input type="button" id="cdss-restore-rule" class="cdss-small-button" onclick="cdss.restoreRuleBackup()" value="restore from backup" />
             </div>
 
             <div class="cdss-config-panel-row-right">
-               <label for="cdss-config-backup-select"></label><select id="cdss-config-backup-select"></select>
+               <select id="cdss-rule-backup-select"></select>
             </div>
 
          </div>
@@ -75,127 +75,6 @@ $HtmlPage->ProjectHeader();
 
          <div id="cdss-rule-specifications" class="cdss-sortable">
 
-            <table id="cdss-rule-9999" class="cdss-rule-specification cdss-rule-specification-template cdss-config-table" data-rule_number="9999" data-rule_index="0">
-
-               <tbody>
-
-                  <tr class="cdss-config-table-header">
-
-                     <td class="cdss-gutter-left">
-                        <a class="cdss-spec-expander" href="javascript:cdss.expandOrCollapse('9999')"><i class="fas fa-compress-alt fa-lg"></i></a>
-                     </td>
-
-                     <td class="cdss-rule-left-stub">
-                        rule name
-                     </td>
-
-                     <td class="cdss-rule-input">
-                        <label for="cdss-rule-9999-name"></label><input type="text" name="rule-name" id="cdss-rule-9999-name" class="cdss-rule-name" data-configitem="rule_name" value="Rule #9999" />
-                     </td>
-
-                     <td class="cdss-gutter-right">
-                        <a href="javascript:cdss.removeSpec('rule', '9999');"><i class="fas fa-times fa-lg"></i></a>
-                     </td>
-
-                  </tr>
-
-                  <tr>
-                     <td colspan="4">
-
-                        <table class="cdss-rule-conditions-table">
-
-                           <tbody class="cdss-rule-conditions-subtable" id="cdss-rule-9999-conditions">
-
-                              <tr class="cdss-collapsible cdss-rule-condition" id="cdss-rule-9999-condition-8888" data-rule_number="9999" data-condition_number="8888" data-condition_index="0"> <!-- the template for additional conditions -->
-
-                                 <td class="cdss-gutter-left centered">
-                                 </td>
-
-                                 <td class="cdss-condition-left-stub">
-
-                                    <div class="cdss-rule-condition-if">
-                                       IF
-                                    </div>
-
-                                    <div class="cdss-rule-condition-join">
-                                       <label for="cdss-rule-9999-condition-8888-join"></label>
-                                       <select id="cdss-rule-9999-condition-8888-join" data-configitem="rule_condition_join">
-                                          <option value="and">&nbsp;&nbsp;AND</option>
-                                          <option value="or">&nbsp;&nbsp;OR</option>
-                                          <option value="oparen">(</option>
-                                          <option value="cparen">)</option>
-                                       </select>
-                                    <div>
-
-                                 </td>
-
-                                 <td class="cdss-rule-condition-basis-panel">
-                                    <input name="cdss-rule-9999-condition-8888-basis" id="cdss-rule-9999-condition-8888-basis" class="cdss-condition-rule-basis" data-configitem="rule_condition_basis" data-rule_number="9999" data-condition_number="8888" placeholder="start typing or [c]-conditions, [d]-diseases, [m]-medications, [f]-study fields or [space]-all" />
-                                    <select name="cdss-rule-9999-condition-8888-basis-option" id="cdss-rule-9999-condition-8888-basis-option" class="cdss-condition-rule-basis-option" data-rule_number="9999" data-condition_number="8888" data-configitem="rule_condition_basis_option">
-                                    </select>
-                                    <input type="text" placeholder="enter value" name="cdss-rule-9999-condition-8888-basis-option-cutpoint" id="cdss-rule-9999-condition-8888-basis-option-cutpoint" class="cdss-condition-rule-basis-option-cutpoint" data-configitem="rule_condition_basis_option_cutpoint" data-rule_number="9999" data-condition_number="8888" />
-                                 </td>
-
-                                 <td class="cdss-gutter-right centered">
-                                    <a class="cdss-rule-condition-join" href="javascript:cdss.removeRuleCondition('9999', '8888');" title="remove this condidtion"><i class="fas fa-times"></i></a>
-                                 </td>
-
-                              </tr>
-
-                           </tbody>
-                        </table>
-                     </td>
-                  </tr>
-
-                  <tr class="cdss-collapsible">
-                     <td colspan="4"><a href="javascript:cdss.addRuleCondition('9999');" title="add a new rule condition"><i class="fas fa-plus"></i></a></td>
-                  </tr>
-
-                  <tr class="cdss-collapsible">
-
-                     <td class="cdss-gutter-left"></td>
-
-                     <td class="cdss-rule-left-stub">
-
-                        <div class="cdss-rule-condition-if">
-                           THEN
-                        </div>
-
-                     </td>
-
-                     <td class="cdss-rule-input">
-
-                           <select name="cdss-rule-9999-action" id="cdss-rule-9999-action" class="cdss-rule-action" data-configitem="rule_action" onchange="cdss.ruleActionSelect(9999)">
-                              <option value="">-- select a report action --</option>
-                           </select>
-
-                     </td>
-
-                     <td class="cdss-gutter-right"></td>
-
-                  </tr>
-                  
-                  <tr id="cdss-rule-9999-params_wrapper" class="cdss-rule-params-wrapper cdss-collapsible">
-
-                     <td class="cdss-gutter-left"></td>
-
-                     <td class="cdss-rule-left-stub"></td>
-
-                     <td class="cdss-rule-params">
-
-                        <div class="cdss-rule-params">
-                           HI MOM
-                        </div> <!-- wrapping div -->
-
-                     </td>
-
-                     <td class="cdss-gutter-right"></td>
-
-                  </tr>
-
-               </tbody>
-
-            </table> <!-- cdss-rule-9999-specification -->
 
          </div> <!-- cdss-rule-specifications -->
 
@@ -213,6 +92,133 @@ $HtmlPage->ProjectHeader();
 
 <div id="cdss-rule-templates">
 
+   <table id="cdss-rule-9999" class="cdss-rule-specification cdss-config-table" data-rule_number="9999" data-rule_index="0">
+
+      <tbody>
+
+      <tr class="cdss-config-table-header">
+
+         <td class="cdss-gutter-left">
+            <a class="cdss-spec-expander" href="javascript:cdss.expandOrCollapse('9999')"><i class="fas fa-compress-alt fa-lg"></i></a>
+         </td>
+
+         <td class="cdss-rule-left-stub">
+            rule name
+         </td>
+
+         <td class="cdss-rule-input">
+            <input type="text" name="rule-name" id="cdss-rule-9999-name" class="cdss-rule-name" data-configitem="rule_name" value="Rule #9999" />
+            <div id="cdss-rule-9999-message" class="cdss-rule-message" data-configitem="rule_message"></div>
+         </td>
+
+         <td class="cdss-gutter-right">
+            <a href="javascript:cdss.removeRule('9999');"><i class="fas fa-times fa-lg"></i></a>
+         </td>
+
+      </tr>
+
+      <tr>
+         <td colspan="4" class="cdss-rule-condition-container">
+
+            <table class="cdss-rule-conditions-table">
+
+               <tbody class="cdss-rule-conditions-subtable" id="cdss-rule-9999-conditions">
+
+               <tr class="cdss-collapsible cdss-rule-condition" id="cdss-rule-9999-condition-8888" data-rule_number="9999" data-condition_number="8888" data-condition_index="0"> <!-- the template for additional conditions -->
+
+                  <td class="cdss-gutter-left centered">
+                  </td>
+
+                  <td class="cdss-rule-condition-left-stub">
+
+                     <select id="cdss-rule-9999-condition-8888-if" class="cdss-rule-condition-if cdss-rule-condition-cmd" data-rule_number="9999" data-configitem="rule_condition_if">
+                        <option value="if">IF</option>
+                        <option value="if_op">IF (</option>
+                     </select>
+
+                     <select id="cdss-rule-9999-condition-8888-join" class="cdss-rule-condition-join  cdss-rule-condition-cmd" data-rule_number="9999" data-configitem="rule_condition_join">
+                        <option value="and">AND</option>
+                        <option value="or">OR</option>
+                        <option value="and_op">AND (</option>
+                        <option value="or_op">OR (</option>
+                        <option value="cp">)</option>
+                        <!--option value="cp_and_op">) AND (</option>
+                        <option value="cp_or_op">) OR (</option>
+                        <option value="cp_and">) AND</option>
+                        <option value="cp_or">) OR</option-->
+                     </select>
+
+                  </td>
+
+                  <td class="cdss-rule-condition-basis-panel">
+                     <input name="cdss-rule-9999-condition-8888-basis" id="cdss-rule-9999-condition-8888-basis" class="cdss-condition-rule-basis" data-configitem="rule_condition_basis" data-rule_number="9999" data-condition_number="8888" placeholder="start typing or [c]-conditions, [d]-diseases, [m]-medications, [f]-study fields or [space]-all" />
+                     <select name="cdss-rule-9999-condition-8888-basis-option" id="cdss-rule-9999-condition-8888-basis-option" class="cdss-condition-rule-basis-option" data-rule_number="9999" data-condition_number="8888" data-configitem="rule_condition_basis_option">
+                     </select>
+                     <input type="text" placeholder="enter value" name="cdss-rule-9999-condition-8888-basis-option-cutpoint" id="cdss-rule-9999-condition-8888-basis-option-cutpoint" class="cdss-condition-rule-basis-option-cutpoint" data-configitem="rule_condition_basis_option_cutpoint" data-rule_number="9999" data-condition_number="8888" />
+                  </td>
+
+                  <td class="cdss-gutter-right centered">
+                     <a class="cdss-rule-condition-join" href="javascript:cdss.removeRuleCondition('9999', '8888');" title="remove this condidtion"><i class="fas fa-times"></i></a>
+                  </td>
+
+               </tr>
+
+               </tbody>
+            </table>
+         </td>
+      </tr>
+
+      <tr class="cdss-collapsible">
+         <td colspan="4"><a href="javascript:cdss.addRuleCondition('9999');" title="add a new rule condition"><i class="fas fa-plus"></i></a></td>
+      </tr>
+
+      <tr class="cdss-collapsible">
+
+         <td class="cdss-gutter-left"></td>
+
+         <td class="cdss-rule-condition-left-stub">
+
+            <select id="cdss-rule-9999-condition-8888-then" class="cdss-rule-condition-then cdss-rule-condition-cmd" data-rule_number="9999" data-configitem="rule_condition_then">
+               <option value="then">THEN</option>
+               <option value="cp_then">) THEN</option>
+            </select>
+
+         </td>
+
+         <td class="cdss-rule-input">
+
+            <select name="cdss-rule-9999-action" id="cdss-rule-9999-action" class="cdss-rule-action" data-configitem="rule_action" onchange="cdss.ruleActionSelect(9999)">
+               <option value="">-- select a report action --</option>
+            </select>
+
+         </td>
+
+         <td class="cdss-gutter-right"></td>
+
+      </tr>
+
+      <tr id="cdss-rule-9999-params_wrapper" class="cdss-rule-params-wrapper cdss-collapsible">
+
+         <td class="cdss-gutter-left"></td>
+
+         <td class="cdss-rule-left-stub"></td>
+
+         <td class="cdss-rule-params">
+
+            <div class="cdss-rule-params">
+               HI MOM
+            </div> <!-- wrapping div -->
+
+         </td>
+
+         <td class="cdss-gutter-right"></td>
+
+      </tr>
+
+      </tbody>
+
+   </table> <!-- cdss-rule-9999-specification -->
+
    <table class="cdss-rule-params" id="cdss-param-table-template">
 
       <tbody>
@@ -222,7 +228,7 @@ $HtmlPage->ProjectHeader();
                add a freetext entry to the medications management report
             </td>
             <td class="cdss-rule-param-input">
-               <textarea id="cdss-rule-9999-param-comment" class="cdss-rule-param-comment" data-configitem="cdss_rule_comment"></textarea>
+               <textarea id="cdss-rule-9999-param-comment" class="cdss-rule-param-comment" data-configitem="cdss_rule_param_input"></textarea>
             </td>
             <td class="cdss-gutter-right"></td>
          </tr>
@@ -232,7 +238,7 @@ $HtmlPage->ProjectHeader();
                select a medication
             </td>
             <td class="cdss-rule-param-input">
-               <select id="cdss-rule-9999-param-main_item" class="cdss-rule-param-medication" data-configitem="cdss_rule_main_item">
+               <select id="cdss-rule-9999-param-main_item" class="cdss-rule-param-medication" data-configitem="cdss_rule_param_input">
                   <option value="">-- select a medication --</option>
                </select>
             </td>
@@ -244,7 +250,7 @@ $HtmlPage->ProjectHeader();
                select a med, condition, disease or field
             </td>
             <td class="cdss-rule-param-input">
-               <input id="cdss-rule-9999-param-secondary_item" class="cdss-rule-param-general_item" data-configitem="cdss_rule_secondary_item" />
+               <input id="cdss-rule-9999-param-secondary_item" class="cdss-rule-param-general_item" data-configitem="cdss_rule_param_input" />
             </td>
             <td class="cdss-gutter-right"></td>
          </tr>
@@ -254,14 +260,14 @@ $HtmlPage->ProjectHeader();
                additional item to report
             </td>
             <td class="cdss-rule-param-input">
-               <input class="cdss-rule-param-general_item" />
+               <input class="cdss-rule-param-general_item"  data-configitem="cdss_rule_param_input" />
             </td>
             <td class="cdss-gutter-right cdss-rule-param-remove-item">
                <a href="javascript:cdss.removeRuleParamAdditionalItem('9999', '1');" title="remove this additional item"><i class="fas fa-times"></i></a>
             </td>
          </tr>
 
-         <tr class="cdss-rule-param" id="cdss-rule-param-add-item-template">
+         <tr class="cdss-rule-param-add-additional-item" id="cdss-rule-param-add-item-template">
             <td colspan="4" class=" cdss-rule-param-add-item">
                <a href="" title="add an additional item to report"><i class="fas fa-plus"></i></a>
             </td>

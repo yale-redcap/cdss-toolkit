@@ -511,7 +511,7 @@ ORDER BY m.`instance`
    } // redcap_data_entry_form
 
    function redcap_module_configure_button_display(){
-      return false; // hide the setup button
+      return true; // show the setup button
    }
 
 }

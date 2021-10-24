@@ -161,8 +161,84 @@ cdss.requestService = function( params, doneFn, dataType ) {
 
 }
 
+cdss.saveRules = function() {
+   let rules = [];
+   let ruleParent = $('div#cdss-rule-specifications');
+
+   ruleParent.find('table.cdss-rule-specification').each(function () {
+
+      let rule_number = $(this).data('rule_number');
+      let rule_index = $(this).data('rule_index');
+      let rule_name = $(this).find('input[data-configitem=rule_name]:first').val();
+
+      let thisRule = {
+         "rule_number": $(this).data('rule_number'),
+         "rule_index": $(this).data('rule_index'),
+         "rule_name": $(this).find('input[data-configitem=rule_name]:first').val(),
+         "rule_conditions": [],
+         "rule_action": $(this).find('select[data-configitem=rule_action]:first').val(),
+         "rule_action_name": $(this).find('select[data-configitem=rule_action]:first option:selected').text(),
+         "rule_action_params": []
+      }
+
+      $(this).find('tr.cdss-rule-condition').each(function () {
+         let thisCondition = {
+            "condition_number": $(this).data('condition_number'),
+            "condition_index": $(this).data('condition_index'),
+            "condition_if": $(this).find('select[data-configitem=rule_condition_if]:first').val(),
+            "condition_join": $(this).find('select[data-configitem=rule_condition_join]:first').val(),
+            "condition_basis": $(this).find('input[data-configitem=rule_condition_basis]:first').val(),
+            "condition_basis_option": $(this).find('select[data-configitem=rule_condition_basis_option]:first').val(),
+            "condition_basis_option_cutpoint": $(this).find('input[data-configitem=rule_condition_basis_option_cutpoint]:first').val()
+         }
+         thisRule.rule_conditions.push( thisCondition );
+      })
+
+      $(this).find('tr.cdss-rule-param').each(function () {
+         let thisParam = {
+            "action": $(this).data('action'),
+            "index": $(this).data('param_index'),
+            "name": $(this).data('param_name'),
+            "type": $(this).data('param_type'),
+            "label": $(this).data('param_label'),
+            "value": $(this).find('[data-configitem=cdss_rule_param_input]:first').val()
+         }
+         thisRule.rule_action_params.push( thisParam );
+      })
+
+      rules.push( thisRule );
+
+   })
+
+   let params = {
+      "request": "save-cdss-rules",
+      "rules": rules
+   }
+
+   cdss.requestService(params, cdss.saveComplete, "json");
+
+   console.log( rules );
+
+
+}
+
 cdss.saveComplete = function( response ){
    console.log( response );
+}
+
+cdss.populateRuleBackupSelect = function() {
+
+   cdss.requestService( {"request": "get-cdss-rule-backup-select-options"}, cdss.populateRuleBackupSelectCallback, "json" );
+
+}
+
+cdss.populateRuleBackupSelectCallback = function( response ){
+   console.log("populateRuleBackupSelectCallback", response);
+   $('select#cdss-rule-backup-select')
+      .empty()
+      .append( response.options )
+   ;
+   $('div#cdss-rules-save-message').html( response.last_saved_message );
 }
 
 cdss.toTitleCase = function(str) {
@@ -296,9 +372,14 @@ cdss.getSetGo = function( response ){
    cdss.pushRuleBaseCategory('f', cdss.study_fields);
 
    // TESTING ONLY
-   cdss.populateRuleActionSelect( "9999" );
-   cdss.populateRuleConditionBasisSelect( "9999", "8888" );
-   cdss.addRuleSpecListeners("9999");
+   let ruleNumber = cdss.addRuleSpec();
+   /*
+   cdss.populateRuleActionSelect( ruleNumber );
+   cdss.populateRuleConditionBasisSelect( ruleNumber, "1" );
+   cdss.addRuleSpecListeners(ruleNumber);
+   cdss.addRuleConditionCmdSelectListeners(); // mainly parenthesis checking
+    */
+
    //cdss.populateRuleParamTableElements("9999");
    //cdss.addRuleConditionListeners( "9999", "8888");
    $("tbody.cdss-rule-conditions-subtable").trigger("sortupdate");
@@ -354,6 +435,54 @@ cdss.populateRuleActionSelect = function( ruleNumber ){
 
 }
 
+cdss.addRuleConditionCmdSelectListeners = function(){
+
+   $('select.cdss-rule-condition-cmd')
+      .off()
+      .on('change', function () {
+
+         let nCmds = 0;
+         let parenLevel = 0;
+         let ruleNumber = $(this).attr('data-rule_number');
+         let errMsg = "";
+
+         $(`select.cdss-rule-condition-cmd[data-rule_number=${ruleNumber}]`).each( function () {
+            nCmds++;
+            let thisVal = $(this).val();
+            let err = false;
+            if ( thisVal==="if_op" || thisVal==="and_op" || thisVal==="or_op" ){
+               if ( parenLevel ){
+                  errMsg = "error: nested parentheses are not allowed";
+                  err = true;
+               }
+               parenLevel++;
+            }
+            else if ( thisVal==="cp" || thisVal==="cp_then" ){
+               if ( !parenLevel ){
+                  errMsg = "error: no matching open parenthesis";
+                  err = true;
+               }
+               parenLevel--;
+            }
+            if ( err ){
+               $(this).addClass('cdss-error-mark');
+            }
+            else if ( $(this).hasClass('cdss-error-mark') ) {
+               $(this).removeClass('cdss-error-mark');
+            }
+         })
+
+         if ( parenLevel && !errMsg.length ){
+            errMsg = "note: open parenthesis block"
+         }
+
+         cdss.postRuleMessage(ruleNumber, errMsg);
+
+         console.log("parenLevel", ruleNumber, parenLevel);
+      })
+   ;
+}
+
 cdss.expandOrCollapse = function( ruleNumber ){
 
    let tbl = $(`table#cdss-rule-${ruleNumber}`);
@@ -392,13 +521,27 @@ cdss.showSpecTable = function( tbl, ruleNumber ){
 
 }
 
-cdss.addRuleSpec = function() {
-
-}
-
 cdss.removeRuleCondition = function(ruleNumber, conditionNumber){
    $(`tr#cdss-rule-${ruleNumber}-condition-${conditionNumber}`).remove();
    $(`tr#cdss-rule-${ruleNumber}-conditions`).trigger('sortupdate');
+}
+
+cdss.addRuleSetListeners = function() {
+
+   $('div#cdss-rule-specifications')
+      .sortable()
+      .on('sortupdate', function ( event, ui ) {
+
+         let ruleIndex = 0;
+         $(this).find('table.cdss-rule-specification').each(function () {
+
+            $(this).attr('data-rule_index', ruleIndex);
+
+            ruleIndex++;
+         })
+
+      })
+   ;
 }
 
 cdss.addRuleSpecListeners = function(ruleNumber) {
@@ -422,7 +565,7 @@ cdss.addRuleSpecListeners = function(ruleNumber) {
             $(this).find(".cdss-rule-condition-join").show();
          }
 
-         console.log('addRuleSpecListeners', ruleNumber, conditionIndex);
+         console.log('sortupdate', ruleNumber, conditionIndex);
 
          conditionIndex++;
       })
@@ -478,10 +621,12 @@ cdss.addRuleCondition = function( ruleNumber ) {
    thisConditionBasisOptionCutpoint.val('').hide();
 
    cdss.populateRuleConditionBasisSelect( ruleNumber, thisConditionNumber );
-   //cdss.addRuleConditionListeners( ruleNumber, thisConditionNumber );
+
+   cdss.addRuleConditionCmdSelectListeners();
+
    cdss.showCondition( ruleNumber, thisConditionNumber );
 
-   console.log("addRuleCondition", conditionHtml);
+   //console.log("addRuleCondition", conditionHtml);
 
 }
 /*
@@ -569,8 +714,67 @@ cdss.ruleActionSelect = function(ruleNumber){
 
    ruleParamsWrapper.show();
    
+   cdss.inspectRule(ruleNumber);
+}
+
+cdss.postRuleMessage = function(ruleNumber, msg){
+   $(`div#cdss-rule-${ruleNumber}-message`)
+      .html(msg)
+   ;
+}
+
+cdss.clearRuleMessage = function(ruleNumber, msg){
+   $(`div#cdss-rule-${ruleNumber}-message`)
+      .html("")
+   ;
+}
+
+cdss.inspectRule = function(ruleNumber){
+
+   let ruleParent = $(`table#cdss-rule-${ruleNumber}`);
 
 }
+
+
+cdss.addRuleSpec = function() {
+
+   let ruleParent = $('div#cdss-rule-specifications');
+   let ruleNumber = 0;
+
+   $('table.cdss-rule-specification').each( function(){
+      let thisRuleNumber = parseInt($(this).data('rule_number'));
+      if ( thisRuleNumber < 8000 && thisRuleNumber > ruleNumber ){
+         ruleNumber = thisRuleNumber;
+      }
+   })
+
+   ruleNumber++;
+
+   let ruleTableHtml = document.getElementById('cdss-rule-9999').outerHTML;
+
+   let reRule = /9999/g;
+   let reCondition = /8888/g;
+
+   ruleTableHtml = ruleTableHtml.replace(reRule, ruleNumber);
+
+   ruleTableHtml = ruleTableHtml.replace(reCondition, "1");
+
+   ruleParent.append( ruleTableHtml );
+
+   cdss.populateRuleActionSelect( ruleNumber );
+   cdss.populateRuleConditionBasisSelect( ruleNumber, "1" );
+   cdss.addRuleSpecListeners(ruleNumber);
+   cdss.addRuleConditionCmdSelectListeners(); // mainly parenthesis checking
+   cdss.showCondition(ruleNumber, "1");
+
+   cdss.expandOrCollapse(ruleNumber);
+
+   ruleParent.trigger('sortupdate'); // re-index the rules
+
+   return ruleNumber;
+
+}
+
 
 cdss.buildRuleActionParamTable = function(ruleNumber, ruleAction){
    let paramTableWrapper = $(`table#cdss-rule-${ruleNumber} div.cdss-rule-params:first`);
@@ -611,6 +815,11 @@ cdss.buildRuleActionParamTable = function(ruleNumber, ruleAction){
       paramClone
          .attr('id', `cdss-rule-${ruleNumber}-param-${cdss.cdss_actions[a].params[i].name}`)
          .attr('data-configitem', cdss.cdss_actions[a].params[i].name)
+         .attr('data-action', a)
+         .attr('data-param_index', i)
+         .attr('data-param_name', cdss.cdss_actions[a].params[i].name)
+         .attr('data-param_type', cdss.cdss_actions[a].params[i].type)
+         .attr('data-param_label', cdss.cdss_actions[a].params[i].label)
          .attr('data-rule_number', ruleNumber)
          .find('td.cdss-rule-param-label').html(cdss.cdss_actions[a].params[i].label)
       ;
@@ -623,7 +832,7 @@ cdss.buildRuleActionParamTable = function(ruleNumber, ruleAction){
 
    paramClone = $( `tr#cdss-rule-param-additional_item-template` ).clone();
 
-   cdss.setRuleParamAdditionalItemProperties( paramClone, ruleNumber, "1");
+   cdss.setRuleParamAdditionalItemProperties( paramClone, ruleNumber, "1", a, "100");
 
    paramClone.appendTo( tbody );
 
@@ -649,10 +858,15 @@ cdss.buildRuleActionParamTable = function(ruleNumber, ruleAction){
 
 }
 
-cdss.setRuleParamAdditionalItemProperties = function( el, ruleNumber, additional_item_number ){
+cdss.setRuleParamAdditionalItemProperties = function( el, ruleNumber, additional_item_number, action, param_index ){
 
    el
       .attr('id', `cdss-rule-${ruleNumber}-param-additional_item-${additional_item_number}`)
+      .attr('data-action', action)
+      .attr('data-param_index', param_index)
+      .attr('data-param_name', "cdss_rule_additional_item")
+      .attr('data-param_type', "general_item")
+      .attr('data-param_label', "additional item to report")
       .attr('data-configitem', "cdss_rule_additional_item")
       .attr('data-rule_number', ruleNumber)
       .attr('data-additional_item_number', additional_item_number)
@@ -672,10 +886,13 @@ cdss.populateRuleParamTableElements = function(paramTable) {
    });
 
    paramTable.find('input.cdss-rule-param-general_item').each(function () {
-      $(this).autocomplete({
+      $(this)
+         .autocomplete({
          source: cdss.rule_basis_source,
          minLength: 0
-      });
+         })
+         .attr('placeholder', "start typing or [c]-conditions, [d]-diseases, [m]-medications, [f]-study fields or [space]-all")
+      ;
    });
 }
 
@@ -695,14 +912,22 @@ cdss.addRuleParamAdditionalItem = function(ruleNumber){
 
    let lastItemSibling = $(`table#cdss-rule-${ruleNumber}-param-table tr.cdss-rule-param-additional-item:last`);
    let additional_item_number = '' + (1 + parseInt(lastItemSibling.data('additional_item_number')));
+   let param_index = '' + (1 + parseInt(lastItemSibling.data('param_index')));
 
    let thisItemSibling = lastItemSibling.clone();
 
-   cdss.setRuleParamAdditionalItemProperties( thisItemSibling, ruleNumber, additional_item_number);
+   thisItemSibling.find('[data-configitem=cdss_rule_param_input]').val("");
+
+   cdss.setRuleParamAdditionalItemProperties( thisItemSibling,
+      ruleNumber, additional_item_number,
+      lastItemSibling.data('action'),
+      param_index
+   );
 
    cdss.populateRuleParamTableElements(thisItemSibling);
 
-   lastItemSibling.after( thisItemSibling );
+   lastItemSibling
+      .after( thisItemSibling );
 
    console.log( "addRuleParamAdditionalItem", lastItemSibling, thisItemSibling.data('additional_item_number'));
 
@@ -714,6 +939,10 @@ cdss.removeRuleParamAdditionalItem = function(ruleNumber, additional_item_number
 
 }
 
+cdss.removeRule = function( ruleNumber ){
+   $(`table#cdss-rule-${ruleNumber}`).remove();
+}
+
 
 /*
 * the approved alternative to $(document).ready()
@@ -721,6 +950,10 @@ cdss.removeRuleParamAdditionalItem = function(ruleNumber, additional_item_number
 $( function () {
 
    $(".cdss-draggable").draggable({"handle": ".cdss-panel-header-row, .cdss-panel-handle, .cdss-drag-handle"});
+
+   cdss.addRuleSetListeners();
+
+   cdss.populateRuleBackupSelect();
 
    cdss.getReady();
 

@@ -28,7 +28,7 @@ html {
     --cdss-item-gutter-width: 25px;
     --cdss-rule-left-stub-width: 80px;
     --cdss-rule-input-width: calc( 100% - var(--cdss-rule-left-stub-width) - 2*var(--cdss-item-gutter-width));
-    --cdss-condition-left-stub-width: 100px;
+    --cdss-rule-condition-left-stub-width: 125px;
 
     --cdss-color-balloon-input: darkslategrey;
 
@@ -234,14 +234,29 @@ input.cdss-rule-param-general_item, select.cdss-rule-param-medication {
 input.cdss-rule-param-general_item {
     width: 100%;
 }
-
-div.cdss-rule-condition-join {
+select.cdss-rule-condition-if, select.cdss-rule-condition-join, select.cdss-rule-condition-then {
     width: 100%;
+    font-weight: 800;
+    font-size: 1.2rem !important;
 }
 
-div.cdss-rule-condition-join select {
-    width: calc( 100% - 2*var(--cdss-padding) );
+select.cdss-rule-condition-if {
+    color: cadetblue;
 }
+
+select.cdss-rule-condition-join {
+    color: cadetblue;
+}
+
+select.cdss-rule-condition-then {
+    color: cadetblue;
+}
+
+.cdss-error-mark {
+    color: darkred !important;
+    background-color: yellow;
+}
+
 /*
 hide the remove link for the first addl item
  */
@@ -258,20 +273,13 @@ div#cdss-rule-templates {
     display: none;
 }
 
-td.cdss-condition-left-stub {
-    width: var(--cdss-condition-left-stub-width);
+td.cdss-rule-condition-left-stub {
+    width: var(--cdss-rule-condition-left-stub-width);
     vertical-align: middle;
 }
 
-td.cdss-condition-left-stub div {
+td.cdss-rule-condition-left-stub div {
     width: 100%;
-}
-
-td.cdss-condition-left-stub div select {
-    font-weight: 800;
-    opacity: 66%;
-    font-size: 1.2rem !important;
-    color: firebrick !important;
 }
 
 td.cdss-rule-condition-basis-panel {
@@ -285,8 +293,18 @@ td.cdss-condition-input select, td.cdss-condition-input input  {
 }
 
 input.cdss-rule-name {
+    float: left;
     color: black !important;
-    width: 100%;
+    width: 50%;
+}
+
+div.cdss-rule-message {
+    float: right;
+    font-weight: 800;
+    color: darkred !important;
+    width: 40%;
+    height: 40px;
+    line-height: 40px;
 }
 
 td.cdss-gutter-left.centered, td.cdss-gutter-right.centered {
@@ -346,10 +364,17 @@ div.cdss-vertical-option {
 }
 
 table.cdss-rule-conditions-table td {
+    /*
     padding-left: 0;
-    padding-right: 0;
+    padding-right: var(--cdss-padding);
     padding-top: 0;
     padding-bottom: var(--cdss-padding);
+
+     */
+}
+
+td.cdss-rule-condition-container {
+    padding: 0;
 }
 
 div.cdss-halfwidth {
@@ -393,7 +418,6 @@ td.cdss-config-table-third:not(.cdss-bottom-row) {
 .cdss-config-panel input[type=text], .cdss-config-panel select {
     padding: var(--cdss-padding) !important;
     border: 1px solid var(--cdss-input-border-color);
-    color: var(--cdss-input-color);
     font-family: var(--cdss-input-font-family);
     border-radius: 4px;
     height: var(--cdss-line-height);
@@ -425,7 +449,6 @@ td.cdss-config-table-third:not(.cdss-bottom-row) {
 .ui-autocomplete-input {
     padding: var(--cdss-padding) !important;
     border: 1px solid var(--cdss-input-border-color);
-    color: var(--cdss-input-color);
     font-family: var(--cdss-input-font-family);
     border-radius: 4px;
     height: var(--cdss-line-height);
@@ -434,7 +457,6 @@ td.cdss-config-table-third:not(.cdss-bottom-row) {
 
 .ui-autocomplete {
     padding: 1px !important;
-    color: var(--cdss-input-color);
     font-family: var(--cdss-input-font-family);
 }
 
@@ -450,20 +472,6 @@ td.cdss-config-table-third:not(.cdss-bottom-row) {
     background-color: indianred;
     border-color: indianred;
     color: white;
-}
-
-.cdss-rule-condition-if {
-    float: left;
-    width: 100%;
-    font-weight: 800;
-    font-size: 1.3rem !important;
-    color: cadetblue;
-}
-
-.cdss-rule-condition-then {
-    font-weight: 800;
-    font-size: 1.3rem !important;
-    color: cadetblue;
 }
 
 .cdss-sortable .cdss-config-table-item-description:hover {

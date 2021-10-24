@@ -23,8 +23,65 @@ $request = $_POST['request']; // always passed
 if ( $request === "save-rbase"  ) exit(save_rbase());
 elseif ( $request === "get-cdss-settings"  ) exit(get_cdss_settings());
 elseif ( $request === "save-metadata"  ) exit(save_metadata());
+elseif ( $request === "save-cdss-rules"  ) exit(save_cdss_rules());
+elseif ( $request === "get-cdss-rule-backup-select-options"  ) exit(get_cdss_rule_backup_select_options());
 
 else exit("go away");
+
+function save_cdss_rules() {
+   global $module;
+   $cdss_rules = $_POST['rules'];
+   $module->setProjectSetting('cdss-rules', json_encode($cdss_rules) );
+   backup_cdss_rules($cdss_rules);
+   return $module->getProjectSetting('cdss-rules');
+}
+
+function backup_cdss_rules( $cdss_rules ) {
+   global $module;
+
+   if ( $cdss_rules_backups_json = $module->getProjectSetting('cdss-rules-backups') ) {
+      $cdss_rules_backups = json_decode( $cdss_rules_backups_json );
+   } else {
+      $cdss_rules_backups = [];
+   }
+
+   $cdss_rules_backup = [
+      'backup_date' => strftime("%F %T"),
+      'user' => USERID,
+      'cdss_rules' => $cdss_rules
+   ];
+
+   array_unshift($cdss_rules_backups, $cdss_rules_backup);
+
+   $module->setProjectSetting('cdss-rules-backups', json_encode($cdss_rules_backups) );
+
+}
+
+function get_cdss_rule_backup_select_options() {
+   global $module;
+
+   if ( !$cdss_rules_backups_json =  $module->getProjectSetting('cdss-rules-backups') ) {
+      return  "<option value=''>NO BACKUPS AVAILABLE</option>";
+   }
+
+   $cdss_rules_backups = json_decode($cdss_rules_backups_json, true);
+
+   $options = "<option value=''>-- select a backup set --</option>";
+
+   for ( $i=0; $i<count($cdss_rules_backups); $i++ ){
+
+      $nrules = count( $cdss_rules_backups[$i]['cdss_rules'] );
+
+      $options .=
+         "<option value='{$i}'>{$cdss_rules_backups[$i]['backup_date']} ({$nrules} rules)</option>";
+
+   }
+
+   return json_encode( [
+      'options' => $options,
+      'last_saved_message' => "last saved ". $cdss_rules_backups[0]['backup_date']
+   ]);
+}
 
 function save_metadata() {
    global $module;
