@@ -26,7 +26,7 @@ html {
     --cdss-item-description-width: 175px;
 
     --cdss-item-gutter-width: 25px;
-    --cdss-rule-left-stub-width: 80px;
+    --cdss-rule-left-stub-width: 125px;
     --cdss-rule-input-width: calc( 100% - var(--cdss-rule-left-stub-width) - 2*var(--cdss-item-gutter-width));
     --cdss-rule-condition-left-stub-width: 125px;
 
@@ -41,6 +41,15 @@ html {
     --cdss-highlight-color: darkslategray;
 
     --cdss-line-height: 40px;
+
+    --cdss-link-hover-color: indianred;
+    --cdss-link-color: slategray;
+
+    --cdss-rule-comment-color: steelblue;
+
+    --cdss-rule-item-color: steelblue;
+
+    --cdss-rule-info-color: slategray;
 
 }
 
@@ -165,6 +174,7 @@ td.cdss-gutter-right {
 
 td.cdss-rule-left-stub {
     width: var(--cdss-rule-left-stub-width);
+    min-width: var(--cdss-rule-left-stub-width);
     vertical-align: middle;
     padding-left: 0;
     padding-right: 0;
@@ -195,15 +205,29 @@ table.cdss-rule-params {
     width: 100%;
 }
 
-td.cdss-rule-param-label {
+td.cdss-rule-param-item-label {
     width: 40%;
     padding-left: calc( 2 * var(--cdss-padding) );
     padding-right: var(--cdss-padding);
     padding-top: calc( 0.5*var(--cdss-padding) );
     padding-bottom: calc( 0.5*var(--cdss-padding) );
+    vertical-align: middle;
+    font-family: var(--cdss-input-font-family);
+    font-size: 1rem !important;
+    color: var(--cdss-rule-item-color);
+
 }
 
-td.cdss-rule-param-input {
+td.cdss-rule-comment-label {
+    width: 40%;
+    padding-left: calc( 2 * var(--cdss-padding) );
+    padding-right: var(--cdss-padding);
+    padding-top: calc( 0.5*var(--cdss-padding) );
+    padding-bottom: calc( 0.5*var(--cdss-padding) );
+    vertical-align: top;
+}
+
+td.cdss-rule-comment {
     width: 60%;
     padding-right: calc( 2 * var(--cdss-padding) );
     padding-left: var(--cdss-padding);
@@ -211,15 +235,47 @@ td.cdss-rule-param-input {
     padding-bottom: calc( 0.5*var(--cdss-padding) );
 }
 
-textarea.cdss-rule-param-comment {
+div.cdss-rule-comment {
+    width: 100%;
+    float: left;
+    clear: both;
+}
+
+div.cdss-rule-comment-label {
+    font-family: var(--cdss-input-font-family);
+    font-size: 1rem !important;
+    color: var(--cdss-rule-comment-color);
+}
+
+div.cdss-rule-info {
+    width: 100%;
+    float: left;
+    clear: both;
+    margin-top: var(--cdss-margin);
+    font-style: italic;
+    color: var(--cdss-rule-info-color);
+}
+
+input[data-configitem=rule_condition_basis]{
+    color: darkslategray !important;
+}
+
+textarea[data-configitem=rule_comment] {
     padding: var(--cdss-padding) !important;
     border: 1px solid var(--cdss-input-border-color);
-    color: var(--cdss-input-color);
+    color: var(--cdss-rule-comment-color);
     font-family: var(--cdss-input-font-family);
+    font-size: 1rem !important;
     border-radius: 4px;
     height: calc( 3*var(--cdss-line-height) );
     width: 100%;
     resize: vertical;
+}
+
+input[data-configitem=rule_additional_item]{
+    color: var(--cdss-rule-item-color) !important;
+    font-family: var(--cdss-input-font-family) !important;
+    font-size: 1rem !important;
 }
 
 input.cdss-rule-param-general_item, select.cdss-rule-param-medication {
@@ -234,22 +290,23 @@ input.cdss-rule-param-general_item, select.cdss-rule-param-medication {
 input.cdss-rule-param-general_item {
     width: 100%;
 }
-select.cdss-rule-condition-if, select.cdss-rule-condition-join, select.cdss-rule-condition-then {
+select[data-configitem=rule_condition_if],
+select[data-configitem=rule_condition_join],
+select[data-configitem=rule_condition_then] {
     width: 100%;
-    font-weight: 800;
-    font-size: 1.2rem !important;
+    font-size: 1.1rem !important;
 }
 
-select.cdss-rule-condition-if {
-    color: cadetblue;
+select[data-configitem=rule_condition_if] {
+    color: steelblue;
 }
 
-select.cdss-rule-condition-join {
-    color: cadetblue;
+select[data-configitem=rule_condition_join] {
+    color: steelblue;
 }
 
-select.cdss-rule-condition-then {
-    color: cadetblue;
+select[data-configitem=rule_condition_then] {
+    color: steelblue;
 }
 
 .cdss-error-mark {
@@ -260,14 +317,11 @@ select.cdss-rule-condition-then {
 /*
 hide the remove link for the first addl item
  */
+/*
 td.cdss-rule-param-remove-item[data-additional_item_number='1'] {
     visibility: hidden;
 }
-
-select.cdss-rule-action  {
-    color: darkslategray !important;
-    width: 100%;
-}
+*/
 
 div#cdss-rule-templates {
     display: none;
@@ -275,7 +329,8 @@ div#cdss-rule-templates {
 
 td.cdss-rule-condition-left-stub {
     width: var(--cdss-rule-condition-left-stub-width);
-    vertical-align: middle;
+    min-width: var(--cdss-rule-condition-left-stub-width);
+    vertical-align: top;
 }
 
 td.cdss-rule-condition-left-stub div {
@@ -294,17 +349,34 @@ td.cdss-condition-input select, td.cdss-condition-input input  {
 
 input.cdss-rule-name {
     float: left;
-    color: black !important;
-    width: 50%;
+    color: steelblue !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-weight: 600;
+    width: calc( 60% - 2*var(--cdss-margin) );
+    margin-right: var(--cdss-margin);
+    background-color: white !important;
+    font-size: 1rem !important;
+}
+
+
+select.cdss-rule-action  {
+    color: steelblue !important;
+    float: left;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    font-weight: 600;
+    width: calc( 40% - 2*var(--cdss-margin) );
+    background-color: white !important;
+    font-size: 1rem !important;
 }
 
 div.cdss-rule-message {
     float: right;
     font-weight: 800;
     color: darkred !important;
-    width: 40%;
+    width: 100%;
     height: 40px;
     line-height: 40px;
+    display: none;
 }
 
 td.cdss-gutter-left.centered, td.cdss-gutter-right.centered {
@@ -500,7 +572,7 @@ td.cdss-config-table-third:not(.cdss-bottom-row) {
 }
 
 table.cdss-config-table i, div.cdss-config-table-add i {
-    opacity: 0.4;
+    color: var(--cdss-link-color) !important;
 }
 
 table.cdss-config-table , div.cdss-config-table-add i:hover {
@@ -683,11 +755,16 @@ div.cdss-panel-row-left+div.cdss-panel-row-left {
     text-align: center;
 }
 
-.cdss-panel-row a {
+.cdss-panel-row a, table.cdss-rule-params a {
     font-family: inherit;
-    color: inherit;
+    color: var(--cdss-link-color);
     font-size: inherit;
     font-weight: 600;
+}
+
+.cdss-panel-row a:hover, table.cdss-rule-params a:hover {
+    text-decoration: none;
+    color: var(--cdss-link-hover-color);
 }
 
 .cdss-panel label {

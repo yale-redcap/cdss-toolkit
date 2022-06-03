@@ -83,15 +83,52 @@ div#cdss-canvas {
 div#center {
     background-color: var(--cdss-background-color) !important;
 }
+ 
+.yes3-flex-container {
+    width: 100%;
+    display: flex !important;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    align-content: flex-start;
+    /*border: 1px solid lightgrey;*/
+}
+
+.yes3-flex-vcenter-hleft {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.yes3-flex-vtop-hleft {
+    display: flex;
+    justify-content: left;
+    align-items: top;
+}
+
+.yes3-flex-vcenter-hright {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+.yes3-flex-vcenter-hcenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 div.cdss-metadata-list-container {
-    float: left;
-    margin: var(--cdss-margin);
+    width: 400px;
+    max-width: 400px;
+    margin-right: 10px;
+    margin-bottom: 10px;
     padding: var(--cdss-padding);
-    width: 200px;
-    max-width: 200px;
     background-color: white;
     border: 1px solid var(--cdss-border-color);
+
 }
 
 div.cdss-metadata-list-header {
@@ -111,6 +148,7 @@ div.cdss-metadata-list-cpanel {
 div.cdss-metadata-list-content {
     width: 100%;
     height: 200px;
+    margin-bottom: 20px;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -278,7 +316,7 @@ div.cdss-popup-content table td.cdss-table-left {
     padding-right: 5px;
     padding-left: 0;
     color: slategray;
-    width: 100px;
+    width: 140px;
 }
 
 div.cdss-popup-content table td.cdss-table-right {
@@ -356,6 +394,20 @@ input.cdss-editor-string {
     width: 100%;
     padding: 5px;
     color: black;
+    background-color: white !important;
+    font-size: 15px;
+    font-weight: 600;
+    border: 1px solid var(--cdss-border-color);
+}
+
+select.cdss-editor-string {
+    width: 300px !important;
+    overflow:hidden !important; 
+    white-space:nowrap !important; 
+    text-overflow:ellipsis !important;
+    padding: 5px !important;
+    color: black;
+    background-color: white !important;
     font-size: 15px;
     font-weight: 600;
     border: 1px solid var(--cdss-border-color);

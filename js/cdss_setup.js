@@ -1,7 +1,6 @@
 
 let cdss = {
    study_fields: "",
-   cdss_functions: "",
    cdss_variables: "",
    cdss_medications: "",
    cdss_diseases: "",
@@ -84,6 +83,7 @@ cdss.load_metadata_panel = function( metaclass, readonly ) {
    readonly = readonly || false;
 
    var metadata = cdss[metaclass];
+   var panelContainer = $("<div>", {"class": "yes3-flex-vtop-hleft"})
    var panel = $("<div>", {id: metaclass, "class": "cdss-metadata-list-container"});
    var panel_content = $("<div>", {id: metaclass + "-content", "class": "cdss-metadata-list-content"});
    var panelTitle = cdss.pretty_panel_name(metaclass);
@@ -114,7 +114,9 @@ cdss.load_metadata_panel = function( metaclass, readonly ) {
       ;
    }
 
-   $('div#cdss_metadata_selectors').append( panel );
+   panelContainer.append( panel );
+
+   $('div#cdss_metadata_selectors').append( panelContainer );
 }
 
 cdss.sort_compare_id = function( a, b ) {
@@ -143,25 +145,31 @@ cdss.sort_compare_name = function( a, b ) {
 
 cdss.getNameIndex = function (xx, theName) {
 
-   let start=0, end=xx.length-1, i=0;
+    let start=0, end=xx.length-1, i=0;
 
-   // Iterate while start not meets end
-   while (start<=end){
+    // Iterate while start not meets end
+    while (start<=end){
 
-      // Find the mid index
-      i = Math.floor((start + end)/2);
+        // Find the mid index
+        i = Math.floor((start + end)/2);
 
-      // If element is present at mid, return True
-      if (xx[i].name===theName) return i;
+        // If element is present at mid, return True
+        if (xx[i].name===theName) return i;
 
-      // Else look in left or right half accordingly
-      else if (xx[i].name < theName)
-         start = i + 1;
-      else
-         end = i - 1;
-   }
+        // Else look in left or right half accordingly
+        else if (xx[i].name < theName)
+            start = i + 1;
+        else
+            end = i - 1;
+    }
 
-   return -1;
+    // Oops, may not be an ordered list. Try linear search.
+    for (i=0; i<xx.length; i++){
+
+        if (xx[i].name===theName) return i;
+    }
+
+    return -1;
 }
 
 cdss.copyToClipboard = function (itemText) {
@@ -175,282 +183,266 @@ cdss.copyToClipboard = function (itemText) {
 
 cdss.addListeners = function (){
 
-   $('div.cdss-metadata-list-item').on('click', function () {
+    $('div.cdss-metadata-list-item').on('click', function () {
 
-      if ( !$(this).hasClass('cdss-item-selected') ) {
-         $(this).siblings().removeClass('cdss-item-selected');
-         $(this).addClass('cdss-item-selected');
-         let itemName = $(this).html();
-         cdss.copyToClipboard($(this).html());
-         $(this).parent().parent().find('button.cdss-button-edit').show();
-         $(this).parent().parent().find('button.cdss-button-inspect').show();
-         $(this).parent().parent().find('button.cdss-button-delete').show();
-      } else {
-         $(this).removeClass('cdss-item-selected');
-         $(this).parent().parent().find('button.cdss-button-edit').hide();
-         $(this).parent().parent().find('button.cdss-button-inspect').hide();
-         $(this).parent().parent().find('button.cdss-button-delete').hide();
-      }
+        if ( !$(this).hasClass('cdss-item-selected') ) {
+            $(this).siblings().removeClass('cdss-item-selected');
+            $(this).addClass('cdss-item-selected');
+            let itemName = $(this).html();
+            cdss.copyToClipboard($(this).html());
+            $(this).parent().parent().find('button.cdss-button-edit').show();
+            $(this).parent().parent().find('button.cdss-button-inspect').show();
+            $(this).parent().parent().find('button.cdss-button-delete').show();
+        } else {
+            $(this).removeClass('cdss-item-selected');
+            $(this).parent().parent().find('button.cdss-button-edit').hide();
+            $(this).parent().parent().find('button.cdss-button-inspect').hide();
+            $(this).parent().parent().find('button.cdss-button-delete').hide();
+        }
 
-   });
+    });
 
-   $('button#cdss-save-rbase').on('click', function () {
-      let params = {
-         'request': 'save-rbase',
-         'cdss_rbase_text': $('textarea#cdss-rbase-text').val()
-      }
-      cdss.requestService( params, cdss.saveComplete );
-   });
+    /* inspectors */
 
-   /*
-    * special keypress actions for code editing:
-    *   tab insertion (tab = 3 spaces)
-    *   tab removal
-    *   hanging indents
-    */
-   $('textarea#cdss-rbase-text').on('keydown', function ( k ) {
+    cdss.nl2br = function(str){return str.replace(/(?:\r\n|\r|\n)/g, '<br>');};
 
-      var keyCode = k.keyCode || k.which;
-      var start = this.selectionStart;
-      var end = this.selectionEnd;
-      var spaces = "   ";
-      var tabLength = spaces.length;
+    cdss.inspector_open = function( metaclass, itemname ) {
+        var popup = $('div#cdss-inspector');
+        var popup_content = $('div#cdss-inspector-content');
+        var tbl = "";
+        var i = cdss.getNameIndex( cdss[metaclass], itemname );
 
-      // tab or shift-tab
-      if ( keyCode === 9 ){
-         k.preventDefault();
-         // shift-tab: remove tab spaces
-         if ( k.shiftKey ){
-            if ( this.value.substring(start-tabLength, start)===spaces ){
-               this.value = this.value.substring(0, start-tabLength) + this.value.substring(end);
-               this.selectionStart = this.selectionEnd = start - tabLength;
-            }
-         }
-         // tab
-         else {
-            this.value = this.value.substring(0, start) + spaces + this.value.substring(end);
-            this.selectionStart = this.selectionEnd = start + spaces.length;
-         }
-      }
-      // backspace: remove tab spaces if indicated, otherwise default action
-      else if ( keyCode === 8 ){
-         if ( this.value.substring(start-tabLength, start)===spaces ){
-            k.preventDefault();
-            this.value = this.value.substring(0, start-tabLength) + this.value.substring(end);
-            this.selectionStart = this.selectionEnd = start - tabLength;
-         }
-      }
-      // cr: hanging indent if indicated ( always if following ':' )
-      else if ( keyCode === 13 ){
-         var startOfLine = this.value.substring(0, start).lastIndexOf('\n') + 1;
-         //console.log('start:', start, 'end:', end, 'startOfLine:', startOfLine, 'charAt: ['+this.value.charAt(start-1)+']');
-         var indent = ( this.value.charAt(start-1)===':' ) ? spaces : "";
-         for ( var i=startOfLine; i<start; i+=tabLength){
-            if ( this.value.substring(i, i+tabLength)===spaces ) {
-               indent += spaces;
-            } else {
-               break;
-            }
-         }
-         if ( indent.length ){
-            k.preventDefault();
-            this.value = this.value.substring(0, start) + "\n" + indent + this.value.substring(end);
-            this.selectionStart = this.selectionEnd = start + indent.length + 1;
-         }
-      }
-
-   }); /* rbase-text keyboard handler */
-
-   /* inspectors */
-
-   cdss.nl2br = function(str){return str.replace(/(?:\r\n|\r|\n)/g, '<br>');};
-
-   cdss.inspector_open = function( metaclass, itemname ) {
-      var popup = $('div#cdss-inspector');
-      var popup_content = $('div#cdss-inspector-content');
-      var tbl = "";
-      var i = cdss.getNameIndex( cdss[metaclass], itemname );
-
-      console.log('inspector_open', metaclass, itemname, i, cdss[metaclass][i]);
+        console.log('inspector_open', metaclass, itemname, i, cdss[metaclass][i]);
 
 
-      $('div#cdss-inspector-metaclass').html( cdss.pretty_panel_name(metaclass) );
-      //$('div#cdss-inspector-itemname').html( itemname );
+        $('div#cdss-inspector-metaclass').html( cdss.pretty_panel_name(metaclass) );
+        //$('div#cdss-inspector-itemname').html( itemname );
 
-      tbl = "<table>";
+        tbl = "<table>";
 
-      tbl += `<tr><td class="cdss-table-left">name:</td><td class="cdss-table-right cdss-metadata-name">${cdss[metaclass][i].name}</td>`;
+        tbl += `<tr><td class="cdss-table-left">name:</td><td class="cdss-table-right cdss-metadata-name">${cdss[metaclass][i].name}</td>`;
 
-      if (cdss[metaclass][i].label) tbl += `<tr><td class="cdss-table-left">label:</td><td class="cdss-table-right">${cdss.nl2br(cdss[metaclass][i].label)}</td>`;
+        if (cdss[metaclass][i].label) tbl += `<tr><td class="cdss-table-left">label:</td><td class="cdss-table-right">${cdss.nl2br(cdss[metaclass][i].label)}</td>`;
 
-      if (cdss[metaclass][i].code) tbl += `<tr><td class="cdss-table-left">coding:</td><td class="cdss-table-right">${cdss.nl2br(cdss[metaclass][i].code)}</td>`;
+        if (cdss[metaclass][i].code) tbl += `<tr><td class="cdss-table-left">coding:</td><td class="cdss-table-right">${cdss.nl2br(cdss[metaclass][i].code)}</td>`;
 
-      if (cdss[metaclass][i].params) tbl += `<tr><td class="cdss-table-left">parameters:</td><td class="cdss-table-right">${cdss.nl2br(cdss[metaclass][i].params)}</td>`;
+        if (cdss[metaclass][i].params) tbl += `<tr><td class="cdss-table-left">parameters:</td><td class="cdss-table-right">${cdss.nl2br(cdss[metaclass][i].params)}</td>`;
 
-      if (cdss[metaclass][i].example) tbl += `<tr><td class="cdss-table-left">example:</td><td class="cdss-table-right">${cdss.nl2br(cdss[metaclass][i].example)}</td>`;
+        if (cdss[metaclass][i].example) tbl += `<tr><td class="cdss-table-left">example:</td><td class="cdss-table-right">${cdss.nl2br(cdss[metaclass][i].example)}</td>`;
 
-      if (cdss[metaclass][i].comments) tbl += `<tr><td class="cdss-table-left">comments:</td><td class="cdss-table-right">${cdss.nl2br(cdss[metaclass][i].comments)}</td>`;
+        if (cdss[metaclass][i].comments) tbl += `<tr><td class="cdss-table-left">comments:</td><td class="cdss-table-right">${cdss.nl2br(cdss[metaclass][i].comments)}</td>`;
 
-      tbl += "</table>";
+        tbl += "</table>";
 
-      popup_content.html(tbl);
+        popup_content.html(tbl);
 
-      cdss.openPopup(popup);
-   }
+        cdss.openPopup(popup);
+    }
 
-   cdss.inspector_close = function() {
-      cdss.closePopup("cdss-inspector");
-   }
+    cdss.inspector_close = function() {
+        cdss.closePopup("cdss-inspector");
+    }
 
-   cdss.editor_open = function( metaclass, itemname ) {
-      var popup = $('div#cdss-editor');
-      var popup_content = $('div#cdss-editor-content');
-      var tbl = "";
-      var i = cdss.getNameIndex( cdss[metaclass], itemname );
+cdss.editor_open = function( metaclass, itemname ) {
+    var popup = $('div#cdss-editor');
+    var popup_content = $('div#cdss-editor-content');
+    var tbl = "";
+    var i = cdss.getNameIndex( cdss[metaclass], itemname );
 
-      //console.log('editor_open', metaclass, itemname, i, cdss[metaclass][i]);
+    //console.log('editor_open', metaclass, itemname, i, cdss[metaclass][i]);
 
-      $('div#cdss-editor-metaclass').html( cdss.pretty_panel_name(metaclass) );
-      //$('div#cdss-editor-itemname').html( itemname );
+    $('div#cdss-editor-metaclass').html( cdss.pretty_panel_name(metaclass) );
+    //$('div#cdss-editor-itemname').html( itemname );
 
-      tbl = "<table>";
+    tbl = "<table>";
 
-      tbl += `<tr><td class="cdss-table-left">name:</td><td class="cdss-table-right cdss-metadata-name">${cdss[metaclass][i].name}</td>`;
+    tbl += `<tr><td class="cdss-table-left">name:</td><td class="cdss-table-right cdss-metadata-name">${cdss[metaclass][i].name}</td>`;
 
-      tbl += `<tr><td class="cdss-table-left">label:</td><td class="cdss-table-right"><input type="text" class="cdss-editor-string" id="cdss-editor-label" /></td>`;
+    tbl += `<tr><td class="cdss-table-left">label:</td><td class="cdss-table-right"><input type="text" class="cdss-editor-string" id="cdss-editor-label" /></td>`;
 
-      tbl += `<tr><td class="cdss-table-left">coding:</td><td class="cdss-table-right"><textarea class="cdss-editor-text" id="cdss-editor-code"></textarea></td>`;
+    tbl += `<tr><td class="cdss-table-left">REDCap field:</td><td class="cdss-table-right"><select class="cdss-editor-string" id="cdss-editor-field"></select></td>`;
 
-      tbl += `<tr><td class="cdss-table-left">comments:</td><td class="cdss-table-right"><textarea class="cdss-editor-text" id="cdss-editor-comments"></textarea></td>`;
+    tbl += `<tr><td class="cdss-table-left">coding:</td><td class="cdss-table-right"><textarea class="cdss-editor-text" id="cdss-editor-code"></textarea></td>`;
 
-      tbl += `<tr><td colspan='2' class='cdss-editor-button-container'><button class='cdss-editor-button cdss-editor-button-save' onclick="cdss.editor_save('${metaclass}', ${i});">SAVE AND CLOSE</button></td></tr>`;
+    tbl += `<tr><td class="cdss-table-left">comments:</td><td class="cdss-table-right"><textarea class="cdss-editor-text" id="cdss-editor-comments"></textarea></td>`;
 
-      tbl += "</table>";
+    tbl += `<tr><td colspan='2' class='cdss-editor-button-container'><button class='cdss-editor-button cdss-editor-button-save' onclick="cdss.editor_save('${metaclass}', ${i});">SAVE AND CLOSE</button></td></tr>`;
 
-      popup_content.html(tbl);
+    tbl += "</table>";
 
-      $('input#cdss-editor-label').val(cdss[metaclass][i].label);
-      $('textarea#cdss-editor-code').val(cdss[metaclass][i].code);
-      $('textarea#cdss-editor-comments').val(cdss[metaclass][i].comments);
+    popup_content.html(tbl);
 
-      cdss.openPopup(popup);
-   }
+    $('select#cdss-editor-field').empty().append(cdss.studyFieldOptionsHtml);
 
-   cdss.editor_close = function() {
-      cdss.closePopup("cdss-editor");
-   }
+    $('input#cdss-editor-label').val(cdss[metaclass][i].label);
+    $('textarea#cdss-editor-code').val(cdss[metaclass][i].code);
+    $('select#cdss-editor-field').val(cdss[metaclass][i].field);
+    $('textarea#cdss-editor-comments').val(cdss[metaclass][i].comments);
 
-   cdss.editor_save = function(metaclass, i){
+    cdss.openPopup(popup);
+}
 
-      cdss[metaclass][i].label = $('input#cdss-editor-label').val();
-      cdss[metaclass][i].code = $('textarea#cdss-editor-code').val();
-      cdss[metaclass][i].comments = $('textarea#cdss-editor-comments').val();
+cdss.editor_close = function() {
+    cdss.closePopup("cdss-editor");
+}
 
-      console.log('editor_save', metaclass, i, cdss[metaclass][i]);
+cdss.editor_save = function(metaclass, i){
 
-      var params = {
-         'request': 'save-metadata',
-         'metaclass': metaclass,
-         'data': cdss[metaclass]
-      }
-      cdss.requestService(params, cdss.editor_save_callback);
+    cdss[metaclass][i].label = $('input#cdss-editor-label').val();
+    cdss[metaclass][i].code = $('textarea#cdss-editor-code').val();
+    cdss[metaclass][i].field = $('select#cdss-editor-field').val();
+    cdss[metaclass][i].comments = $('textarea#cdss-editor-comments').val();
 
-      cdss.editor_close();
-   }
+    console.log('editor_save', metaclass, i, cdss[metaclass][i]);
 
-   cdss.editor_save_callback = function( response ){
-      console.log('editor_save_callback', response);
-   }
+    var params = {
+        'request': 'save-metadata',
+        'metaclass': metaclass,
+        'data': cdss[metaclass]
+    }
+    cdss.requestService(params, cdss.editor_save_callback);
 
-   $("button.cdss-button-inspect").off().on("click", function () {
+    cdss.editor_close();
+}
 
-      var metaclass = $(this).attr('data-metaclass');
+cdss.editor_save_callback = function( response ){
+    console.log('editor_save_callback', response);
+}
 
-      var itemname = $(`div[data-metaclass=${metaclass}].cdss-item-selected`).attr("data-itemname");
+cdss.add_medication_fields = function(){
 
-      cdss.inspector_open( metaclass, itemname );
+    for (let i=0; i<cdss.cdss_medications.length; i++){
 
-   });
+        cdss.cdss_medications[i].field = "cdss_m_" + cdss.cdss_medications[i].name.toLowerCase();
+    }
 
-   $("button.cdss-button-edit").off().on("click", function () {
+    var params = {
+        'request': 'save-metadata',
+        'metaclass': 'cdss_medications',
+        'data': cdss.cdss_medications
+    }
+    cdss.requestService(params, cdss.editor_save_callback);
 
-      var metaclass = $(this).attr('data-metaclass');
+    console.log(cdss.cdss_medications);
+}
 
-      var itemname = $(`div[data-metaclass=${metaclass}].cdss-item-selected`).attr("data-itemname");
+cdss.writeCDSSVarsCsv = function(){
 
-      cdss.editor_open( metaclass, itemname );
+    url = cdss.serviceUrl + "&request=writeCDSSVarsCsv&csrf_token="+redcap_csrf_token;
+    window.open(url);
+}
 
-   });
+$("button.cdss-button-inspect").off().on("click", function () {
 
-   /*
+    var metaclass = $(this).attr('data-metaclass');
+
+    var itemname = $(`div[data-metaclass=${metaclass}].cdss-item-selected`).attr("data-itemname");
+
+    cdss.inspector_open( metaclass, itemname );
+
+});
+
+$("button.cdss-button-edit").off().on("click", function () {
+
+    var metaclass = $(this).attr('data-metaclass');
+
+    var itemname = $(`div[data-metaclass=${metaclass}].cdss-item-selected`).attr("data-itemname");
+
+    cdss.editor_open( metaclass, itemname );
+
+});
+
+/*
     * popups
     */
 
-   cdss.spinMe = function() {
-      $('i.cdss-spinme').addClass('fa-spin');
-   }
+cdss.spinMe = function() {
+    $('i.cdss-spinme').addClass('fa-spin');
+}
 
-   cdss.openPopup = function(popup) {
-      cdss.maxZ += 1;
-      $('#cdss-screencover').css({'z-index':cdss.maxZ-1}).show(); <!-- places the full-screen overlay just below the panel -->
-      popup.center(0, 0).css({'z-index':cdss.maxZ}).show();
-      setTimeout(cdss.spinMe, 10000);
-   };
+cdss.openPopup = function(popup) {
+    cdss.maxZ += 1;
+    $('#cdss-screencover').css({'z-index':cdss.maxZ-1}).show(); // places the full-screen overlay just below the panel
+    popup.center(0, 0).css({'z-index':cdss.maxZ}).show();
+    setTimeout(cdss.spinMe, 10000);
+};
 
-   cdss.closePopup = function(popupName) {
-      $(`#${popupName}`).hide();
-      $('#cdss-screencover').hide();
-   };
+cdss.closePopup = function(popupName) {
+    $(`#${popupName}`).hide();
+    $('#cdss-screencover').hide();
+};
 
-   /* misc */
-   $(".cdss-draggable").draggable({"handle": ".cdss-drag-handle"});
+/* misc */
+$(".cdss-draggable").draggable({"handle": ".cdss-drag-handle"});
 
 
 }
 
 cdss.getReady = function() {
-   var params = {'request':'get-cdss-settings'};
-   cdss.requestService(params, cdss.getSetGo, "json");
+    var params = {'request':'get-cdss-settings'};
+    cdss.requestService(params, cdss.getSetGo, "json");
 }
 
 cdss.getSetGo = function( response ){
 
-   console.log( response );
+    console.log( 'getSetGo', response );
 
-   cdss.study_fields = response.study_fields;
-   cdss.cdss_medications = response.cdss_medications;
-   cdss.cdss_diseases = response.cdss_diseases;
-   cdss.cdss_conditions = response.cdss_conditions;
-   cdss.cdss_variables = response.cdss_variables;
-   cdss.cdss_functions = response.cdss_functions;
-   cdss.cdss_rbase = response.cdss_rbase;
+    cdss.study_fields = response.study_fields;
+    cdss.cdss_medications = response.cdss_medications;
+    cdss.cdss_diseases = response.cdss_diseases;
+    cdss.cdss_conditions = response.cdss_conditions;
+    cdss.cdss_variables = response.cdss_variables;
+    //cdss.cdss_functions = response.cdss_functions;
+    cdss.cdss_rbase = response.cdss_rbase;
+    cdss.all_drugs = response.all_drugs;
+    cdss.all_diseases = response.all_diseases;
+    cdss.drugs = response.drugs;
+    cdss.diseases = response.diseases;
 
-   $('textarea#cdss-rbase-text').val(cdss.cdss_rbase);
+    //$('textarea#cdss-rbase-text').val(cdss.cdss_rbase);
 
-   cdss.cdss_medications.sort( cdss.sort_compare_name );
-   cdss.cdss_diseases.sort( cdss.sort_compare_name );
-   cdss.cdss_conditions.sort( cdss.sort_compare_name );
-   cdss.cdss_variables.sort( cdss.sort_compare_name );
-   cdss.cdss_functions.sort( cdss.sort_compare_id );
-   cdss.study_fields.sort( cdss.sort_compare_name );
+    cdss.cdss_medications.sort( cdss.sort_compare_name );
+    cdss.cdss_diseases.sort( cdss.sort_compare_name );
+    cdss.cdss_conditions.sort( cdss.sort_compare_name );
+    cdss.cdss_variables.sort( cdss.sort_compare_name );
+    //cdss.cdss_functions.sort( cdss.sort_compare_id );
+    cdss.study_fields.sort( cdss.sort_compare_name );
 
-   cdss.load_metadata_panel( "study_fields", true );
-   cdss.load_metadata_panel( "cdss_functions", true );
-   cdss.load_metadata_panel( "cdss_variables" );
-   cdss.load_metadata_panel( "cdss_diseases" );
-   cdss.load_metadata_panel( "cdss_medications" );
-   cdss.load_metadata_panel( "cdss_conditions" );
+    //cdss.load_metadata_panel( "study_fields", true );
+    //cdss.load_metadata_panel( "cdss_functions", true );
+    //cdss.load_metadata_panel( "cdss_variables" );
+    cdss.load_metadata_panel( "cdss_diseases" );
+    cdss.load_metadata_panel( "cdss_medications" );
+    //cdss.load_metadata_panel( "cdss_conditions" );
 
-   // all retrievals will be by name
-   cdss.cdss_functions.sort( cdss.sort_compare_name );
+    // all retrievals will be by name
+    //cdss.cdss_functions.sort( cdss.sort_compare_name );
 
-   cdss.addListeners();
+    cdss.addListeners();
 
+    cdss.studyFieldOptionsHtml = "<option value=''>&nbsp;</option>";
+
+    let label = "";
+
+    for (let i=0; i<cdss.study_fields.length; i++){
+
+        label = `${cdss.study_fields[i].name} - ${cdss.study_fields[i].label.substring(0,80)}`;
+
+        cdss.studyFieldOptionsHtml += `\n<option value=${cdss.study_fields[i].name}>${label}</option>`;
+    }
 }
 
 $(document).ready(function () {
 
-   cdss.getReady();
+    /*
+    attach the csrf token to every AJAX request
+    https://stackoverflow.com/questions/22063612/adding-csrftoken-to-ajax-request
+    */
+    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+        jqXHR.setRequestHeader('X-CSRF-Token', redcap_csrf_token);
+    });
+
+    cdss.getReady();
 
 });
 

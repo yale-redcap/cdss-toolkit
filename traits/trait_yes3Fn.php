@@ -7,12 +7,14 @@
 
 namespace Yale\CDSS;
 
+use Parsedown;
+
 /*
  * Table to hold debug log messages. Must be created by dba, see logDebugMessage() below.
  */
 define('DEBUG_LOG_TABLE', "ydcclib_debug_messages");
 
-trait ye3Fn {
+trait trait_yes3Fn {
 
    // calls the generic REDCap query function, which is located in Config/init_functions.php
    // db_query returns mysqli_query() on success, or triggers a fatal redcap fail
@@ -222,7 +224,7 @@ trait ye3Fn {
             USERID,
             SUPER_USER,
             $this->getProjectId(),
-            $this->getUrl("/services/{$libname}_services.php")
+            $this->getUrl("services/{$libname}_services.php")
          ],
          file_get_contents( $this->getModulePath()."js/{$libname}.js" )
       );
@@ -239,5 +241,108 @@ trait ye3Fn {
       $Parsedown = new \Parsedown();
       return $Parsedown->text( $s );
    }
+
+
+   public function objectProperties()
+   {
+       $propKeys = [];
+
+       /**
+        * A ReflectionObject is apparently required to distinuish the non-private properties of this object
+        * https://www.php.net/ReflectionObject
+        */
+       $publicProps = (new \ReflectionObject($this))->getProperties(\ReflectionProperty::IS_PUBLIC+\ReflectionProperty::IS_PROTECTED);
+
+       foreach( $publicProps as $rflxnProp){
+           $propKeys[] = $rflxnProp->name;
+       }
+        
+       $props = [ 'CLASS' => __CLASS__ ];
+
+       foreach ( $propKeys as $propKey ){
+
+           $json = json_encode($this->$propKey);
+
+           /**
+            * some properties can't be json-encoded...
+            */
+           if ( $json===false ){
+               $props[$propKey] = "json encoding failed for {$propKey}: " . json_last_error_msg();
+           }
+           else {
+               $props[$propKey] = $this->$propKey;
+           }
+       }
+
+       if ( !$json = json_encode($props) ){
+           return json_encode(['message'=>json_last_error_msg()]);
+       }
+       
+       return $json;
+   }
+
+   public function yes3UserRights()
+   {
+       $user = $this->getUser()->getRights();
+
+       $formPermString = str_replace("[", "", $user['data_entry']);
+
+       $formPerms = explode("]", $formPermString);
+       $formPermissions = [];
+       foreach( $formPerms as $formPerm){
+
+           if ( $formPerm ){
+               
+               $formPermParts = explode(",", $formPerm);
+               $formPermissions[ $formPermParts[0] ] = $formPermParts[1];
+           }
+       }
+
+       return [
+
+           'username' => $this->getUser()->getUsername(),
+           'isDesigner' => ( $this->getUser()->hasDesignRights() ) ? 1:0,
+           'isSuper' => ( $this->getUser()->isSuperUser() ) ? 1:0,
+           'group_id' => (int)$user['group_id'],
+           'dag' => ( $user['group_id'] ) ? \REDCap::getGroupNames(true, $user['group_id']) : "",
+           'export' => (int)$user['data_export_tool'],
+           'import' => (int)$user['data_import_tool'],
+           'api_export' => (int)$user['api_export'],
+           'api_import' => (int)$user['api_import'],
+           'form_permissions' => $formPermissions
+       ];
+   }
+
+   public function getCodeForV2( string $libname ):string
+   {
+       $s = "";
+       $js = "";
+       $css = "";
+       
+       $s .= "\n<!-- enhanced getCodeFor: {$libname} -->";
+ 
+       $js .= file_get_contents( $this->getModulePath()."js/{$libname}.js" );
+
+       $js .= "\n" . $this->initializeJavascriptModuleObject() . ";";
+
+       $js .= "\nCDSS.moduleObject = " . $this->getJavascriptModuleObjectName() . ";";
+
+       $js .= "\nCDSS.moduleObjectName = '" . $this->getJavascriptModuleObjectName() . "';";
+
+       $js .= "\nCDSS.moduleProperties = " . $this->objectProperties() . ";\n";
+
+       $js .= "\nCDSS.userRights = " . json_encode( $this->yes3UserRights() ) . ";\n";
+
+       $css .= file_get_contents( $this->getModulePath()."css/{$libname}.css" );
+
+       if ( $js ) $s .= "\n<script>{$js}</script>";
+
+       if ( $css ) $s .= "\n<style>{$css}</style>";
+
+       //print $s;
+
+       return $s;
+   }
+
 
 }

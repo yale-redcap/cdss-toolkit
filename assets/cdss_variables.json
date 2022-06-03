@@ -1,0 +1,27 @@
+[
+
+    {
+        "name": "CALC_COMORBS",
+        "label": "Count of comorbid diagnoses",
+        "code": "[CHRONIC KIDNEY DISEASE] + [COPD] + [CANCER] + [HYPERTENSION] + [CHF] + [CAD OR MI]+ [PERIPHERAL ARTERY DISEASE] + [STROKE]",
+        "comments": ""
+    },
+    {
+        "name": "CALC_FALLS",
+        "label": "Calculated (0, 1) falls indicator: 1=diagnosis or self-reported history",
+        "code": "[FALLS] or [hs_falls]",
+        "comments": ""
+    },
+    {
+        "name": "CALC_FUNCTIONAL_DISABILITY",
+        "label": "Calculated (0, 1) functional disability score: 1=any ADL deficit",
+        "code": "[adl_1]=2 or [adl_1]=3 or [adl_2]=2 or [adl_2]=3 or [adl_3]=2 or [adl_3]=3 or [adl_4]=2 or [adl_4]=3 or [adl_5]=2 or [adl_5]=3 or [adl_6]=2 or [adl_6]=3 or [adl_7]=2 or [adl_7]=3",
+        "comments": ""
+    },
+    {
+        "name": "CALC_5YEAR50",
+        "label": "Calculated 5-year mortality risk",
+        "code": "1 * ( [ehr_age] >= 70 and [ehr_age] < 75 ) + 3 * ( [ehr_age] >= 75 and [ehr_age] < 80 ) + 5 * ( [ehr_age] >= 80 and [ehr_age] < 85 ) + 7 * ( [ehr_age] >= 85 ) + 3 * ( [pt_sex] = 'male' ) + 1 * ( [hs_cigarettes] = 2 ) + 3 * ( [hs_cigarettes] = 3 ) + 2 * ( [ehr_bmi] > 0 and [ehr_bmi] < 25 ) + 2 * [DIABETES] + 2 * [COPD] + 2 * [CANCER] + 1 * ( [hs_hospital] = 2 ) + 3 * ( [hs_hospital] = 3 ) + 1 * ( [hs_ratehealth] = 2 ) + 2 * ( [hs_ratehealth] = 3 ) + 2 * ( [hs_one_iadl] = 1 ) + 3 * ( [hs_walk] = 2 or [hs_walk] = 3 ) + 1 * [CALC_FUNCTIONAL_DISABILITY]",
+        "comments": ""
+    }
+]

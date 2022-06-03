@@ -1,10 +1,10 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-$module = new Yale\cdss\CDSS();
+$module = new Yale\CDSS\CDSS();
 
 $HtmlPage = new HtmlPage();
 $HtmlPage->ProjectHeader();
@@ -19,13 +19,7 @@ $HtmlPage->ProjectHeader();
 
 <div id="cdss_setup_canvas">
 
-   <div id="cdss_metadata_selectors"></div>
-
-   <textarea id="cdss-rbase-text"></textarea>
-
-   <div class="cdss-row">
-      <button id="cdss-save-rbase" class="cdss-editor-button cdss-editor-button-save">SAVE RULEBASE</button>
-   </div>
+   <div id="cdss_metadata_selectors" class="yes3-flex-container"></div>
 
    <!-- inspector -->
    <div class="cdss-popup cdss-draggable" id="cdss-inspector">
@@ -93,3 +87,7 @@ $HtmlPage->ProjectHeader();
    </div> <!-- rule builder -->
 
 </div> <!-- canvas -->
+
+<p>
+    <!--a href="javascript:cdss.writeCDSSVarsCsv()">click me</a-->
+</p>

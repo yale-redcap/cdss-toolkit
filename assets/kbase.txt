@@ -1,0 +1,1113 @@
+//  Knowledge Base for COMET, 10/22/2014
+// any line preceeded by two slashes is a comment
+// put the rules in the order in which the comments should be displayed
+
+
+
+// INTERACTIONS
+
+//Rule 1.
+if drugs("chlordiazepoxide")	 then {
+  comment_interaction("Chlordiazepoxide","", "Increases the risk of cognitive impairment, delirium, fractures, and falls. If using for sleep, consider referral to Mental Health for sleep hygiene education.")
+   add1(stopp) 
+}
+
+if drugs("diazepam")	 then {
+  comment_interaction("Diazepam","", "Increases the risk of cognitive impairment, delirium, fractures, and falls. If using for sleep, consider referral to Mental Health for sleep hygiene education.")
+   add1(stopp) 
+}
+
+if drugs("alprazolam")	 then {
+  comment_interaction("Alprazolam","", "Increases the risk of cognitive impairment, delirium, fractures, and falls. If using for sleep, consider referral to Mental Health for sleep hygiene education.")
+   add1(stopp) 
+}
+
+if drugs("lorazepam")	 then {
+  comment_interaction("Lorazepam","", "Increases the risk of cognitive impairment, delirium, fractures, and falls. If using for sleep, consider referral to Mental Health for sleep hygiene education.")
+   add1(stopp) 
+}
+
+if drugs("temazepam")	 then {
+  comment_interaction("Temazepam","", "Increases the risk of cognitive impairment, delirium, fractures, and falls. If using for sleep, consider referral to Mental Health for sleep hygiene education.")
+   add1(stopp) 
+}
+
+ 
+//Rule 6.
+if drugs("clonazepam")	 then {
+  comment_interaction("Clonazepam","", "Increases the risk of cognitive impairment, delirium, fractures, and falls. If using for sleep, consider referral to Mental Health for sleep hygiene education.")
+   add1(stopp) 
+}
+
+if drugs("oxazepam")	 then {
+  comment_interaction("Oxazepam","", "Increases the risk of cognitive impairment, delirium, fractures, and falls. If using for sleep, consider referral to Mental Health for sleep hygiene education.")
+   add1(stopp) 
+}
+
+//Rule 8.
+if drugs("diclofenac") & patient("GFR<50") then {
+  comment_interaction("Diclofenac", "Chronic kidney disease", "Increases the risk of worsening renal function")
+  add1(stopp) 
+}
+
+if drugs("diclofenac") & diseases("gi bleed")  then {
+  comment_interaction("Diclofenac", "GI Bleed", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("diclofenac") & drugs("warfarin") then {
+  comment_interaction("Diclofenac", "Warfarin", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("diclofenac") & drugs("clopidogrel") then {
+  comment_interaction("Diclofenac", "Clopidogrel", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("diclofenac") & diseases("peptic ulcer disease") then {
+  comment_interaction("Diclofenac", "Peptic ulcer disease", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("diclofenac") & diseases("hypertension") then {
+  comment_interaction("Diclofenac", "Hypertension", "Increases the risk of worsening the hypertension")
+  add1(stopp) 
+}
+
+if drugs("diclofenac") & diseases("heart failure") then {
+  comment_interaction("Diclofenac", "Heart failure", "Increases the risk of worsening the heart failure")
+  add1(stopp) 
+}
+
+if drugs("diclofenac") & patient("Age>75") then {
+  comment_interaction("Diclofenac", "Age>75", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+//Rule 15.
+if drugs("etodolac") & patient("GFR<50") then {
+  comment_interaction("Etodolac", "Chronic kidney disease", "Increases the risk of worsening renal function")
+  add1(stopp) 
+}
+
+if drugs("etodolac") & diseases("gi bleed") then {
+  comment_interaction("Etodolac", "GI Bleed", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("etodolac") & drugs("warfarin") then {
+  comment_interaction("Etodolac", "Warfarin", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("etodolac") & drugs("clopidogrel") then {
+  comment_interaction("Etodolac", "Clopidogrel", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("etodolac") & diseases("peptic ulcer disease") then {
+  comment_interaction("Etodolac", "Peptic ulcer disease", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("etodolac") & diseases("hypertension") then {
+  comment_interaction("Etodolac", "Hypertension", "Increases the risk of worsening the hypertension")
+  add1(stopp) 
+}
+
+if drugs("etodolac") & diseases("heart failure") then {
+  comment_interaction("Etodolac", "Heart failure", "Increases the risk of worsening the heart failure")
+  add1(stopp) 
+}
+
+if drugs("etodolac") & patient("Age>75") then {
+  comment_interaction("Etodolac", "Age > 75", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+//Rule 22.
+if drugs("Ibuprofen") & patient("GFR<50") then {
+  comment_interaction("Ibuprofen", "Chronic kidney disease", "Increases the risk of worsening renal function")
+  add1(stopp) 
+}
+
+if drugs("ibuprofen") & diseases("gi bleed") then {
+  comment_interaction("Ibuprofen", "GI Bleed", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("Ibuprofen") & drugs("warfarin") then {
+  comment_interaction("Ibuprofen", "Warfarin", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("Ibuprofen") & drugs("clopidogrel") then {
+  comment_interaction("Ibuprofen", "Clopidogrel", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("Ibuprofen") & diseases("peptic ulcer disease") then {
+  comment_interaction("Ibuprofen", "Peptic ulcer disease", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("Ibuprofen") & diseases("hypertension") then {
+  comment_interaction("Ibuprofen", "Hypertension", "Increases the risk of worsening the hypertension")
+  add1(stopp) 
+}
+
+if drugs("Ibuprofen") & diseases("heart failure") then {
+  comment_interaction("Ibuprofen", "Heart failure", "Increases the risk of worsening the heart failure")
+  add1(stopp) 
+}
+
+if drugs("ibuprofen") & patient("Age>75") then {
+  comment_interaction("Ibuprofen", "Age > 75", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+//Rule 29.
+if drugs("meloxicam") & patient("GFR<50") then {
+  comment_interaction("Meloxicam", "Chronic kidney disease", "Increases the risk of worsening renal function")
+  add1(stopp) 
+}
+
+if drugs("meloxicam") & diseases("gi bleed") then {
+  comment_interaction("Meloxicam", "GI Bleed", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("meloxicam") & drugs("warfarin") then {
+  comment_interaction("Meloxicam", "Warfarin", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("meloxicam") & drugs("clopidogrel") then {
+  comment_interaction("Meloxicam", "Clopidogrel", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("meloxicam") & diseases("peptic ulcer disease") then {
+  comment_interaction("Meloxicam", "Peptic ulcer disease", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("meloxicam") & diseases("hypertension") then {
+  comment_interaction("Meloxicam", "Hypertension", "Increases the risk of worsening the hypertension")
+  add1(stopp) 
+}
+
+if drugs("meloxicam") & diseases("heart failure") then {
+  comment_interaction("Meloxicam", "Heart failure", "Increases the risk of worsening the heart failure")
+  add1(stopp) 
+}
+
+
+if drugs("meloxicam") & patient("Age>75") then {
+  comment_interaction("Meloxicam", "Age > 75", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+//Rule 30.
+if drugs("nabumetone") & patient("GFR<50") then {
+  comment_interaction("Nabumetone", "Chronic kidney disease", "Increases the risk of worsening renal function")
+  add1(stopp) 
+}
+
+if drugs("nabumetone") & diseases("gi bleed") then {
+  comment_interaction("Nabumetone", "GI Bleed", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("nabumetone") & drugs("warfarin") then {
+  comment_interaction("Nabumetone", "Warfarin", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("nabumetone") & drugs("clopidogrel") then {
+  comment_interaction("Nabumetone", "Clopidogrel", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("nabumetone") & diseases("peptic ulcer disease") then {
+  comment_interaction("Nabumetone", "Peptic ulcer disease", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("nabumetone") & diseases("hypertension") then {
+  comment_interaction("Nabumetone", "Hypertension", "Increases the risk of worsening the hypertension")
+  add1(stopp) 
+}
+
+if drugs("nabumetone") & diseases("heart failure") then {
+  comment_interaction("Nabumetone", "Heart failure", "Increases the risk of worsening the heart failure")
+  add1(stopp) 
+}
+
+if drugs("nabumetone") & patient("Age>75") then {
+  comment_interaction("Nabumetone", "Age > 75", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+ add1(stopp) 
+}
+
+
+//Rule 43.
+if drugs("naproxen") & patient("GFR<50") then {
+  comment_interaction("Naproxen", "Chronic kidney disease", "Increases the risk of worsening renal function")
+  add1(stopp) 
+}
+
+if drugs("naproxen") & diseases("gi bleed") then {
+  comment_interaction("Naproxen", "GI Bleed", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+
+if drugs("naproxen") & drugs("warfarin") then {
+  comment_interaction("Naproxen", "Warfarin", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+
+if drugs("naproxen") & drugs("clopidogrel") then {
+  comment_interaction("Naproxen", "Clopidogrel", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("Naproxen") & diseases("peptic ulcer disease") then {
+  comment_interaction("Naproxen", "Peptic ulcer disease", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("naproxen") & diseases("hypertension") then {
+  comment_interaction("Naproxen", "Hypertension", "Increases the risk of worsening the hypertension")
+  add1(stopp) 
+}
+
+if drugs("naproxen") & diseases("heart failure") then {
+  comment_interaction("Naproxen", "Heart failure", "Increases the risk of worsening the heart failure")
+  add1(stopp) 
+}
+
+if drugs("naproxen") & patient("Age>75") then {
+  comment_interaction("Naproxen", "Age > 75", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+
+//Rule 50.
+if drugs("piroxicam") & patient("GFR<50") then {
+  comment_interaction("piroxicam", "Chronic kidney disease", "Increases the risk of worsening renal function")
+  add1(stopp) 
+}
+
+if drugs("piroxicam") & diseases("gi bleed") then {
+  comment_interaction("piroxicam", "GI Bleed","Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("piroxicam") & drugs("warfarin") then {
+  comment_interaction("piroxicam", "Warfarin", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("piroxicam") & drugs("clopidogrel") then {
+  comment_interaction("piroxicam", "Clopidogrel", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+
+if drugs("piroxicam") & diseases("peptic ulcer disease") then {
+  comment_interaction("piroxicam", "Peptic ulcer disease", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("piroxicam") & diseases("hypertension") then {
+  comment_interaction("piroxicam", "Hypertension", "Increases the risk of worsening the hypertension")
+  add1(stopp) 
+}
+
+if drugs("piroxicam") & diseases("heart failure") then {
+  comment_interaction("piroxicam", "Heart failure", "Increases the risk of worsening the heart failure")
+  add1(stopp) 
+}
+
+if drugs("piroxicam") & patient("Age>75") then {
+  comment_interaction("piroxicam", "Age > 75", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+
+//Rule 57.
+if drugs("indomethacin") & patient("GFR<50") then {
+  comment_interaction("Indomethacin", "Chronic kidney disease", "Increases the risk of worsening renal function")
+  add1(stopp) 
+}
+
+if drugs("indomethacin") & diseases("gi bleed") then {
+  comment_interaction("Indomethacin", "GI Bleed","Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("indomethacin") & drugs("warfarin") then {
+  comment_interaction("Indomethacin", "Warfarin", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("indomethacin") & drugs("clopidogrel") then {
+  comment_interaction("Indomethacin", "Clopidogrel", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("indomethacin") & diseases("peptic ulcer disease") then {
+  comment_interaction("Indomethacin", "Peptic ulcer disease", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("indomethacin") & diseases("hypertension") then {
+  comment_interaction("Indomethacin", "Hypertension", "Increases the risk of worsening the hypertension")
+  add1(stopp) 
+}
+
+if drugs("indomethacin") & diseases("heart failure") then {
+  comment_interaction("Indomethacin", "Heart failure", "Increases the risk of worsening the heart failure")
+  add1(stopp) 
+}
+
+if drugs("indomethacin") & patient("Age>75") then {
+  comment_interaction("Indomethacin", "Age > 75", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+//Rule 64.
+if drugs("sulindac") & patient("GFR<50") then {
+  comment_interaction("Sulindac", "Chronic kidney disease", "Increases the risk of worsening renal function")
+  add1(stopp) 
+}
+
+if drugs("sulindac") & diseases("gi bleed") then {
+  comment_interaction("Sulindac", "GI Bleed","Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("sulindac") & drugs("warfarin") then {
+  comment_interaction("Sulindac", "Warfarin", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("sulindac") & drugs("clopidogrel") then {
+  comment_interaction("Sulindac", "Clopidogrel", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("sulindac") & diseases("peptic ulcer disease") then {
+  comment_interaction("Sulindac", "Peptic ulcer disease", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+if drugs("sulindac") & diseases("hypertension") then {
+  comment_interaction("Sulindac", "Hypertension", "Increases the risk of worsening the hypertension")
+  add1(stopp) 
+}
+
+if drugs("sulindac") & diseases("heart failure") then {
+  comment_interaction("Sulindac", "Heart failure", "Increases the risk of worsening the heart failure")
+  add1(stopp) 
+}
+
+if drugs("sulindac") & patient("Age>75") then {
+  comment_interaction("Sulindac", "Age > 75", "Increases the risk of bleeding, which is reduced but not eliminated by a PPI or misoprostol")
+  add1(stopp) 
+}
+
+
+
+//Rule 71.
+
+// PROBABLY NONFUNCTIONAL
+if drugs("aspirin") 
+   & diseases("PEPTIC ULCER DISEASE") 
+   & not drugs("ranitidine") & not drugs("pantoprazole") & not drugs("lansoprazole") & not drugs("esomeprazole") & not drugs("rabeprazole") & not drugs("omeprazole") & not drugs("famotidine") then {
+comment_interaction("Aspirin", "Peptic ulcer disease but no H2 blocker or PPI", "Increases the risk of bleeding")
+add1(stopp) 
+}
+
+// FOLLOWING DOES NOT WORK ('NOT' LOGIC)
+if drugs("aspirin")
+   & drugs("warfarin")
+   & not drugs("ranitidine") & not drugs("pantoprazole") & not drugs("lansoprazole") & not drugs("esomeprazole") & not drugs("rabeprazole") & not drugs("omeprazole") & not drugs("famotidine") then {
+comment_interaction("Aspirin", "Warfarin but no H2 blocker or PPI", "Increases the risk of bleeding")
+  add1(stopp) 
+}
+
+if drugs("diphenhydramine")	 then {
+  comment_interaction("Diphenhydramine","", "Increases the risk of cognitive decline, delirium, sedation, orthostatic hypotension, falls, dry mouth, and constipation due to anticholinergic properties. If using for sleep, consider referral to Mental Health for sleep hygiene education.")
+   add1(stopp) 
+}
+
+if drugs("chlorpheniramine")	 then {
+  comment_interaction("Chlorpheniramine","", "Increases the risk of cognitive decline, delirium, sedation, orthostatic hypotension, falls, dry mouth, and constipation due to anticholinergic properties. If using for sleep, consider referral to Mental Health for sleep hygiene education.")
+   add1(stopp) 
+}
+
+if drugs("hydroxyzine")	 then {
+  comment_interaction("Hydroxyzine","", "Increases the risk of cognitive decline, delirium, sedation, orthostatic hypotension, falls, dry mouth, and constipation due to anticholinergic properties. If using for sleep, consider referral to Mental Health for sleep hygiene education.")
+   add1(stopp) 
+}
+
+if drugs("promethazine")	 then {
+  comment_interaction("Promethazine","", "Increases the risk of cognitive decline, delirium, sedation, orthostatic hypotension, falls, dry mouth, and constipation due to anticholinergic properties")
+   add1(stopp) 
+}
+
+if drugs("dimenhydrinate")	 then {
+  comment_interaction("Dimenhydrinate","", "Increases the risk of cognitive decline, delirium, sedation, orthostatic hypotension, falls, dry mouth, and constipation due to anticholinergic properties. If using for sleep, consider referral to Mental Health for sleep hygiene education.")
+   add1(stopp) 
+}
+
+if drugs("doxylamine")	 then {
+  comment_interaction("Doxylamine","", "Increases the risk of cognitive decline, delirium, sedation, orthostatic hypotension, falls, dry mouth, and constipation due to anticholinergic properties. If using for sleep, consider referral to Mental Health for sleep hygiene education.")
+   add1(stopp) 
+}
+
+//Rule 79.
+if drugs("oxybutynin") & diseases("dementia")	 then {
+  comment_interaction("Oxybutynin","Dementia", "Increases the risk of worsening confusion and  agitation")
+   add1(stopp) 
+}
+
+if drugs("oxybutynin") & patient("constipation")	 then {
+  comment_interaction("Oxybutynin","Constipation", "Increases risk of worsening constipation")
+   add1(stopp) 
+}
+
+if drugs("oxybutynin") & diseases("BPH/history of urinary retention") then {
+  comment_interaction("Oxybutynin", "BPH/history of urinary retention", "Increases risk of worsening urinary retention")
+  add1(stopp) 
+}
+
+//Rule 82.
+if drugs("tolterodine") & diseases("dementia") then {
+  comment_interaction("Tolterodine", "Dementia", "Increases the risk of worsening confusion and agitation")
+  add1(stopp) 
+}
+
+if drugs("Tolterodine") & patient("constipation") then {
+  comment_interaction("Tolterodine", "Constipation", "Increases risk of worsening constipation")
+  add1(stopp) 
+}
+
+if drugs("Tolterodine") & diseases("BPH/history of urinary retention") then {
+  comment_interaction("Tolterodine", "BPH/history of urinary retention", "Increases risk of worsening urinary retention")
+  add1(stopp) 
+}
+
+
+//Rule 85.
+if drugs("trospium") & diseases("dementia") then {
+  comment_interaction("Trospium", "Dementia", "Increases the risk of worsening confusion and agitation")
+  add1(stopp) 
+}
+
+if drugs("Trospium") & patient("constipation") then {
+  comment_interaction("Trospium", "Constipation", "Increases risk of worsening constipation")
+  add1(stopp) 
+}
+
+if drugs("Trospium") & diseases("BPH/history of urinary retention") then {
+  comment_interaction("Trospium", "BPH/history of urinary retention", "Increases risk of worsening urinary retention")
+  add1(stopp) 
+}
+
+
+//Rule 88.
+if drugs("amitriptyline") & diseases("dementia") then {
+  comment_interaction("Amitriptyline", "Dementia", "Increases the risk of worsening cognitive impairment") 
+ add1(stopp) 
+}
+
+if drugs("amitriptyline") & patient("constipation") then {
+  comment_interaction("Amitriptyline", "Constipation", "Increases risk of worsening constipation")
+  add1(stopp) 
+}
+
+if drugs("amitriptyline") & diseases("BPH/history of urinary retention") then {
+  comment_interaction("Amitriptyline", "BPH/history of urinary retention", "Increases the risk of worsening urinary retention")
+  add1(stopp) 
+}
+
+
+// Suppress next  rule if amitriptyline and  a disease state rule is fulfilled.
+if drugs("amitriptyline") & not diseases("dementia") & not diseases("BPH/history of urinary retention") & not patient("constipation") then {
+  comment_interaction("Amitriptyline","", "Increases the risk of cognitive decline, delirium, sedation, & orthostatic hypotension due to anticholinergic properties")
+   add1(stopp) 
+}
+
+
+//Rule 92.
+if drugs("imipramine") & diseases("dementia") then {
+  comment_interaction("Imipramine", "Dementia", "Increases the risk of worsening cognitive impairment")
+ add1(stopp) 
+}
+
+if drugs("imipramine") & patient("constipation") then {
+  comment_interaction("Imipramine", "Constipation","Increases the risk of worsening constipation")
+  add1(stopp) 
+}
+
+if drugs("imipramine") & diseases("BPH/history of urinary retention") then {
+  comment_interaction("Imipramine", "BPH/history of urinary retention", "Increases the risk of worsening urinary retention")
+  add1(stopp) 
+}
+
+
+//Suppress next rule if imipramine & a disease state rule is fulfilled.
+if drugs("imipramine") & not diseases("dementia") & not diseases("BPH/history of urinary retention") & not patient("constipation")  then {
+  comment_interaction("Imipramine","", "Increases the risk of cognitive decline, delirium, sedation, & orthostatic hypotension due to anticholinergic properties")
+   add1(stopp) 
+}
+
+
+//Rule 96.
+if drugs("desipramine") & diseases("dementia") then {
+  comment_interaction("Desipramine", "Dementia", "Increases the risk of worsening cognitive impairment")
+  add1(stopp)  
+}
+
+if drugs("desipramine") & patient("constipation") then {
+  comment_interaction("Desipramine", "Constipation","Increases risk of worsening constipation")
+  add1(stopp) 
+}
+
+if drugs("desipramine") & diseases("BPH/history of urinary retention") then {
+  comment_interaction("Desipramine", "BPH/history of urinary retention", "Increases risk of worsening urinary retention")
+ add1(stopp) 
+}
+
+if drugs("nortriptyline") & diseases("dementia") then {
+  comment_interaction("Nortriptyline", "Dementia", "Increases the risk of worsening cognitive impairment")
+  add1(stopp) 
+}
+
+if drugs("nortriptyline") & patient("constipation") then {
+  comment_interaction("Nortriptyline", "Constipation", "increases risk of worsening constipation")
+  add1(stopp) 
+}
+
+if drugs("nortriptyline") & diseases("BPH/history of urinary retention") then {
+  comment_interaction("Nortriptyline", "BPH/history of urinary retention", "Increases risk of worsening urinary retention")
+  add1(stopp) 
+}
+
+
+//original Rule 102 .
+// if drugs("Amitriptyline, Imipramine, Desipramine, Nortriptyline")
+//   & drugs("Codeine, Oxycodone, Hydrocodone, Fentanyl, Morphine, Methadone, Hydromorphone, Diltiazem, Verapamil")  then {
+//comment_interaction("Amitriptyline, Imipramine, Desipramine, or Nortriptyline", 
+//            "Codeine, Oxycodone, Hydrocodone, Fentanyl, Morphine, Methadone, Hydromorphone, Diltiazem, or Verapamil", 
+//            "Increases the risk of severe constipation")
+//  }
+
+
+//Rule 102  (parsed into 36 separate conditions)
+if drugs("Amitriptyline")
+   & drugs("Codeine")  then {
+comment_interaction("Amitriptyline",  "Codeine",  "Increases the risk of severe constipation")
+}
+
+if drugs("Amitriptyline")
+   & drugs("Oxycodone")  then {
+comment_interaction("Amitriptyline", "Oxycodone",  "Increases the risk of severe constipation")
+}
+
+if drugs("Amitriptyline")
+   & drugs("Hydrocodone")  then {
+comment_interaction("Amitriptyline", "Hydrocodone",     "Increases the risk of severe constipation")
+}
+
+if drugs("Amitriptyline")
+   & drugs("Fentanyl")  then {
+comment_interaction("Amitriptyline", "Fentanyl",  "Increases the risk of severe constipation")
+}
+
+if drugs("Amitriptyline")
+   & drugs("Morphine")  then {
+comment_interaction("Amitriptyline",  "Morphine", "Increases the risk of severe constipation")
+}
+
+if drugs("Amitriptyline")
+   & drugs("Methadone")  then {
+comment_interaction("Amitriptyline", "Methadone", "Increases the risk of severe constipation")
+}
+
+if drugs("Amitriptyline")
+   & drugs("Hydromorphone")  then {
+comment_interaction("Amitriptyline", "Hydromorphone",  "Increases the risk of severe constipation")
+}
+
+if drugs("Amitriptyline")
+   & drugs("Diltiazem")  then {
+comment_interaction("Amitriptyline", "Diltiazem",  "Increases the risk of severe constipation")
+}
+
+if drugs("Amitriptyline")
+   & drugs("Verapamil")  then {
+comment_interaction("Amitriptyline",  "Verapamil",   "Increases the risk of severe constipation")
+}
+
+if drugs("Imipramine")
+   & drugs("Codeine")  then {
+comment_interaction("Imipramine",   "Codeine",       "Increases the risk of severe constipation")
+}
+
+if drugs("Imipramine")
+   & drugs("Oxycodone")  then {
+comment_interaction("Imipramine",   "Oxycodone",     "Increases the risk of severe constipation")
+}
+
+if drugs("Imipramine")
+   & drugs("Hydrocodone")  then {
+comment_interaction("Imipramine",    "Hydrocodone",    "Increases the risk of severe constipation")
+}
+
+if drugs("Imipramine")
+   & drugs("Fentanyl")  then {
+comment_interaction("Imipramine",   "Fentanyl",   "Increases the risk of severe constipation")
+}
+
+if drugs("Imipramine")
+   & drugs("Morphine")  then {
+comment_interaction("Imipramine",  "Morphine",    "Increases the risk of severe constipation")
+}
+
+if drugs("Imipramine")
+   & drugs("Methadone")  then {
+comment_interaction("Imipramine",  "Methadone",    "Increases the risk of severe constipation")
+}
+
+if drugs("Imipramine")
+   & drugs("Hydromorphone")  then {
+comment_interaction("Imipramine",  "Hydromorphone",  "Increases the risk of severe constipation")
+}
+
+if drugs("Imipramine")
+   & drugs("Diltiazem")  then {
+comment_interaction("Imipramine",   "Diltiazem",    "Increases the risk of severe constipation")
+}
+
+if drugs("Imipramine")
+   & drugs("Verapamil")  then {
+comment_interaction("Imipramine",   "Verapamil",   "Increases the risk of severe constipation")
+}
+
+if drugs("Desipramine")
+   & drugs("Codeine")  then {
+comment_interaction("Desipramine",   "Codeine",  "Increases the risk of severe constipation")
+}
+
+if drugs("Desipramine")
+   & drugs("Oxycodone")  then {
+comment_interaction("Desipramine",   "Oxycodone",  "Increases the risk of severe constipation")
+}
+
+if drugs("Desipramine")
+   & drugs("Hydrocodone")  then {
+comment_interaction("Desipramine",   "Hydrocodone",  "Increases the risk of severe constipation")
+}
+
+if drugs("Desipramine")
+   & drugs("Fentanyl")  then {
+comment_interaction("Desipramine",   "Fentanyl",  "Increases the risk of severe constipation")
+}
+
+if drugs("Desipramine")
+   & drugs("Morphine")  then {
+comment_interaction("Desipramine",   "Morphine",  "Increases the risk of severe constipation")
+}
+
+if drugs("Desipramine")
+   & drugs("Methadone")  then {
+comment_interaction("Desipramine",   "Methadone",  "Increases the risk of severe constipation")
+}
+
+if drugs("Desipramine")
+   & drugs("Hydromorphone")  then {
+comment_interaction("Desipramine",   "Hydromorphone",  "Increases the risk of severe constipation")
+}
+
+if drugs("Desipramine")
+   & drugs("Diltiazem")  then {
+comment_interaction("Desipramine",   "Diltiazem",  "Increases the risk of severe constipation")
+}
+
+if drugs("Desipramine")
+   & drugs("Verapamil")  then {
+comment_interaction("Desipramine",   "Verapamil",  "Increases the risk of severe constipation")
+}
+
+if drugs("Nortriptyline")
+   & drugs("Codeine")  then {
+comment_interaction("Nortriptyline",    "Codeine",    "Increases the risk of severe constipation")
+}
+
+if drugs("Nortriptyline")
+   & drugs("Oxycodone")  then {
+comment_interaction("Nortriptyline",    "Oxycodone",    "Increases the risk of severe constipation")
+}
+
+if drugs("Nortriptyline")
+   & drugs("Hydrocodone")  then {
+comment_interaction("Nortriptyline",    "Hydrocodone",    "Increases the risk of severe constipation")
+}
+if drugs("Nortriptyline")
+   & drugs("Fentanyl")  then {
+comment_interaction("Nortriptyline",    "Fentanyl",    "Increases the risk of severe constipation")
+}
+if drugs("Nortriptyline")
+   & drugs("Morphine")  then {
+comment_interaction("Nortriptyline",    "Morphine",    "Increases the risk of severe constipation")
+}
+if drugs("Nortriptyline")
+   & drugs("Methadone")  then {
+comment_interaction("Nortriptyline",    "Methadone",    "Increases the risk of severe constipation")
+}
+if drugs("Nortriptyline")
+   & drugs("Hydromorphone")  then {
+comment_interaction("Nortriptyline",    "Hydromorphone",    "Increases the risk of severe constipation")
+}
+if drugs("Nortriptyline")
+   & drugs("Diltiazem")  then {
+comment_interaction("Nortriptyline",    "Diltiazem",    "Increases the risk of severe constipation")
+}
+if drugs("Nortriptyline")
+   & drugs("Verapamil")  then {
+comment_interaction("Nortriptyline",    "Verapamil",    "Increases the risk of severe constipation")
+}
+
+
+
+//Rule 103.
+if drugs("eszopiclone") then {
+  comment_interaction("Eszopiclone", "", "Increases the risk of fall and  subsequent fracture risk. Avoid chronic use greater than 90 days. Consider referral to Mental Health for sleep hygiene education.")
+ add1(stopp)
+}
+
+if drugs("zolpidem") then {
+  comment_interaction("Zolpidem", "", "Increases the risk of fall and  subsequent fracture risk. Avoid chronic use greater than 90 days. Consider referral to Mental Health for sleep hygiene education.")
+ add1(stopp)
+}
+
+if drugs("zaleplon") then {
+  comment_interaction("Zaleplon", "", "Increases the risk of fall and  subsequent fracture risk. Avoid chronic use greater than 90 days. Consider referral to Mental Health for sleep hygiene education.")
+ add1(stopp)
+}
+
+if drugs("cyclobenzaprine") then {
+  comment_interaction("Cyclobenzaprine", "", "Increases the risk of sedation and fracture due to anticholinergic properties.")
+ add1(stopp)
+}
+
+if drugs("methocarbamol") then {
+  comment_interaction("Methocarbamol", "", "Increases the risk of sedation and fracture due to anticholinergic properties.")
+ add1(stopp)
+}
+
+if patient("digoxin>125")  then {
+   comment_interaction("Digoxin > 0.125 mcg/day", "", "Increases the risk of digoxin toxicity") 
+   add1(stopp) 
+}
+
+if drugs("metoprolol") & drugs("verapamil") then {
+  comment_interaction("Metoprolol", "Verapamil", "Increases risk of symptomatic heart block")
+  add1(stopp) 
+}
+
+
+//Rule 110.
+if drugs("atenolol") & drugs("verapamil") then {
+  comment_interaction("Atenolol", "Verapamil", "Increases risk of symptomatic heart block")
+  add1(stopp) 
+}
+
+if drugs("carvedilol") & drugs("verapamil") then {
+  comment_interaction("Carvedilol", "Verapamil", "Increases risk of symptomatic heart block")
+  add1(stopp) 
+}
+
+if drugs("labetalol") & drugs("verapamil") then {
+  comment_interaction("Labetalol", "Verapamil", "Increases risk of symptomatic heart block")
+  add1(stopp) 
+}
+
+if drugs("propranolol") & drugs("verapamil") then {
+  comment_interaction("Propranolol", "Verapamil", "Increases risk of symptomatic heart block")
+  add1(stopp) 
+}
+
+
+if drugs("chlorpropramide")	 then {
+  comment_interaction("Chlorpropramide","", "Increases the risk of prolonged hypoglycemia")
+   add1(stopp) 
+}
+
+//Rule 115.
+if drugs("glyburide")	 then {
+  comment_interaction("Glyburide","", "Increases the risk of prolonged hypoglycemia")
+   add1(stopp) 
+}
+
+if drugs("diltiazem") & patient("constipation") then {
+  comment_interaction("Diltiazem","Constipation", "Increases the risk of worsening constipation")
+  add1(stopp) 
+}
+
+if drugs("verapamil") & patient("constipation") then {
+  comment_interaction("Verapamil","Constipation", "Increases risk of worsening constipation")
+  add1(stopp) 
+}
+
+// SYNTAX ("'")
+if drugs("prochlorperazine") & diseases("PARKINSONISM") then {
+  comment_interaction("Prochlorperazine", "Parkinson's", "Increases risk of exacerbating Parkinson’s symptoms")
+  add1(stopp) 
+}
+
+if drugs("metoclopramide") & diseases("PARKINSONISM") then {
+  comment_interaction("Metoclopramide", "Parkinson’s", "Increases risk of exacerbating Parkinson’s symptoms")
+  add1(stopp) 
+}
+
+
+//  Hierarchical rules for BP
+// need to add indicator when a rule has been met
+// 3/24/15 removed DBP from HTN (not DM and HTN) rules
+
+if patient("hypertension_medications") & diseases("hypertension") & patient("FALLS") & (value("SBP")<140) then {
+   overtreatment("Consider liberalizing blood pressure control to a target of <150/90. Studies have shown a relationship between intensity of blood pressure treatment & fall risk.  Decreasing antihypertensive load may lower this risk.","Hypertension","One or more falls past year",valuetext("BP"))
+   add1(stopp)
+} 
+// will only execute if the above condition is false
+else
+if patient("hypertension_medications") & diseases("hypertension") & patient("DIZZINESS") & (value("SBP")<140) then {
+   overtreatment("Consider liberalizing blood pressure control to a target of <150/90. Studies have shown a relationship between antihypertensive use, dizziness and  fall risk.  Decreasing antihypertensive load may lower this risk.","Hypertension","Dizziness",valuetext("BP"))
+   add1(stopp)
+}
+// this syntax is also ok
+else 
+if patient("hypertension_medications") & diseases("diabetes") & diseases("hypertension") & (value("SBP")<130 or value("DBP")<85) then {
+   overtreatment("Consider liberalizing blood pressure control to a target of <140/90. Studies have shown no benefit from lower blood pressures among patients with DM and  HTN and  potential for increased risk.","Hypertension","Diabetes",valuetext("BP"))
+   add1(stopp)
+}
+else
+if patient("hypertension_medications") & diseases("hypertension") & value("AGE")>=80 & (value("SBP")<140) & not diseases("diabetes") then {
+   overtreatment("Consider liberalizing blood pressure control to a target of <150/80. This was the goal used in the HYVET trial. Also, think about checking orthostatics, since this increases fall risk.","Hypertension","80 years of age or older",valuetext("BP"))
+   add1(stopp)
+} 
+else
+if patient("hypertension_medications") & diseases("hypertension") & (value("SBP")<140) & not diseases("diabetes") then {
+   overtreatment("Consider checking orthostatics. If orthostasis present, would liberalize blood pressure control to a target of <150/90 to decrease fall risk.","Hypertension",valuetext("BP"))
+   add1(stopp)
+}
+ 
+// end of hierarchical rules for BP
+// Peter -can only the conditions that trigger the rule (functional disability, life expectancy and  2+comorbid conditions)  be listed ? 
+
+//if diseases("diabetes") & patient("HGBA1C<7.5") & (patient("FUNCTIONAL_DISABILITY")  or patient("5-YEAR_LIFE<50") or diseases("2_comorbid_conditions") ) //then {
+//   comment_interaction("Diabetes","Functional disability or life expectancy or comorbid conditions", "Consider liberalizing treatment of diabetes to a //target A1C of <8%.  Your patient might not live long enough and/or has too many competing risks to benefit from tighter control.")
+//   add1(stopp)
+//}
+
+// NEW FUNCTIONS
+
+// patient("comorbs"); // 2+ comorbid condions, from selected list
+// dose("drug_rule_name"); // returns total daily dose
+
+// populates the 'overtreatment' report
+// can list any number of disease or health status conditions, or "bp" or "hgba1c"
+// first parm is recommendation
+
+// overtreatment( "recommendations", "disease/status/value to report", "disease/status/value to report",...); 
+
+// examples
+
+// 12/14/2014 (PC): Removed "diabetes" from the list of conditions reported in overtreatment
+
+if patient("diabetes_medication") & diseases("diabetes") & value("HGBA1C")<7.5 & patient("5-YEAR_LIFE<50") then {
+   overtreatment(
+      "Consider liberalizing treatment of diabetes to a target A1C of <8%.
+      Your patient might not live long enough to benefit from tighter control."
+      , "Diabetes", "Life expectancy less than 5 years", valuetext("HgbA1c"));
+}
+
+
+if patient("diabetes_medications") & diseases("diabetes") & value("HGBA1C")<7.5 
+   & patient("functional_disability") & patient("comorbs")
+   & not patient("5-YEAR_LIFE<50") then {
+   overtreatment(
+      "Consider liberalizing treatment of diabetes to a target A1C of <8%.
+      Your patient may have too many competing risks because of comorbidities and disability to benefit from tighter control."
+      , "Diabetes", "Functional disability", "Comorbidities", valuetext("HgbA1c"));
+}
+
+if patient("diabetes_medications") & diseases("diabetes") & value("HGBA1C")<7.5 
+   & patient("functional_disability") & not patient("comorbs")
+   & not patient("5-YEAR_LIFE<50") then {
+   overtreatment(
+      "Consider liberalizing treatment of diabetes to a target A1C of <8%.
+      Your patient's functional disability is a risk factor for adverse events from tight control."
+      , "Diabetes", "Functional disability", valuetext("HgbA1c"));
+}
+
+
+if  patient("diabetes_medications") & diseases("diabetes") & value("HGBA1C")<7.5 
+   & not patient("functional_disability") & patient("comorbs")
+   & not patient("5-YEAR_LIFE<50") then {
+   overtreatment(
+      "Consider liberalizing treatment of diabetes to a target A1C of <8%.
+      Your patient may have too many competing risks because of comorbidity 
+      to benefit from tighter control."
+      , "Diabetes", "Comorbidities", valuetext("HgbA1c"));
+}
+
+
+//Renal dosing rules
+if value("CrCl")<35 and drugs("alendronate") then {
+   renal( "Recommendation is to discontinue medication if CrCl < 35 ml/min", "Alendronate", valuetext("CrCl"));
+}
+
+// Peter - need to add crcl<10 to the patient function
+if value("CrCl")<10 and dose("allopurinol")>100 then {
+   renal("Recommendation is not to exceed 100mg daily if CrCl < 10 ml/min" , "Allopurinol", valuetext("CrCl"));
+}
+else 
+if value("CrCl")<20 and dose("allopurinol")>200 then {
+   renal("Recommendation is not to exceed Maximum dose of 200mg daily if CrCl 10 - 20 ml/min", "Allopurinol",  valuetext("CrCl"));
+}
+
+// Peter - need to add CrCl<15 to the patient function ? 
+if value("CrCl")<15 and dose("amantadine") >100 then {
+   renal("Recommendation is not to exceed 100mg every 7 days if CrCl <15 ml/min", "Amantadine", valuetext("CrCl"));
+}
+else
+if value("CrCl")<30 and dose("amantadine") >100 then {
+   renal("Recommendation is not to exceed 100mg every 48 hours if CrCl 15 - 29 ml/min",  "Amantadine", valuetext("CrCl"));
+}
+else
+if value("CrCl")<60 and dose("amantadine" ) >100  then {
+   renal("Recommendation is not to exceed 100mg daily if CrCl 30 - 59 ml/min", "Amantadine", valuetext("CrCl"));
+}
+
+
+if value("CrCl")<15 and dose("atenolol") >25 then {
+   renal("Recommendation is not to exceed 25mg daily if CrCl <15 ml/min","Atenolol", valuetext("CrCl"));
+}
+else
+if value("CrCl")<35 and dose("atenolol") >50 then {
+   renal("Recommendation is not to exceed 50mg daily if CrCl 15-35 ml/min", "Atenolol", valuetext("CrCl"));
+}
+
+
+if value("CrCl")<50 and drugs("chlorpropamide") then {
+   renal( "Recommendation is to discontinue chlorpropamide if CrCl <50 ml/min", "Chlorpropamide", valuetext("CrCl"));
+}
+
+
+if value("CrCl")<15 and dose("gabapentin")>300 then {
+   renal("Recommendation is not to exceed 300 mg daily if CrCl < 15 ml/min","Gabapentin", valuetext("CrCl"));
+}
+else
+if value("CrCl")<30 and dose("gabapentin")>600 then {
+   renal("Recommendation is not to exceed 300 mg twice daily if CrCl 15 - 29 ml/min","Gabapentin", valuetext("CrCl"));
+}
+else
+if patient("CrCl<60") and dose("gabapentin")>1200 then {
+   renal("Recommendation is not to exceed 600 mg twice daily if CrCl 30 - 60 ml/min","Gabapentin", valuetext("CrCl"));
+}
+
+
+if patient("CrCl<9") and drugs("galantamine") then {
+   renal( "Recommendation is to discontinue medication if CrCl < 9 ml/min", "Galantamine", valuetext("CrCl"));
+}
+
+if value("CrCl")<30 and drugs("glyburide") then {
+   renal( "Recommendation is to discontinue medication if CrCl < 30 ml/min", "Glyburide", valuetext("CrCl"));
+}
+
+if value("CrCl")<30 and drugs("hydrochlorothiazide") then {
+   renal( "Recommendation is to discontinue medication if CrCl < 30 ml/min", "Hydrochlorothiazide", valuetext("CrCl"));
+}
+
+
+if value("CrCl")<30 and dose("memantine")>10 then {
+   renal("Recommendation is not to exceed 10 mg daily if CrCl < 30 ml/min","Memantine", valuetext("CrCl"));
+}
+
+
+//Peter- need to add GFR<30 , GFR<45 and GFR<60 to function
+if value("GFR")<30 and drugs("metformin") then {
+   renal("Recommendation is to discontinue medication if GFR < 30","Metformin", valuetext("GFR"));
+}
+else 
+if value("GFR")<45 and dose("metformin")>1999 then {
+   renal("Recommendation is to use half-maximal dose and closely monitor renal function every 3 months if GFR 30 - 44", "Metformin", valuetext("GFR"));
+}
+
+
+if patient("CrCl<50") and dose("ranitidine")>150 then {
+   renal("Recommendation is not to exceed 150 mg daily if CrCl < 50 ml/min","Ranitidine", valuetext("CrCl"));
+}
+
+if value("CrCl")<30 and dose("rosuvastatin")>10 then {
+   renal("Recommendation is not to exceed 10 mg daily if CrCl < 30 ml/min","Rosuvastatin", valuetext("CrCl"));
+}
+
+if value("CrCl")<30 and drugs("spironolactone") then {
+   renal( "Recommendation is to discontinue medication if CrCl < 30 ml/min", "Spironolactone", valuetext("CrCl"));
+}
+
+
+if value("CrCl")<30 and dose("tramadol")>200 then {
+   renal("Recommendation is not to exceed 200mg if CrCl < 30 ml/min","Tramadol", valuetext("CrCl"));
+}
+
+if value("CrCl")<30 and drugs("triamterene") then {
+   renal( "Recommendation is to discontinue medication if CrCl < 30 ml/min", "Triamterene", valuetext("CrCl"));
+}
+
+
+if dose("citalopram")>20 then {
+ dosing("Citalopram", "Increased risk of QT prolongation risk. The maximum recommended daily dose is 20mg in patients older than 60 years");
+}
+
+if dose("gabapentin")>600 then {
+ dosing("Gabapentin", "Increased risk of drowsiness/sedation, dizziness, and  falls with daily dose greater than 600 mg");
+}
+
+
+// MEDICATION MANAGEMENT RECOMMENDATIONS
+
+
+
+if (patient("low_adherence") or patient("executive_dysfunction")) & patient("no_current_support") & patient("no_future_support") then {
+  medsmanagement("Your patient's regimen needs to be as simple as you can possibly make it.  If we identified medications that could be removed, these will be outlined below.  Otherwise, you can look at the general tips for simplifying medications.</li><li>A pharmacist is also available to do an additional medication review.  Indicate your preference for pharmacist intervention at the end of this hand-out.");
+
+} else
+
+
+
+if (patient("low_adherence") or patient("executive_dysfunction")) & patient("no_current_support") & patient("yes_future_support") then {
+
+   medsmanagement("Your patient's regimen needs to be as simple as you can possibly make it.  If we identified medications that could be removed, these will be outlined below.  Otherwise, you can look at the general tips for simplifying medications.</li><li>A pharmacist is also available to do an additional medication review and to contact the social support to make a plan for increased oversight. Indicate your preference for pharmacist intervention at the end of this hand-out.");
+
+
+}
+
+ else
+
+if patient("low_adherence") & patient("yes_current_support") then {
+   
+medsmanagement("Your patient's regimen needs to be as simple as you can possibly make it.  If we identified medications that could be removed, these will be outlined below.  Otherwise, you can look at the general tips for simplifying medications.</li><li>A pharmacist is also available to do an additional medication review.  Your patient told us there was someone helping at home with medications.  A pharmacist can contact this person to review the regimen and make sure he/she knows to how to help.  Indicate your preference for pharmacist intervention at the end of this hand-out.");
+
+
+}
+

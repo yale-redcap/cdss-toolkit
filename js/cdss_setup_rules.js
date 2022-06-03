@@ -19,7 +19,7 @@ let cdss = {
       m: ["IS PRESCRIBED", "IS NOT PRESCRIBED", "DOSE IS GREATER THAN", "DOSE IS LESS THAN", "DOSE IS GREATER THAN OR EQUAL TO", "DOSE IS LESS THAN OR EQUAL TO"],
       f: ["IS GREATER THAN", "IS LESS THAN", "IS EQUAL TO", "IS GREATER THAN OR EQUAL TO", "IS LESS THAN OR EQUAL TO"]
    },
-   cdss_actions: [
+   cdss_actions_legacy: [
       {
          id: 1,
          name: 'report_comment',
@@ -105,7 +105,39 @@ let cdss = {
             }
          ]
       }
-   ]
+   ],
+    cdss_actions: [
+        {
+            id: 1,
+            name: 'report_comment',
+            label: 'medications management report',
+            comment_label: 'medications management recommendation'
+        },
+        {
+            id: 2,
+            name: 'report_dosing',
+            label: 'medication dosing report',
+            comment_label: 'dosing recommendation'
+        },
+        {
+            id: 3,
+            name: 'report_interaction',
+            label: 'high risk medications report',
+            comment_label: 'consequence of taking medicine(s)'
+        },
+        {
+            id: 4,
+            name: 'report_overtreatment',
+            label: 'overtreatment report',
+            comment_label: 'overtreatment recommendation'
+        },
+        {
+            id: 5,
+            name: 'report_renal',
+            label: 'renal dosing report',
+            comment_label: 'renal dosing recommendation'
+        }
+    ]
 
 };
 
@@ -176,9 +208,11 @@ cdss.saveRules = function() {
          "rule_index": $(this).data('rule_index'),
          "rule_name": $(this).find('input[data-configitem=rule_name]:first').val(),
          "rule_conditions": [],
+         "rule_condition_then": $(this).find('select[data-configitem=rule_condition_then]:first').val(),
          "rule_action": $(this).find('select[data-configitem=rule_action]:first').val(),
          "rule_action_name": $(this).find('select[data-configitem=rule_action]:first option:selected').text(),
-         "rule_action_params": []
+         "rule_comment": $(this).find('textarea[data-configitem=rule_comment').val(),
+         "rule_additional_items": []
       }
 
       $(this).find('tr.cdss-rule-condition').each(function () {
@@ -201,9 +235,9 @@ cdss.saveRules = function() {
             "name": $(this).data('param_name'),
             "type": $(this).data('param_type'),
             "label": $(this).data('param_label'),
-            "value": $(this).find('[data-configitem=cdss_rule_param_input]:first').val()
+            "value": $(this).find('[data-configitem=rule_additional_item]:first').val()
          }
-         thisRule.rule_action_params.push( thisParam );
+         thisRule.rule_additional_items.push( thisParam );
       })
 
       rules.push( thisRule );
@@ -218,8 +252,6 @@ cdss.saveRules = function() {
    cdss.requestService(params, cdss.saveComplete, "json");
 
    console.log( rules );
-
-
 }
 
 cdss.saveComplete = function( response ){
@@ -320,7 +352,7 @@ cdss.spinMe = function() {
 
 cdss.openPopup = function(popup) {
    cdss.maxZ += 1;
-   $('#cdss-screencover').css({'z-index':cdss.maxZ-1}).show(); <!-- places the full-screen overlay just below the panel -->
+   $('#cdss-screencover').css({'z-index':cdss.maxZ-1}).show(); // places the full-screen overlay just below the panel
    popup.center(0, 0).css({'z-index':cdss.maxZ}).show();
    setTimeout(cdss.spinMe, 10000);
 };
@@ -352,15 +384,15 @@ cdss.getSetGo = function( response ){
    cdss.cdss_diseases = response.cdss_diseases;
    cdss.cdss_conditions = response.cdss_conditions;
    cdss.cdss_variables = response.cdss_variables;
-   cdss.cdss_functions = response.cdss_functions;
+   //cdss.cdss_functions = response.cdss_functions;
    //cdss.cdss_actions = response.cdss_actions;
-   cdss.cdss_rbase = response.cdss_rbase;
+   //cdss.cdss_rbase = response.cdss_rbase;
 
    cdss.cdss_medications.sort( cdss.sort_compare_name );
    cdss.cdss_diseases.sort( cdss.sort_compare_name );
    cdss.cdss_conditions.sort( cdss.sort_compare_name );
    cdss.cdss_variables.sort( cdss.sort_compare_name );
-   cdss.cdss_functions.sort( cdss.sort_compare_id );
+   //cdss.cdss_functions.sort( cdss.sort_compare_id );
    //cdss.cdss_actions.sort( cdss.sort_compare_name );
    cdss.study_fields.sort( cdss.sort_compare_name );
 
@@ -372,7 +404,7 @@ cdss.getSetGo = function( response ){
    cdss.pushRuleBaseCategory('f', cdss.study_fields);
 
    // TESTING ONLY
-   let ruleNumber = cdss.addRuleSpec();
+   //let ruleNumber = cdss.addRuleSpec();
    /*
    cdss.populateRuleActionSelect( ruleNumber );
    cdss.populateRuleConditionBasisSelect( ruleNumber, "1" );
@@ -382,8 +414,135 @@ cdss.getSetGo = function( response ){
 
    //cdss.populateRuleParamTableElements("9999");
    //cdss.addRuleConditionListeners( "9999", "8888");
-   $("tbody.cdss-rule-conditions-subtable").trigger("sortupdate");
+   //$("tbody.cdss-rule-conditions-subtable").trigger("sortupdate");
 
+   cdss.getRules();
+}
+
+cdss.getRules = function( ruleset ){
+
+    ruleset = ruleset || 0;
+    var params = {'request':'get_cdss_rules', 'ruleset': ruleset};
+    cdss.requestService(params, cdss.getRulesCallback, "json");    
+}
+
+cdss.getRulesCallback = function(response){
+
+    console.log("getRulesCallback", response );
+
+    if ( !response.length ) {
+
+        let ruleNumber = cdss.addRuleSpec();
+        $("tbody.cdss-rule-conditions-subtable").trigger("sortupdate");
+        return 0;
+    }
+
+    return cdss.populateRules( response );
+}
+
+cdss.ruleActionInputSelector = function( ruleActionType ){
+
+    if ( ruleActionType==="textarea"){
+
+        return "textarea";
+    }
+    else if ( ruleActionType==="general_item"){
+
+        return "input.cdss-rule-param-general_item";
+    }
+    else {
+
+        return "select";
+    }
+}
+
+cdss.populateRules = function( rules ){
+
+    let nRules = rules.length;
+    let rule = {};
+    let cond = {};
+    let ruleNumber = 0;
+    let ruleObject = {};
+    let i = 0;
+    let actionInputSelector = "";
+    let condRow = {};
+    let lastRow = {};
+    let item = {};
+    let condition_number = 0;
+
+    for (let r=0; r<nRules; r++){
+
+        rule = rules[r];
+
+        ruleNumber = cdss.addRuleSpec( true );
+
+        ruleObject = cdss.getRuleObject(ruleNumber);
+
+        ruleObject.find("input[data-configitem=rule_name]").val(rule.rule_name);
+
+        ruleObject.find("select[data-configitem=rule_condition_if]").val(rule.rule_condition_if);
+
+        ruleObject.find("select[data-configitem=rule_condition_then]").val(rule.rule_condition_then);
+
+        ruleObject.find("textarea[data-configitem=rule_comment]").val(rule.rule_comment);
+
+        if ( typeof rule.rule_action !== "undefined" ){
+
+            ruleObject.find("select[data-configitem=rule_action]").val(rule.rule_action).trigger('change');
+        }
+
+        /*** RULE CONDITIONS ***/
+
+        if ( rule.rule_conditions && rule.rule_conditions.length ){
+
+            for ( i=0; i<rule.rule_conditions.length; i++ ){
+
+                cond = rule.rule_conditions[i];
+
+                condRow = cdss.addRuleCondition(ruleNumber);
+
+                condition_number = condRow.attr("data-condition_number");
+
+                cdss.populateRuleConditionBasisSelect(ruleNumber, condition_number);
+
+                condRow.find('select[data-configitem=rule_condition_if]').val(cond.condition_if);
+                condRow.find('select[data-configitem=rule_condition_join]').val(cond.condition_join);
+
+                condRow.find('input[data-configitem=rule_condition_basis]').val(cond.condition_basis);
+
+                cdss.ruleConditionBasisSelectOnChange(ruleNumber, condition_number, cond.condition_basis);
+
+                condRow.find('select[data-configitem=rule_condition_basis_option]').val(cond.condition_basis_option).trigger('change');
+                
+                condRow.find('input[data-configitem=rule_condition_basis_option_cutpoint]').val(cond.condition_basis_option_cutpoint);
+
+                lastRow = condRow;
+            }
+        }
+
+        /*** ADDITIONAL ITEMS */
+
+        if ( rule.rule_additional_items && rule.rule_additional_items.length ){
+
+            for ( i=0; i<rule.rule_additional_items.length; i++ ){
+
+                item = cdss.addRuleParamAdditionalItem(ruleNumber);
+
+                item.find('input').val(rule.rule_additional_items[i].value);   
+            }
+        }
+
+        cdss.expandOrCollapse(ruleNumber, "collapsed");
+    }
+
+    $("tbody.cdss-rule-conditions-subtable").trigger("sortupdate");
+
+    return nRules;
+}
+
+cdss.getRuleObject = function(ruleNumber){
+
+    return $(`table#cdss-rule-${ruleNumber}`);
 }
 
 cdss.pushRuleBaseCategory = function (category, x ) {
@@ -412,11 +571,13 @@ cdss.populateRuleConditionBasisSelect = function( ruleNumber, conditionNumber ){
          let ruleNumber = $(this).data('rule_number');
          let conditionNumber = $(this).data('condition_number');
 
-         let basis_option = $(`select#cdss-rule-${ruleNumber}-condition-${conditionNumber}-basis-option`);
+         cdss.ruleConditionBasisSelectOnChange(ruleNumber, conditionNumber, rule_condition_basis);
 
-         cdss.populateRuleConditionBasisOptionSelect( basis_option, basisCategory );
+         //let basis_option = $(`select#cdss-rule-${ruleNumber}-condition-${conditionNumber}-basis-option`);
 
-         cdss.addRuleConditionBasisOptionListeners( basis_option, ruleNumber, conditionNumber );
+         //cdss.populateRuleConditionBasisOptionSelect( basis_option, basisCategory );
+
+         //cdss.addRuleConditionBasisOptionListeners( basis_option, ruleNumber, conditionNumber );
 
          //console.log('RuleConditionBasis.select', ruleNumber, conditionNumber, rule_condition_basis, basisCategory);
 
@@ -424,6 +585,17 @@ cdss.populateRuleConditionBasisSelect = function( ruleNumber, conditionNumber ){
       }
    });
 
+}
+
+cdss.ruleConditionBasisSelectOnChange = function( ruleNumber, conditionNumber, rule_condition_basis ){
+
+    let basisCategory = rule_condition_basis.substr(1, 1);
+
+    let basis_option = $(`select#cdss-rule-${ruleNumber}-condition-${conditionNumber}-basis-option`);
+
+    cdss.populateRuleConditionBasisOptionSelect( basis_option, basisCategory );
+
+    cdss.addRuleConditionBasisOptionListeners( basis_option, ruleNumber, conditionNumber );
 }
 
 cdss.populateRuleActionSelect = function( ruleNumber ){
@@ -483,17 +655,27 @@ cdss.addRuleConditionCmdSelectListeners = function(){
    ;
 }
 
-cdss.expandOrCollapse = function( ruleNumber ){
+cdss.expandOrCollapse = function( ruleNumber, forceThisState ){
 
-   let tbl = $(`table#cdss-rule-${ruleNumber}`);
+    forceThisState = forceThisState || "";
 
-   cdss.showSpecTable( tbl, ruleNumber );
+    let tbl = cdss.getRuleObject(ruleNumber);
+
+    cdss.showSpecTable( tbl, ruleNumber, forceThisState );
 }
 
-cdss.showSpecTable = function( tbl, ruleNumber ){
+cdss.showSpecTable = function( tbl, ruleNumber, forceThisState ){
 
    let collapsed = !tbl.hasClass('cdss-collapsed');
    let specType = tbl.data("spectype");
+
+   if ( forceThisState.length > 0 ) {
+
+        collapsed = ( forceThisState==="collapsed" );
+   }
+
+   //console.log("showSpecTable", ruleNumber, forceThisState, collapsed);
+
    /*
       // no collapse if required items missing
       tbl.find(".cdss-item-required").each(function () {
@@ -503,20 +685,29 @@ cdss.showSpecTable = function( tbl, ruleNumber ){
       })
    */
    if ( collapsed ){
+
       tbl.find("a.cdss-spec-expander").html("<i class='fas fa-expand-alt fa-lg'></i>");
       if ( !tbl.hasClass('cdss-collapsed') ) {
          tbl.addClass('cdss-collapsed' );
       }
       tbl.find("tr.cdss-collapsible" ).hide();
-   } else {
+      tbl.css({
+          'background-color': 'white'
+      });
+   } 
+   else {
+
       tbl.find("a.cdss-spec-expander").html("<i class='fas fa-compress-alt fa-lg'></i>");
       if (tbl.hasClass('cdss-collapsed')) {
          tbl.removeClass('cdss-collapsed');
       }
       tbl.find("tr.cdss-collapsible:not(.cdss-rule-params-wrapper)").show();
-      
+      tbl.css({
+        'background-color': '#f3f3f3'
+    });
+    
       // only show params elements if action selected
-      cdss.showOrHideRuleParams(ruleNumber);
+      //cdss.showOrHideRuleParams(ruleNumber);
    }
 
 }
@@ -575,7 +766,9 @@ cdss.addRuleSpecListeners = function(ruleNumber) {
 }
 
 cdss.addRuleCondition = function( ruleNumber ) {
+
    let thisRuleParent = $(`tbody#cdss-rule-${ruleNumber}-conditions`);
+
    // fetch the template HTML
    let conditionHtml = document.getElementById('cdss-rule-9999-condition-8888').outerHTML;
    let maxConditionNumber = 0;
@@ -625,6 +818,8 @@ cdss.addRuleCondition = function( ruleNumber ) {
    cdss.addRuleConditionCmdSelectListeners();
 
    cdss.showCondition( ruleNumber, thisConditionNumber );
+
+   return thisCondition;
 
    //console.log("addRuleCondition", conditionHtml);
 
@@ -701,32 +896,47 @@ cdss.showCondition = function( ruleNumber, conditionNumber ) {
 }
 
 cdss.ruleActionSelect = function(ruleNumber){
-   let ruleAction = $(`select#cdss-rule-${ruleNumber}-action`).val();
-   let ruleParamsWrapper = $(`tr#cdss-rule-${ruleNumber}-params_wrapper`);
 
-   ruleParamsWrapper.hide();
+    let tbl = $(`table#cdss-rule-${ruleNumber}`);
+    let ruleAction = tbl.find('select[data-configitem="rule_action"]').val();
+
+   //let ruleParamsWrapper = $(`tr#cdss-rule-${ruleNumber}-params_wrapper`);
+
+   //ruleParamsWrapper.hide();
 
    if ( !ruleAction.length ){
       return "no action selected";
    }
-   
-   cdss.buildRuleActionParamTable(ruleNumber, ruleAction);
 
-   ruleParamsWrapper.show();
+    tbl.find('div.cdss-rule-comment-label').html(cdss.cdss_actions[ruleAction].comment_label);
    
-   cdss.inspectRule(ruleNumber);
+   //cdss.buildRuleActionParamTable(ruleNumber, ruleAction);
+
+   //ruleParamsWrapper.show();
+   
+   //cdss.inspectRule(ruleNumber);
 }
 
 cdss.postRuleMessage = function(ruleNumber, msg){
+
+    if ( !msg.length ) {
+
+        return cdss.clearRuleMessage(ruleNumber);
+    }
+
    $(`div#cdss-rule-${ruleNumber}-message`)
       .html(msg)
+      .show()
    ;
+   return true;
 }
 
-cdss.clearRuleMessage = function(ruleNumber, msg){
+cdss.clearRuleMessage = function(ruleNumber){
    $(`div#cdss-rule-${ruleNumber}-message`)
       .html("")
+      .hide()
    ;
+   return true;
 }
 
 cdss.inspectRule = function(ruleNumber){
@@ -736,105 +946,114 @@ cdss.inspectRule = function(ruleNumber){
 }
 
 
-cdss.addRuleSpec = function() {
+cdss.addRuleSpec = function( noConditions ) {
 
-   let ruleParent = $('div#cdss-rule-specifications');
-   let ruleNumber = 0;
+    noConditions = noConditions || false;
 
-   $('table.cdss-rule-specification').each( function(){
-      let thisRuleNumber = parseInt($(this).data('rule_number'));
-      if ( thisRuleNumber < 8000 && thisRuleNumber > ruleNumber ){
-         ruleNumber = thisRuleNumber;
-      }
-   })
+    let ruleParent = $('div#cdss-rule-specifications');
+    let ruleNumber = 0;
 
-   ruleNumber++;
+    $('table.cdss-rule-specification').each( function(){
+        let thisRuleNumber = parseInt($(this).data('rule_number'));
+        if ( thisRuleNumber < 8000 && thisRuleNumber > ruleNumber ){
+            ruleNumber = thisRuleNumber;
+        }
+    })
 
-   let ruleTableHtml = document.getElementById('cdss-rule-9999').outerHTML;
+    ruleNumber++;
 
-   let reRule = /9999/g;
-   let reCondition = /8888/g;
+    let ruleTableHtml = document.getElementById('cdss-rule-9999').outerHTML;
 
-   ruleTableHtml = ruleTableHtml.replace(reRule, ruleNumber);
+    let reRule = /9999/g;
+    let reCondition = /8888/g;
 
-   ruleTableHtml = ruleTableHtml.replace(reCondition, "1");
+    ruleTableHtml = ruleTableHtml.replace(reRule, ruleNumber);
 
-   ruleParent.append( ruleTableHtml );
+    ruleTableHtml = ruleTableHtml.replace(reCondition, "1");
 
-   cdss.populateRuleActionSelect( ruleNumber );
-   cdss.populateRuleConditionBasisSelect( ruleNumber, "1" );
-   cdss.addRuleSpecListeners(ruleNumber);
-   cdss.addRuleConditionCmdSelectListeners(); // mainly parenthesis checking
-   cdss.showCondition(ruleNumber, "1");
+    ruleParent.append( ruleTableHtml );
 
-   cdss.expandOrCollapse(ruleNumber);
+    cdss.populateRuleActionSelect( ruleNumber );
 
-   ruleParent.trigger('sortupdate'); // re-index the rules
+    if ( noConditions ){
 
-   return ruleNumber;
+        $(`tbody#cdss-rule-${ruleNumber}-conditions`).empty();
+    }
+    else {
 
+        cdss.populateRuleConditionBasisSelect( ruleNumber, "1" );
+        cdss.addRuleConditionCmdSelectListeners(); // mainly parenthesis checking
+        cdss.showCondition(ruleNumber, "1");    
+    }
+
+    cdss.addRuleSpecListeners(ruleNumber);
+    ruleParent.trigger('sortupdate'); // re-index the rules
+
+    return ruleNumber;
 }
 
 
 cdss.buildRuleActionParamTable = function(ruleNumber, ruleAction){
-   let paramTableWrapper = $(`table#cdss-rule-${ruleNumber} div.cdss-rule-params:first`);
-   let ruleParamsWrapper = $(`tr#cdss-rule-${ruleNumber}-params_wrapper`);
+    let paramTableWrapper = $(`table#cdss-rule-${ruleNumber} div.cdss-rule-params:first`);
+    let ruleParamsWrapper = $(`tr#cdss-rule-${ruleNumber}-params_wrapper`);
 
-   let paramTableClone = $('table#cdss-param-table-template').clone();
+    let paramTableClone = $('table#cdss-param-table-template').clone();
 
-   paramTableClone
-      .attr('id', `cdss-rule-${ruleNumber}-param-table`)
-      .attr('data-rule_number', ruleNumber)
-   ;
+    paramTableClone
+        .attr('id', `cdss-rule-${ruleNumber}-param-table`)
+        .attr('data-rule_number', ruleNumber)
+        .attr('data-action', ruleAction)
+    ;
 
-   let a = parseInt( ruleAction );
-   let paramTemplateId = "";
-   let paramClone = null;
-   let input_type="";
-   let tbody = paramTableClone.find('tbody').first();
+    let a = parseInt( ruleAction );
+    let paramTemplateId = "";
+    let paramClone = null;
+    let input_type="";
+    let tbody = paramTableClone.find('tbody').first();
 
-   tbody.html("");
+    tbody.html("");
 
-   for ( let i=0; i<cdss.cdss_actions[a].params.length; i++ ){
+    for ( let i=0; i<cdss.cdss_actions[a].params.length; i++ ){
 
-      paramTemplateId = `cdss-rule-param-${cdss.cdss_actions[a].params[i].type}-template`;
-      console.log('buildRuleActionParamTable', paramTemplateId);
+        paramTemplateId = `cdss-rule-param-${cdss.cdss_actions[a].params[i].type}-template`;
+        console.log('buildRuleActionParamTable', paramTemplateId);
 
-      paramClone = $( `tr#${paramTemplateId}` ).clone();
+        paramClone = $( `tr#${paramTemplateId}` ).clone();
 
-      if ( cdss.cdss_actions[a].params[i].type === "textarea" ){
-         input_type = "textarea";
-      }
-      else if ( cdss.cdss_actions[a].params[i].type === "medication" ){
-         input_type = "select";
-      }
-      else {
-         input_type = "input";
-      }
+        if ( cdss.cdss_actions[a].params[i].type === "textarea" ){
+            input_type = "textarea";
+        }
+        else if ( cdss.cdss_actions[a].params[i].type === "medication" ){
+            input_type = "select";
+        }
+        else {
+            input_type = "input";
+        }
 
-      paramClone
-         .attr('id', `cdss-rule-${ruleNumber}-param-${cdss.cdss_actions[a].params[i].name}`)
-         .attr('data-configitem', cdss.cdss_actions[a].params[i].name)
-         .attr('data-action', a)
-         .attr('data-param_index', i)
-         .attr('data-param_name', cdss.cdss_actions[a].params[i].name)
-         .attr('data-param_type', cdss.cdss_actions[a].params[i].type)
-         .attr('data-param_label', cdss.cdss_actions[a].params[i].label)
-         .attr('data-rule_number', ruleNumber)
-         .find('td.cdss-rule-param-label').html(cdss.cdss_actions[a].params[i].label)
-      ;
+        paramClone
+            
+            .attr('id', `cdss-rule-${ruleNumber}-param-${cdss.cdss_actions[a].params[i].name}`)
+            .attr('data-configitem', cdss.cdss_actions[a].params[i].name)
+            .attr('data-action', a)
+            .attr('data-param_index', i)
+            .attr('data-param_name', cdss.cdss_actions[a].params[i].name)
+            .attr('data-param_type', cdss.cdss_actions[a].params[i].type)
+            .attr('data-param_label', cdss.cdss_actions[a].params[i].label)
+            .attr('data-rule_number', ruleNumber)
+            .find('td.cdss-rule-param-label').html(cdss.cdss_actions[a].params[i].label)
+        ;
 
-      paramClone.appendTo( tbody );
+        paramClone.appendTo( tbody );
 
    }
 
    // add the additional item rows
 
-   paramClone = $( `tr#cdss-rule-param-additional_item-template` ).clone();
+   //paramClone = $( `tr#cdss-rule-param-additional_item-template` ).clone();
 
-   cdss.setRuleParamAdditionalItemProperties( paramClone, ruleNumber, "1", a, "100");
+   //cdss.setRuleParamAdditionalItemProperties( paramClone, ruleNumber, "1", a, "100");
 
-   paramClone.appendTo( tbody );
+   //paramClone.appendTo( tbody );
 
    // final row is a link to add new item
 
@@ -864,10 +1083,10 @@ cdss.setRuleParamAdditionalItemProperties = function( el, ruleNumber, additional
       .attr('id', `cdss-rule-${ruleNumber}-param-additional_item-${additional_item_number}`)
       .attr('data-action', action)
       .attr('data-param_index', param_index)
-      .attr('data-param_name', "cdss_rule_additional_item")
+      .attr('data-param_name', "rule_additional_item")
       .attr('data-param_type', "general_item")
       .attr('data-param_label', "additional item to report")
-      .attr('data-configitem', "cdss_rule_additional_item")
+      .attr('data-configitem', "rule_additional_item")
       .attr('data-rule_number', ruleNumber)
       .attr('data-additional_item_number', additional_item_number)
       .find('a').first().attr('href', `javascript: cdss.removeRuleParamAdditionalItem('${ruleNumber}', '${additional_item_number}');`)
@@ -910,27 +1129,62 @@ cdss.showOrHideRuleParams = function(ruleNumber) {
 
 cdss.addRuleParamAdditionalItem = function(ruleNumber){
 
-   let lastItemSibling = $(`table#cdss-rule-${ruleNumber}-param-table tr.cdss-rule-param-additional-item:last`);
-   let additional_item_number = '' + (1 + parseInt(lastItemSibling.data('additional_item_number')));
-   let param_index = '' + (1 + parseInt(lastItemSibling.data('param_index')));
+    let sibRow = $(`tr#cdss-rule-${ruleNumber}-add-additional-item`);
 
-   let thisItemSibling = lastItemSibling.clone();
+    let tbl = sibRow.closest(`table`);
 
-   thisItemSibling.find('[data-configitem=cdss_rule_param_input]').val("");
+    let additional_item_number = 0;
 
-   cdss.setRuleParamAdditionalItemProperties( thisItemSibling,
-      ruleNumber, additional_item_number,
-      lastItemSibling.data('action'),
-      param_index
-   );
+    let action = tbl.data('action');
 
-   cdss.populateRuleParamTableElements(thisItemSibling);
+    let param_index = 100;
 
-   lastItemSibling
-      .after( thisItemSibling );
+    tbl.find('tr.cdss-rule-additional-item').each(function(){
 
-   console.log( "addRuleParamAdditionalItem", lastItemSibling, thisItemSibling.data('additional_item_number'));
+        let thisAddlItemNumber = $(this).data('additional_item_number');
 
+        if (typeof thisAddlItemNumber !== 'undefined' ){
+
+            if ( parseInt(thisAddlItemNumber) > additional_item_number ){
+
+                additional_item_number = thisAddlItemNumber;
+            }
+        }
+    })
+
+    param_index = ++additional_item_number + 99;
+
+    let itemElement = $(`
+    <tr class="cdss-rule-param cdss-rule-additional-item">
+        <td class="cdss-rule-param-item-label">
+            additional item to report
+        </td>
+        <td class="cdss-rule-param-input">
+            <input class="cdss-rule-param-general_item"  data-configitem="rule_additional_item" />
+        </td>
+        <td class="cdss-gutter-right cdss-rule-param-remove-item">
+            <a title="remove this additional item"><i class="far fa-trash-alt"></i></a>
+        </td>
+    </tr>`);
+        
+    itemElement.find('[data-configitem=cdss_rule_param_input]').val("");
+
+    cdss.setRuleParamAdditionalItemProperties( itemElement,
+        ruleNumber, additional_item_number,
+        action,
+        param_index
+    );
+
+    cdss.populateRuleParamTableElements(itemElement);
+
+    sibRow
+        .before( itemElement );
+
+    sibRow.find('input').focus();
+
+    //console.log( "addRuleParamAdditionalItem", sibRow, itemElement.data('additional_item_number'));
+
+    return itemElement;
 }
 
 cdss.removeRuleParamAdditionalItem = function(ruleNumber, additional_item_number) {
@@ -949,6 +1203,14 @@ cdss.removeRule = function( ruleNumber ){
 */
 $( function () {
 
+    /*
+    attach the csrf token to every AJAX request
+    https://stackoverflow.com/questions/22063612/adding-csrftoken-to-ajax-request
+    */
+    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+        jqXHR.setRequestHeader('X-CSRF-Token', redcap_csrf_token);
+    });
+    
    $(".cdss-draggable").draggable({"handle": ".cdss-panel-header-row, .cdss-panel-handle, .cdss-drag-handle"});
 
    cdss.addRuleSetListeners();

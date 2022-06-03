@@ -1,0 +1,535 @@
+[
+    {
+        "id": "1",
+        "name": "ALENDRONATE",
+        "label": "",
+        "code": "",
+        "comments": "",
+        "field": ""
+    },
+    {
+        "id": "2",
+        "name": "ALLOPURINOL",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "3",
+        "name": "ALPRAZOLAM",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "4",
+        "name": "AMANTADINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "5",
+        "name": "AMITRIPTYLINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "6",
+        "name": "ASPIRIN",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "7",
+        "name": "ATENOLOL",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "8",
+        "name": "CARVEDILOL",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "9",
+        "name": "CHLORDIAZEPOXIDE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "10",
+        "name": "CHLORPHENIRAMINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "11",
+        "name": "CHLORPROPRAMIDE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "12",
+        "name": "CITALOPRAM ",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "13",
+        "name": "CLONAZEPAM",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "14",
+        "name": "CLOPIDOGREL",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "15",
+        "name": "CODEINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "16",
+        "name": "CYCLOBENZAPRINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "17",
+        "name": "DESIPRAMINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "18",
+        "name": "DIAZEPAM",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "19",
+        "name": "DICLOFENAC",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "20",
+        "name": "DIGOXIN",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "21",
+        "name": "DILTIAZEM",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "22",
+        "name": "DIMENHYDRINATE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "23",
+        "name": "DIPHENHYDRAMINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "24",
+        "name": "DOXYLAMINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "25",
+        "name": "ESOMEPRAZOLE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "26",
+        "name": "ESZOPICLONE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "27",
+        "name": "ETODOLAC",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "28",
+        "name": "FAMOTIDINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "29",
+        "name": "FENTANYL",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "30",
+        "name": "GABAPENTIN ",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "31",
+        "name": "GALANTAMINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "32",
+        "name": "GLYBURIDE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "33",
+        "name": "HYDROCHLOROTHIAZIDE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "34",
+        "name": "HYDROCODONE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "35",
+        "name": "HYDROMORPHONE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "36",
+        "name": "HYDROXYZINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "37",
+        "name": "IBUPROFEN",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "38",
+        "name": "IMIPRAMINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "39",
+        "name": "INDOMETHACIN",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "40",
+        "name": "LABETALOL",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "41",
+        "name": "LANSOPRAZOLE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "42",
+        "name": "LORAZEPAM",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "43",
+        "name": "MELOXICAM",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "44",
+        "name": "MEMANTINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "45",
+        "name": "METFORMIN",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "46",
+        "name": "METHADONE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "47",
+        "name": "METHOCARBAMOL",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "48",
+        "name": "METOCLOPRAMIDE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "49",
+        "name": "METOPROLOL",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "50",
+        "name": "MORPHINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "51",
+        "name": "NABUMETONE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "52",
+        "name": "NAPROXEN",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "53",
+        "name": "NORTRIPTYLINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "54",
+        "name": "OMEPRAZOLE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "55",
+        "name": "OXAZEPAM",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "56",
+        "name": "OXYBUTYNIN",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "57",
+        "name": "OXYCODONE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "58",
+        "name": "PANTOPRAZOLE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "59",
+        "name": "PIROXICAM",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "60",
+        "name": "PROCHLORPERAZINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "61",
+        "name": "PROMETHAZINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "62",
+        "name": "PROPRANOLOL",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "63",
+        "name": "RABEPRAZOLE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "64",
+        "name": "RANITIDINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "65",
+        "name": "ROSUVASTATIN",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "66",
+        "name": "SPIRONOLACTONE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "67",
+        "name": "SULINDAC",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "68",
+        "name": "TEMAZEPAM",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "69",
+        "name": "TOLTERODINE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "70",
+        "name": "TRAMADOL",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "71",
+        "name": "TRIAMTERENE",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "72",
+        "name": "TROSPIUM",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "73",
+        "name": "VERAPAMIL",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "74",
+        "name": "WARFARIN",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "75",
+        "name": "ZALEPLON",
+        "label": "",
+        "code": "",
+        "comments": ""
+    },
+    {
+        "id": "76",
+        "name": "ZOLPIDEM",
+        "label": "",
+        "code": "",
+        "comments": ""
+    }
+]

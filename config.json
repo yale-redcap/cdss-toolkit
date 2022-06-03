@@ -1,5 +1,5 @@
 {
-  "name": "CDSS",
+  "name": "Yale CDSS",
 
   "namespace": "Yale\\CDSS",
 
@@ -20,6 +20,12 @@
 
   "versions": [
     {
+      "number": "0.3.0",
+      "date": "2021-10-25",
+      "description": "refactored to Yes3 guidelines",
+      "comments": ""
+    },
+    {
       "number": "0.0.1",
       "date": "2021-01-18",
       "description": "and off we go",
@@ -28,6 +34,7 @@
   ],
 
   "permissions": [
+    "redcap_save_record",
     "redcap_data_entry_form",
     "redcap_module_link_check_display"
   ],
@@ -53,50 +60,128 @@
   "system-settings": [
   ],
 
-  "project-settings": [
-    {
-      "key":  "cdss-diseases",
-      "name": "CDSS Diseases",
-      "required": false,
-      "type": "textarea"
-    },
-    {
-      "key":  "cdss-medications",
-      "name": "CDSS medications",
-      "required": false,
-      "type": "textarea"
-    },
-    {
-      "key":  "cdss-conditions",
-      "name": "CDSS conditions",
-      "required": false,
-      "type": "textarea"
-    },
-    {
-      "key":  "cdss-variables",
-      "name": "CDSS variables",
-      "required": false,
-      "type": "textarea"
-    },
-    {
-      "key":  "cdss-rbase",
-      "name": "CDSS Rule Base",
-      "required": false,
-      "type": "textarea"
-    },
-    {
-      "key":  "cdss-rules",
-      "name": "CDSS Rules",
-      "required": false,
-      "type": "textarea"
-    },
-    {
-      "key":  "cdss-rules-backups",
-      "name": "CDSS Rules backups",
-      "required": false,
-      "type": "textarea"
-    }
-  ],
+    "project-settings": [
+        {
+            "key": "cdss-event",
+            "name": "REDCap event for CDSS",
+            "required": true,
+            "type": "event-list"
+        },
+        {
+            "key": "cdss-medication-field",
+            "name": "name of the prescribed medication field",
+            "required": true,
+            "type": "field-list"
+        },
+        {
+            "key": "cdss-medication-dose-field",
+            "name": "name of the prescribed dose field",
+            "required": true,
+            "type": "field-list"
+        },
+        {
+            "key": "cdss-medication-reported-field",
+            "name": "name of the reported medication field",
+            "required": true,
+            "type": "field-list"
+        },
+        {
+            "key": "cdss-cdss-medications-field",
+            "name": "name of text/paragraph field to hold CDSS medications",
+            "required": false,
+            "type": "field-list"
+        },
+        {
+            "key": "cdss-medication-reconciliation-field",
+            "name": "name of the medication reconciliation field",
+            "required": true,
+            "type": "field-list"
+        },
+        {
+            "key": "cdss-medication-reconciliation-comments-field",
+            "name": "name of the medication reconciliation comments field",
+            "required": true,
+            "type": "field-list"
+        },
+        {
+            "key": "cdss-diagnosis-field",
+            "name": "name of the diagnosis field",
+            "required": true,
+            "type": "field-list"
+        },
+        {
+            "key": "cdss-cdss-diseases-field",
+            "name": "name of text/paragraph field to hold CDSS diseases",
+            "required": false,
+            "type": "field-list"
+        },
+        {
+            "key": "cdss-adherence-field",
+            "name": "name of the adherence field",
+            "required": true,
+            "type": "field-list"
+        },
+        {
+            "key": "cdss-adherence-low",
+            "name": "value that indicates low adherence",
+            "required": true,
+            "type": "text"
+        },
+        {
+            "key": "cdss-adherence-medium",
+            "name": "value that indicates medium adherence (optional)",
+            "required": false,
+            "type": "text"
+        },
+        {
+            "key": "cdss-adherence-high",
+            "name": "value that indicates low adherence (optional)",
+            "required": false,
+            "type": "text"
+        },
+        {
+            "key": "cdss-readonly-warning",
+            "name": "<h4>All items below are set by the 'CDSS Setup' and 'CDSS Rules' plugins and are READ-ONLY</h4>",
+            "required": false,
+            "type": "descriptive"
+        },
+        {
+            "key":  "cdss-diseases",
+            "name": "CDSS Diseases READ ONLY",
+            "required": false,
+            "type": "textarea"
+        },
+        {
+            "key":  "cdss-medications",
+            "name": "CDSS medications READ ONLY",
+            "required": false,
+            "type": "textarea"
+        },
+        {
+            "key":  "cdss-conditions",
+            "name": "CDSS conditions READ ONLY",
+            "required": false,
+            "type": "textarea"
+        },
+        {
+            "key":  "cdss-variables",
+            "name": "CDSS variables READ ONLY",
+            "required": false,
+            "type": "textarea"
+        },
+        {
+            "key":  "cdss-rules",
+            "name": "CDSS Rules READ ONLY",
+            "required": false,
+            "type": "textarea"
+        },
+        {
+            "key":  "cdss-rules-backups",
+            "name": "CDSS Rules backups READ ONLY",
+            "required": false,
+            "type": "textarea"
+        }
+],
 
   "crons":[
   ],
