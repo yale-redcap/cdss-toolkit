@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="4"
+    phpVersion="7.4"
+    resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    autoloader="autoload.php"
+>
+    <issueHandlers>
+
+        <MissingPropertyType errorLevel="suppress" />
+
+        <MissingReturnType errorLevel="suppress" />
+
+        <MissingParamType errorLevel="suppress" />
+
+        <MissingDependency errorLevel="info" />
+
+        <UndefinedConstant errorLevel="info" />
+
+        <UnusedVariable errorLevel="info" />
+
+        <UndefinedFunction>
+            <errorLevel type="suppress">
+                <referencedFunction name="Yale\CDSS\CDSS\db_real_escape_string" />
+            </errorLevel>
+        </UndefinedFunction>
+        
+        <UndefinedMethod>
+            <errorLevel type="suppress">
+                <referencedMethod name="Yale\CDSS\CDSS::getUrl" />
+                <referencedMethod name="Yale\CDSS\CDSS::getModulePath" />
+                <referencedMethod name="Yale\CDSS\CDSS::getModuleDirectoryName" />
+            </errorLevel>
+        </UndefinedMethod>
+
+        <UndefinedClass>
+            <errorLevel type="suppress">
+                <referencedClass name="Yale\CDSS\CDSS" />
+                <referencedClass name="ExternalModules\AbstractExternalModule" />
+                <referencedClass name="ExternalModules\ExternalModules" />
+                <referencedClass name="Parsedown" />
+                <referencedClass name="REDCap" />
+                <referencedClass name="HtmlPage" />
+            </errorLevel>
+        </UndefinedClass>
+
+    </issueHandlers>
+
+    <projectFiles>
+        <file name="CDSS.php" />
+        <directory name="classes" />
+        <directory name="traits" />
+        <directory name="plugins" />
+        <directory name="defines" />
+        <directory name="services" />
+        <directory name="html" />
+        <directory name="css" />
+        <directory name="js" />
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+
+</psalm>
