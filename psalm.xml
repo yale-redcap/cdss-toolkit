@@ -55,7 +55,6 @@
         <directory name="traits" />
         <directory name="plugins" />
         <directory name="services" />
-        <directory name="html" />
         <directory name="css" />
         <directory name="js" />
         <ignoreFiles>
