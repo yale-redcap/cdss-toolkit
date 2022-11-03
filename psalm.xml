@@ -33,6 +33,10 @@
                 <referencedMethod name="Yale\CDSS\CDSS::getUrl" />
                 <referencedMethod name="Yale\CDSS\CDSS::getModulePath" />
                 <referencedMethod name="Yale\CDSS\CDSS::getModuleDirectoryName" />
+                <referencedMethod name="Yale\CDSS\CDSS::getProjectSetting" />
+                <referencedMethod name="Yale\CDSS\CDSS::setProjectSetting" />
+                <referencedMethod name="Yale\CDSS\CDSS::getFieldLabel" />
+                <referencedMethod name="Yale\CDSS\CDSS::getCSRFToken" />
             </errorLevel>
         </UndefinedMethod>
 
