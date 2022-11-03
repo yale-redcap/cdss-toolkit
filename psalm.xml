@@ -24,7 +24,7 @@
 
         <UndefinedFunction>
             <errorLevel type="suppress">
-                <referencedFunction name="Yale\CDSS\CDSS\db_real_escape_string" />
+                <referencedFunction name="Yale\CDSS\db_real_escape_string" />
             </errorLevel>
         </UndefinedFunction>
         
