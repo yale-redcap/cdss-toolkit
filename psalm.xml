@@ -54,7 +54,6 @@
         <directory name="classes" />
         <directory name="traits" />
         <directory name="plugins" />
-        <directory name="defines" />
         <directory name="services" />
         <directory name="html" />
         <directory name="css" />
