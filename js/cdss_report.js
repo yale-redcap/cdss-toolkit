@@ -121,14 +121,6 @@ $(document).ready(function () {
 
     $(".cdss-draggable").draggable({"handle": ".cdss-drag-handle"});
 
-    /*
-    attach the csrf token to every AJAX request
-    https://stackoverflow.com/questions/22063612/adding-csrftoken-to-ajax-request
-    */
-    //$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-    //    jqXHR.setRequestHeader('X-CSRF-Token', CDSS.csrf_token);
-    //});
-
     CDSS.getReady();
 });
 
