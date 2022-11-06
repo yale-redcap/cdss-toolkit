@@ -5,19 +5,15 @@ ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
 use Yale\Yes3\Yes3;
+
+
 /**
  * The instantiated EM class
  */
 $module = new Yale\CDSS\CDSS();
 
-$record =   $_GET['record'];
-$event_id = (int)$_GET['event_id'];
-$csrf_token = $_GET['csrf_token'];
-
-if ( !in_array( $csrf_token, $_SESSION['redcap_csrf_token']) ){
-
-    die("error: invalid csrf token.");
-}
+$record =   $_GET['id'];
+//$event_id = (int)$_GET['event_id'];
 
 ?>
 
@@ -34,20 +30,18 @@ if ( !in_array( $csrf_token, $_SESSION['redcap_csrf_token']) ){
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
         
-        <?= $module->getCodeForV2("cdss_report") ?>
+        <?= $module->getCodeForV2("cdss_report", $record) ?>
         
         <script type="text/javascript">
 
-            CDSS.record   = "<?= $record ?>";
-            CDSS.event_id = "<?= $event_id ?>";
-            CDSS.csrf_token = "<?= $csrf_token ?>";
+            console.log("CDSS Reports", CDSS);
 
         </script>
     </head>
 
     <body>
 
-        <div id="cdss-report-container"></div>
+        <div id="cdss-report-container">hi mom</div>
 
     </body>
 

@@ -1,4 +1,75 @@
-.cdss_rule_report_message_title {
-    text-decoration: underline;
+@media print
+{    
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
+
+p, ul {
+    font-size: 1rem !important;
+    margin-block-start: 10px !important;
+    margin-block-end: 10px !important;
+}
+
+div.cdss_rule_report_controls {
+    float: left;
+    width: 100%;
+    background-color: darkslategray;
+    color: white;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    height: 1.5rem;
+    line-height: 1.5rem;
+}
+div.cdss_rule_report_controls_title {
+    font-size: 1rem;
+    float: left;
+    margin-left: 1rem;
+}
+
+div.cdss_rule_report_control {
+    float: right;
+    margin-right: 1rem;
+}
+
+div.cdss_rule_report_control img {
+    height: 1.5rem;
+}
+
+div.cdss_rule_report_control img:hover {
+    cursor: pointer;
+}
+
+div.cdss_rule_report_title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+div.cdss_rule_report_message_title {
+    font-size: 1rem;
     font-weight: 600;
+    margin-bottom: 10px;
+}
+
+div.cdss_rule_report_message {
+    font-size: 1rem;
+    border: 1px solid;
+    padding: 10px;
+}
+
+div.cdss_rule_report_section {
+    font-size: 1rem !important;
+}
+
+div.cdss_rule_report_comments {
+    width: 100%;
+    margin-top: 3rem;
+    padding-top: 0.5rem;
+    min-height: 10rem;
+    font-size: 1rem;
+    font-style: italic;
+    border-top: 1px solid lightgrey;
+    break-after: page;
 }

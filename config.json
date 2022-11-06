@@ -1,5 +1,5 @@
 {
-  "name": "Yale CDSS",
+  "name": "Yale CDSS Toolkit",
 
   "namespace": "Yale\\CDSS",
 
@@ -20,6 +20,12 @@
 
   "versions": [
     {
+      "number": "0.4.0",
+      "date": "2022-11-05",
+      "description": "manuscript version",
+      "comments": ""
+    },
+    {
       "number": "0.3.0",
       "date": "2021-10-25",
       "description": "refactored to Yes3 guidelines",
@@ -36,20 +42,22 @@
   "permissions": [
     "redcap_save_record",
     "redcap_data_entry_form",
-    "redcap_module_link_check_display"
+    "redcap_module_link_check_display",
+    "redcap_every_page_top"
   ],
 
   "links": {
     "project": [
       {
-        "name": "CDSS Setup",
+        "name": "CDSS Meds and Diseases",
         "icon": "fas fa-cog",
         "url": "plugins/cdss_setup.php"
       },
       {
         "name": "CDSS Rules",
         "icon": "fas fa-ruler",
-        "url": "plugins/cdss_setup_rules.php"
+        "url": "plugins/cdss_setup_rules.php",
+        "show-header-and-footer": true
       }
     ]
   },
@@ -187,9 +195,9 @@
   ],
 
   "compatibility": {
-    "php-version-min": "7.0.0",
-    "redcap-version-min": "10.0.0"
+    "php-version-min": "7.4.0",
+    "redcap-version-min": "12.0.0"
   },
 
-  "framework-version": 5
+  "framework-version": 9
 }

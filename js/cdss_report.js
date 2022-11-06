@@ -10,9 +10,9 @@ let CDSS = {
    serviceUrl: "",
    user: "",
    project_id: "",
-   csrf_token: "",
-   record: "",
-   event_id: ""
+   csrf_token: "CDSS_CSRF_TOKEN",
+   record: "CDSS_RECORD",
+   event_id: "0"
 };
 
 // formats date as mm-dd-yyyy
@@ -52,6 +52,8 @@ jQuery.fn.center = function (dx, dy) {
 CDSS.requestService = function( params, doneFn, dataType ) {
 
    dataType = dataType || "text";
+
+   params.redcap_csrf_token = CDSS.csrf_token;
 
    var request = $.ajax({
       url: CDSS.moduleObject.getUrl('services/cdss_services.php'),
@@ -110,7 +112,7 @@ CDSS.getReady = function() {
 
 CDSS.getSetGo = function( response ){
 
-    console.log( 'getSetGo', response );
+    //console.log( 'getSetGo', response );
 
     $('#cdss-report-container').html(response); ;
 }
@@ -123,9 +125,9 @@ $(document).ready(function () {
     attach the csrf token to every AJAX request
     https://stackoverflow.com/questions/22063612/adding-csrftoken-to-ajax-request
     */
-    $.ajaxPrefilter(function (options, originalOptions, jqXHR) {
-        jqXHR.setRequestHeader('X-CSRF-Token', CDSS.csrf_token);
-    });
+    //$.ajaxPrefilter(function (options, originalOptions, jqXHR) {
+    //    jqXHR.setRequestHeader('X-CSRF-Token', CDSS.csrf_token);
+    //});
 
     CDSS.getReady();
 });

@@ -57,6 +57,107 @@ class CDSS extends \ExternalModules\AbstractExternalModule
         return true; // show the setup button
     }
 
+    function redcap_every_page_top($project_id)
+    {
+        if (PAGE == 'DataEntry/record_home.php') {
+            ?>
+
+            <div id="cdss-injection">HI MOM</div>
+
+            <style>
+
+                .cdss-report-button {
+
+                    color: slategray;
+                    border: 2px solid slategray;
+                    background-color: white;
+                    font-size: 1em;
+                    font-weight: 600;
+                    height: 2.5em;
+                    border-radius: 1.25em;
+                    padding-left: 1em;
+                    padding-right: 1em;
+                    margin-top: 1em;
+                    margin-bottom: 1em;
+                }
+
+                .cdss-report-button:hover {
+                    color: white;
+                    background-color: slategray;
+                }
+
+            </style>
+
+            <script>
+
+                const CDSS = {
+                    project_id: "<?= $_GET['pid'] ?>",
+                    record: "<?= $_GET['id'] ?>",
+                    ajax_url: "<?= $this->getUrl('services/cdss_services.php?pid='.$_GET['pid']) ?>",
+                    report_url: "<?= $this->getUrl('plugins/cdss_report.php?pid='.$_GET['pid'].'&id='.$_GET['id']) ?>",
+                    winNum: 0
+                }
+
+                CDSS.openReport = function(){
+
+                    CDSS.winNum++;
+
+                    window.open(CDSS.report_url, `CDSS_${CDSS.record}_${CDSS.winNum}`, "popup=1,width=800,height=800");
+                }
+
+                $(function(){
+
+                    const $sib = $("div.projhdr:first");
+                    /*
+                    const $form = $("<form>", {
+                        id: "cdss-report-form",
+                        action: CDSS.report_url,
+                        method: "post",
+                        target: "_blank"
+                    });
+
+                    $form
+                    .append( $("<input>", {
+                        type: "hidden",
+                        name: "redcap_csrf_token",
+                        value: redcap_csrf_token
+                    }))
+                    .append( $("<input>", {
+                        type: "hidden",
+                        name: "project_id",
+                        value: CDSS.project_id
+                    }))
+                    .append( $("<input>", {
+                        type: "hidden",
+                        name: "record",
+                        value: CDSS.record
+                    }))
+                    .append( $("<button>", {
+                        type: "submit",
+                        class: "cdss-report-button",
+                        text: "GENERATE THE CDSS REPORT"
+                    }));
+
+                    $sib.after( $form );
+                    */
+                    const $button = $("<input>",{
+                        type: "button",
+                        value: "GENERATE THE CDSS REPORT",
+                        class: "cdss-report-button",
+                        onClick: "CDSS.openReport()"
+                    })
+
+                    $sib.after( $button );
+
+                    console.log("CDSS AHOY: ", CDSS);
+                });
+
+            </script>
+
+            <?php
+        }
+    }
+
     function redcap_data_entry_form ( int $project_id, string $record = NULL, string $instrument, int $event_id, int $group_id = NULL, int $repeat_instance = 1 )
     {
         if ( $instrument==="cdss_variables" || $instrument==="cdss" ){

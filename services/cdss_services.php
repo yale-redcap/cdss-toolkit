@@ -19,6 +19,8 @@ error_reporting(E_ALL);
 
 session_start();
 
+$module = new CDSS();
+
 if ( isset($_GET['request']) ) {
 
     $request = $_GET['request']; // always passed
@@ -27,7 +29,7 @@ else {
 
     $request = $_POST['request']; // always passed
 }
-
+/*
 $csrf_token = "";
 
 if ( isset($_POST['csrf_token']) ) {
@@ -51,14 +53,14 @@ if ( isset($_POST['csrf_token']) ) {
 if ( !$csrf_token ){
    toesUp("error: csrf token missing for request '{$request}'.");
 }
-
-$module = new CDSS();
+*/
 
 /**
  * Validate the csrf token against the list of REDCap-generated tokens
  * for this session.
  */
 
+ /*
 if ( !$csrf_token !== $module->getCSRFToken() ) {
 
     if ( !in_array( $csrf_token, $_SESSION['redcap_csrf_token']) ){
@@ -66,6 +68,7 @@ if ( !$csrf_token !== $module->getCSRFToken() ) {
         toesUp("error: invalid csrf token for request '{$request}'.");
     }
 }
+*/
 
 if ( !requestIsValid($request) ) {
     toesUp("error: invalid request: ".$request);
@@ -185,7 +188,17 @@ function get_cdss_rules()
 function get_cdss_reports(){
     global $module;
 
+    $printerIconUrl = $module->getUrl("images/printer-3-64.png");
+
     $html = "";
+
+    $html .= "<div class='cdss_rule_report_controls no-print'>"
+        . "<div class='cdss_rule_report_controls_title'>Yale CDSS Toolkit</div>"
+        . "<div class='cdss_rule_report_control'>"
+        . "<img src='{$printerIconUrl}' onclick='window.print()' title='print or save this report' />"
+        . "</div>"
+        . "</div>"
+    ;
 
     $rules = get_cdss_rules();
 
@@ -203,7 +216,7 @@ function get_cdss_report($report, $rules)
 
     $html = "";
 
-    $html .= "<h4>".$report['report_name']."</h4>";
+    $html .= "<div class='cdss_rule_report_title'>".$report['report_name']." for patient #" . $_POST['record'] . "</div>";
 
     foreach ($rules as $rule){
 
@@ -245,7 +258,7 @@ function get_cdss_rule_report($rule){
 
     $project_id = $module->project_id;
     $record     = $_POST['record'];
-    $event_id   = $_POST['event_id'];
+    //$event_id   = $_POST['event_id'];
 
     $sql_select = "SELECT d.record, d.event_id";
 
@@ -253,9 +266,13 @@ function get_cdss_rule_report($rule){
 
     $sql_join = "";
 
-    $sql_where  = "\nWHERE d.project_id=? AND d.event_id=? AND d.record=? AND d.field_name='cdss_variables_complete'";
+    //$sql_where  = "\nWHERE d.project_id=? AND d.event_id=? AND d.record=? AND d.field_name='cdss_variables_complete'";
 
-    $sql_where_params = [$project_id, $event_id, $record];
+    //$sql_where_params = [$project_id, $event_id, $record];
+
+    $sql_where  = "\nWHERE d.project_id=? AND d.record=? AND d.field_name='cdss_variables_complete'";
+
+    $sql_where_params = [$project_id, $record];
 
     $sql_join_params = [];
 
@@ -278,6 +295,8 @@ function get_cdss_rule_report($rule){
     $sql = $sql_select . $sql_from . $sql_join . $sql_where;
 
     $params = array_merge( $sql_join_params, $sql_where_params );
+
+    //exit( "<pre>" . $sql . "\n\n" . print_r($params, true) . "</pre>" );
 
     $x = Yes3::fetchRecord($sql, $params);
 
@@ -428,9 +447,11 @@ function get_cdss_rule_report_html( $rule )
 
     $html .= "<div class='cdss_rule_report_message'>" . $rule['message'] . "</div>";
 
-    $html .= get_cdss_rule_report_section_html( $rule['satisfied_conditions'], "The following condition(s) contributed to this report message:" );
+    $html .= get_cdss_rule_report_section_html( $rule['satisfied_conditions'], "The following condition(s) contributed to this report:" );
 
     $html .= get_cdss_rule_report_section_html( array_merge($rule['rule_items_observed'], $rule['additional_items_observed']), "Additional information:" );
+
+    $html .= "<div class='cdss_rule_report_comments'>comments</div>";
 
     return $html;
 }

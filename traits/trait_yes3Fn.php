@@ -218,13 +218,15 @@ trait trait_yes3Fn {
             'YES3_USERNAME',
             'YES3_SUPER_USER',
             'YES3_PROJECT_ID',
-            'YES3_SERVICE_URL'
+            'YES3_SERVICE_URL',
+            'YES3_CSRF_TOKEN'
          ],
          [
             USERID,
             SUPER_USER,
             $this->getProjectId(),
-            $this->getUrl("services/{$libname}_services.php")
+            $this->getUrl("services/{$libname}_services.php"),
+            $this->getCSRFToken()
          ],
          file_get_contents( $this->getModulePath()."js/{$libname}.js" )
       );
@@ -313,35 +315,48 @@ trait trait_yes3Fn {
        ];
    }
 
-   public function getCodeForV2( string $libname ):string
+   public function getCodeForV2( string $libname, string $record ):string
    {
        $s = "";
        $js = "";
        $css = "";
        
        $s .= "\n<!-- enhanced getCodeFor: {$libname} -->";
- 
-       $js .= file_get_contents( $this->getModulePath()."js/{$libname}.js" );
 
-       $js .= "\n" . $this->initializeJavascriptModuleObject() . ";";
 
-       $js .= "\nCDSS.moduleObject = " . $this->getJavascriptModuleObjectName() . ";";
+      $js .= str_replace(
+         [
+            'CDSS_CSRF_TOKEN',
+            'CDSS_RECORD'
+         ],
+         [
+            $this->getCSRFToken(),
+            $record
+         ],
+         file_get_contents( $this->getModulePath()."js/{$libname}.js" )
+      );
 
-       $js .= "\nCDSS.moduleObjectName = '" . $this->getJavascriptModuleObjectName() . "';";
+      //$js .= file_get_contents( $this->getModulePath()."js/{$libname}.js" );
 
-       $js .= "\nCDSS.moduleProperties = " . $this->objectProperties() . ";\n";
+      $js .= "\n" . $this->initializeJavascriptModuleObject() . ";";
 
-       $js .= "\nCDSS.userRights = " . json_encode( $this->yes3UserRights() ) . ";\n";
+      $js .= "\nCDSS.moduleObject = " . $this->getJavascriptModuleObjectName() . ";";
 
-       $css .= file_get_contents( $this->getModulePath()."css/{$libname}.css" );
+      $js .= "\nCDSS.moduleObjectName = '" . $this->getJavascriptModuleObjectName() . "';";
 
-       if ( $js ) $s .= "\n<script>{$js}</script>";
+      $js .= "\nCDSS.moduleProperties = " . $this->objectProperties() . ";\n";
 
-       if ( $css ) $s .= "\n<style>{$css}</style>";
+      $js .= "\nCDSS.userRights = " . json_encode( $this->yes3UserRights() ) . ";\n";
 
-       //print $s;
+      $css .= file_get_contents( $this->getModulePath()."css/{$libname}.css" );
 
-       return $s;
+      if ( $js ) $s .= "\n<script>{$js}</script>";
+
+      if ( $css ) $s .= "\n<style>{$css}</style>";
+
+      //print $s;
+
+      return $s;
    }
 
 

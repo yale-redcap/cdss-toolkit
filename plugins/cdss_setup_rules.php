@@ -8,7 +8,7 @@ $module = new Yale\CDSS\CDSS();
 
 //exit( $module->getUrl("css/cdss_setup.css") );
 
-$HtmlPage = new HtmlPage();
+//$HtmlPage = new HtmlPage();
 
 //$HtmlPage->addStylesheet( $module->getUrl("css/cdss_setup.css"), "screen,print");
 
@@ -16,7 +16,7 @@ $HtmlPage = new HtmlPage();
 
 //exit(print_r($HtmlPage, true));
 
-$HtmlPage->ProjectHeader();
+//$HtmlPage->ProjectHeader();
 
 ?>
 
