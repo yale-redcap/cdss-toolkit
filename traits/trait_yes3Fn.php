@@ -340,13 +340,13 @@ trait trait_yes3Fn {
 
       $js .= "\n" . $this->initializeJavascriptModuleObject() . ";";
 
-      $js .= "\nCDSS.moduleObject = " . $this->getJavascriptModuleObjectName() . ";";
+      $js .= "\ncdss.moduleObject = " . $this->getJavascriptModuleObjectName() . ";";
 
-      $js .= "\nCDSS.moduleObjectName = '" . $this->getJavascriptModuleObjectName() . "';";
+      $js .= "\ncdss.moduleObjectName = '" . $this->getJavascriptModuleObjectName() . "';";
 
-      $js .= "\nCDSS.moduleProperties = " . $this->objectProperties() . ";\n";
+      $js .= "\ncdss.moduleProperties = " . $this->objectProperties() . ";\n";
 
-      $js .= "\nCDSS.userRights = " . json_encode( $this->yes3UserRights() ) . ";\n";
+      $js .= "\ncdss.userRights = " . json_encode( $this->yes3UserRights() ) . ";\n";
 
       $css .= file_get_contents( $this->getModulePath()."css/{$libname}.css" );
 

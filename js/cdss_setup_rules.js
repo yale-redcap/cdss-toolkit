@@ -10,6 +10,7 @@ let cdss = {
    rule_basis_source: [],
    rule_action_source: [],
    maxZ: 500,
+   redcap_csrf_token: "YES3_CSRF_TOKEN",
    serviceUrl: "YES3_SERVICE_URL",
    user: "YES3_USERNAME",
    project_id: "YES3_PROJECT_ID",
@@ -178,6 +179,8 @@ jQuery.fn.center = function (dx, dy) {
 cdss.requestService = function( params, doneFn, dataType ) {
 
    dataType = dataType || "text";
+
+   params['redcap_csrf_token'] = cdss.redcap_csrf_token;
 
    var request = $.ajax({
       url: cdss.serviceUrl,
@@ -382,23 +385,23 @@ cdss.getSetGo = function( response ){
    cdss.study_fields = response.study_fields;
    cdss.cdss_medications = response.cdss_medications;
    cdss.cdss_diseases = response.cdss_diseases;
-   cdss.cdss_conditions = response.cdss_conditions;
-   cdss.cdss_variables = response.cdss_variables;
+   //cdss.cdss_conditions = response.cdss_conditions;
+   //cdss.cdss_variables = response.cdss_variables;
    //cdss.cdss_functions = response.cdss_functions;
    //cdss.cdss_actions = response.cdss_actions;
    //cdss.cdss_rbase = response.cdss_rbase;
 
    cdss.cdss_medications.sort( cdss.sort_compare_name );
    cdss.cdss_diseases.sort( cdss.sort_compare_name );
-   cdss.cdss_conditions.sort( cdss.sort_compare_name );
-   cdss.cdss_variables.sort( cdss.sort_compare_name );
+   //cdss.cdss_conditions.sort( cdss.sort_compare_name );
+   //cdss.cdss_variables.sort( cdss.sort_compare_name );
    //cdss.cdss_functions.sort( cdss.sort_compare_id );
    //cdss.cdss_actions.sort( cdss.sort_compare_name );
    cdss.study_fields.sort( cdss.sort_compare_name );
 
    // assemble the big select source
 
-   cdss.pushRuleBaseCategory('c', cdss.cdss_conditions);
+   //cdss.pushRuleBaseCategory('c', cdss.cdss_conditions);
    cdss.pushRuleBaseCategory('d', cdss.cdss_diseases);
    cdss.pushRuleBaseCategory('m', cdss.cdss_medications);
    cdss.pushRuleBaseCategory('f', cdss.study_fields);
@@ -992,7 +995,7 @@ cdss.addRuleSpec = function( noConditions ) {
     return ruleNumber;
 }
 
-
+/*
 cdss.buildRuleActionParamTable = function(ruleNumber, ruleAction){
     let paramTableWrapper = $(`table#cdss-rule-${ruleNumber} div.cdss-rule-params:first`);
     let ruleParamsWrapper = $(`tr#cdss-rule-${ruleNumber}-params_wrapper`);
@@ -1076,7 +1079,7 @@ cdss.buildRuleActionParamTable = function(ruleNumber, ruleAction){
    console.log('buildRuleActionParamTable',ruleNumber, ruleAction, paramTableWrapper, paramTableClone);
 
 }
-
+*/
 cdss.setRuleParamAdditionalItemProperties = function( el, ruleNumber, additional_item_number, action, param_index ){
 
    el
@@ -1110,7 +1113,7 @@ cdss.populateRuleParamTableElements = function(paramTable) {
          source: cdss.rule_basis_source,
          minLength: 0
          })
-         .attr('placeholder', "start typing or [c]-conditions, [d]-diseases, [m]-medications, [f]-study fields or [space]-all")
+         .attr('placeholder', "start typing or [d]-diseases, [m]-medications, [f]-study fields or [space]-all")
       ;
    });
 }

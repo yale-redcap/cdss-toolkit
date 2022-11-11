@@ -228,7 +228,7 @@ function save_metadata() {
    $data = $module->getProjectSetting($key);
    $crc_after = crc32($data);
 
-   return "{$key}: CRC before={$crc_before}, after={$crc_after}";
+   return $data;
 }
 
 function save_rbase() {
@@ -249,8 +249,9 @@ function save_rbase() {
 function get_cdss_settings() {
     global $module;
 
-    $cdss_functions = "";
-    include $module->getModulePath() . "assets/cdss_function_specs.php";
+    //$cdss_functions = "";
+
+    //include $module->getModulePath() . "assets/cdss_function_specs.php";
 
     $sqlm = "SELECT field_name, element_label, element_enum, element_type, misc FROM redcap_metadata WHERE project_id={$module->project_id} AND element_type<>'descriptive' AND field_name NOT LIKE '%\_complete' ORDER BY field_name";
     $mm = $module->fetchRecords( $sqlm );
@@ -266,9 +267,9 @@ function get_cdss_settings() {
 
     $cdss_medications = $module->getProjectSetting('cdss-medications');
     $cdss_diseases = $module->getProjectSetting('cdss-diseases');
-    $cdss_conditions = $module->getProjectSetting('cdss-conditions');
-    $cdss_variables = $module->getProjectSetting('cdss-variables');
-    
+    //$cdss_conditions = $module->getProjectSetting('cdss-conditions');
+    //$cdss_variables = $module->getProjectSetting('cdss-variables');
+/*    
     $cdss_rbase = file_get_contents( $module->getModulePath() . "assets/kbase.txt" );
 
     $all_drugs = [];
@@ -322,8 +323,9 @@ function get_cdss_settings() {
         $cdss_conditions = $module->getProjectSetting('cdss-conditions');
         $cdss_variables = $module->getProjectSetting('cdss-variables');
     }
-
+*/
     // for now, 'actions' are just functions that start with 'report_'
+    /*
     $cdss_functions = json_decode($cdss_functions);
     $cdss_actions = [];
     foreach ( $cdss_functions as $cdss_function ) {
@@ -331,19 +333,20 @@ function get_cdss_settings() {
             $cdss_actions[] = $cdss_function;
         }
     }
+    */
 
     return json_encode([
         'study_fields'=>$study_fields,
-        'cdss_actions'=>$cdss_actions,
-        'cdss_variables'=>json_decode($cdss_variables),
+        //'cdss_actions'=>$cdss_actions,
+        //'cdss_variables'=>json_decode($cdss_variables),
         'cdss_medications'=>json_decode($cdss_medications),
         'cdss_diseases'=>json_decode($cdss_diseases),
-        'cdss_conditions'=>json_decode($cdss_conditions),
+        //'cdss_conditions'=>json_decode($cdss_conditions),
         //'cdss_rbase'=>$cdss_rbase,
-        'all_drugs' => $all_drugs,
-        'all_diseases' => $all_diseases,   
-        'drugs' => $unique_drugs,
-        'diseases' => $unique_diseases   
+        //'all_drugs' => $all_drugs,
+        //'all_diseases' => $all_diseases,   
+        //'drugs' => $unique_drugs,
+        //'diseases' => $unique_diseases   
         ]);
 
 }

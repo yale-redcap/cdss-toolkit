@@ -1,5 +1,5 @@
 
-let CDSS = {
+let cdss = {
    study_fields: "",
    cdss_variables: "",
    cdss_medications: "",
@@ -49,14 +49,14 @@ jQuery.fn.center = function (dx, dy) {
    return this;
 };
 
-CDSS.requestService = function( params, doneFn, dataType ) {
+cdss.requestService = function( params, doneFn, dataType ) {
 
    dataType = dataType || "text";
 
-   params.redcap_csrf_token = CDSS.csrf_token;
+   params.redcap_csrf_token = cdss.csrf_token;
 
    var request = $.ajax({
-      url: CDSS.moduleObject.getUrl('services/cdss_services.php'),
+      url: cdss.moduleObject.getUrl('services/cdss_services.php'),
       type: "POST",
       dataType: dataType,
       data: params
@@ -68,49 +68,49 @@ CDSS.requestService = function( params, doneFn, dataType ) {
    });
 }
 
-CDSS.saveComplete = function( response ){
+cdss.saveComplete = function( response ){
    console.log( response );
 }
 
-CDSS.toTitleCase = function(str) {
+cdss.toTitleCase = function(str) {
    return str.replace(/\w\S*/g, function(txt){
       return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
    });
 }
 
-CDSS.pretty_panel_name = function(metaclass){
-   return CDSS.toTitleCase(metaclass.split('_').join(' ')).replace('Cdss', 'CDSS');
+cdss.pretty_panel_name = function(metaclass){
+   return cdss.toTitleCase(metaclass.split('_').join(' ')).replace('Cdss', 'CDSS');
 }
 
-CDSS.spinMe = function() {
+cdss.spinMe = function() {
     $('i.cdss-spinme').addClass('fa-spin');
 }
 
-CDSS.openPopup = function(popup) {
-    CDSS.maxZ += 1;
-    $('#cdss-screencover').css({'z-index':CDSS.maxZ-1}).show(); // places the full-screen overlay just below the panel
-    popup.center(0, 0).css({'z-index':CDSS.maxZ}).show();
-    setTimeout(CDSS.spinMe, 10000);
+cdss.openPopup = function(popup) {
+    cdss.maxZ += 1;
+    $('#cdss-screencover').css({'z-index':cdss.maxZ-1}).show(); // places the full-screen overlay just below the panel
+    popup.center(0, 0).css({'z-index':cdss.maxZ}).show();
+    setTimeout(cdss.spinMe, 10000);
 };
 
-CDSS.closePopup = function(popupName) {
+cdss.closePopup = function(popupName) {
     $(`#${popupName}`).hide();
     $('#cdss-screencover').hide();
 };
 
-CDSS.getReady = function() {
+cdss.getReady = function() {
 
     var params = {
 
         'request':'get_cdss_reports',
-        'record': CDSS.record,
-        'event_id': CDSS.event_id
+        'record': cdss.record,
+        'event_id': cdss.event_id
     };
 
-    CDSS.requestService(params, CDSS.getSetGo, "html");
+    cdss.requestService(params, cdss.getSetGo, "html");
 }
 
-CDSS.getSetGo = function( response ){
+cdss.getSetGo = function( response ){
 
     //console.log( 'getSetGo', response );
 
@@ -121,7 +121,7 @@ $(document).ready(function () {
 
     $(".cdss-draggable").draggable({"handle": ".cdss-drag-handle"});
 
-    CDSS.getReady();
+    cdss.getReady();
 });
 
 

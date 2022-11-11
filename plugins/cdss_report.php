@@ -6,7 +6,6 @@ error_reporting(E_ALL);
 
 use Yale\Yes3\Yes3;
 
-
 /**
  * The instantiated EM class
  */
